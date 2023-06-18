@@ -39,6 +39,12 @@ It's also important to have MiniPlaceholders installed on your server. You can d
 
 For the best experience, you also should install the player expansion for MiniPlaceholders. You can download it from [here](https://github.com/MiniPlaceholders/Player-Expansion).
 
+## Support
+
+If you need any help with FairyChat, feel free to join our [Discord server](https://discord.gg/bM8NtsJVeb).
+
+For bug reports and feature requests, please open an issue on [GitHub](https://github.com/rexlManu/FairyChat/issues).
+
 ## Configuration
 
 ```yaml
