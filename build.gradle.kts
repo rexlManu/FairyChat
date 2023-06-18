@@ -22,6 +22,8 @@ dependencies {
 
     // Plugin dependencies
     compileOnly(libs.miniplaceholders)
+
+    implementation(libs.bstats)
 }
 
 tasks {
@@ -47,6 +49,7 @@ tasks {
     }
     shadowJar {
         archiveClassifier.set("")
+        relocate("org.bstats", "de.rexlmanu.fairychat.dependencies.bstats")
         from(file("LICENSE"))
 
         dependencies {

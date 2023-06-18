@@ -13,3 +13,4 @@ commandframework = { module = "cloud.commandframework:cloud-paper", version = "1
 configlib = { module = "com.github.Exlll.ConfigLib:configlib-paper", version = "v4.2.0" }
 guice = { module = "com.google.inject:guice", version = "7.0.0" }
 luckperms = { module = "net.luckperms:api", version = "5.4" }
+bstats = { module = "org.bstats:bstats-bukkit", version = "3.0.2" }

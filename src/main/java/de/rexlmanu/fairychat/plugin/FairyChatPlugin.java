@@ -10,6 +10,7 @@ import de.rexlmanu.fairychat.plugin.module.GsonModule;
 import de.rexlmanu.fairychat.plugin.module.PermissionModule;
 import de.rexlmanu.fairychat.plugin.module.PluginModule;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class FairyChatPlugin extends JavaPlugin {
@@ -34,6 +35,8 @@ public class FairyChatPlugin extends JavaPlugin {
         .registerEvents(this.injector.getInstance(ChatListener.class), this);
 
     this.registerCommands();
+
+    new Metrics(this, Constants.BSTATS_ID);
   }
 
   @Override

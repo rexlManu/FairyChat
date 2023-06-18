@@ -13,4 +13,6 @@ public class Constants {
 
   public static final String MESSAGING_CHANNEL = "fairychat:messaging";
   public static final String BROADCAST_CHANNEL = "fairychat:broadcast";
+
+  public static final int BSTATS_ID = 18786;
 }
