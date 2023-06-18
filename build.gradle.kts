@@ -80,7 +80,7 @@ modrinth {
 
     syncBodyFrom.set(rootProject.file("README.md").readText())
 
-    uploadFile.set(tasks.shadowJar)
+    uploadFile.set(buildDir.resolve("libs").resolve("FairyChat-${rootProject.version}.jar"))
     gameVersions.addAll(versions)
     loaders.addAll(listOf("paper", "purpur", "folia"))
     changelog.set(System.getenv("MODRINTH_CHANGELOG"))
@@ -101,7 +101,7 @@ hangarPublish {
         // register platforms
         platforms {
             register(Platforms.PAPER) {
-                jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+                jar.set(buildDir.resolve("libs").resolve("FairyChat-${rootProject.version}.jar"))
                 platformVersions.set(versions)
                 dependencies {
                     hangar("MiniPlaceholders", "MiniPlaceholders") {
