@@ -37,12 +37,6 @@ public class CommandModule extends AbstractModule {
           .parameterInjectorRegistry()
           .registerInjectionService(context -> injector.getInstance(context.getSecond()));
 
-      //      new MinecraftExceptionHandler<CommandSender>()
-      //          .withHandler(MinecraftExceptionHandler.ExceptionType.NO_PERMISSION,
-      //              e -> Component.text("You don't have permission to do this!")
-      //                  .style(builder -> builder.color(NamedTextColor.RED)))
-      //          .apply(commandManager, sender -> sender);
-
       return commandManager;
     } catch (Exception e) {
       throw new RuntimeException("Failed to initialize the CommandManager");
