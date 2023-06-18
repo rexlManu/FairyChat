@@ -35,6 +35,10 @@ Please note that FairyChat will automatically detect the permission provider and
 
 You need to have [Paper](https://papermc.io/) (or fork of paper) installed on your server. FairyChat is not compatible with other server software.
 
+It's also important to have MiniPlaceholders installed on your server. You can download it from [here](https://modrinth.com/plugin/miniplaceholders).
+
+For the best experience, you also should install the player expansion for MiniPlaceholders. You can download it from [here](https://github.com/MiniPlaceholders/Player-Expansion).
+
 ## Configuration
 
 ```yaml
