@@ -5,6 +5,7 @@ loader: de.rexlmanu.fairychat.plugin.FairyChatLoader
 description: A plugin to manage the chat of your server.
 api-version: '1.19'
 folia-supported: true
+website: https://github.com/rexlManu/FairyChat
 dependencies:
   - name: MiniPlaceholders
     required: true
