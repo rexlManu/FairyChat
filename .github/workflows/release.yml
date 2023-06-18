@@ -35,3 +35,19 @@ jobs:
           files: build/libs/**.jar
           body: ${{ steps.changelog.outputs.changelog }}
           draft: true
+      - name: Publish to Modrinth
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: '8.1.1'
+          arguments: modrinth
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          MODRINTH_CHANGELOG: ${{ steps.changelog.outputs.changelog }}
+      - name: Publish to Hangar
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: '8.1.1'
+          arguments: publishAllPublicationsToHangar
+        env:
+          HANGAR_CHANGELOG: ${{ steps.changelog.outputs.changelog }}
+          HANGAR_TOKEN: ${{ secrets.HANGAR_TOKEN }}

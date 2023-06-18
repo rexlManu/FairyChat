@@ -65,4 +65,4 @@ groupFormats:
 
 ## License
 
-**FairyChat** is licensed under custom terms, which can be found [here](LICENSE).
+**FairyChat** is licensed under MIT License, which can be found [here](LICENSE).
