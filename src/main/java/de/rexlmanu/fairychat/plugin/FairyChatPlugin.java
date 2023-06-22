@@ -10,6 +10,9 @@ import de.rexlmanu.fairychat.plugin.configuration.ConfigModule;
 import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
 import de.rexlmanu.fairychat.plugin.core.CoreModule;
 import de.rexlmanu.fairychat.plugin.core.broadcast.BroadcastChannelSubscriber;
+import de.rexlmanu.fairychat.plugin.core.metrics.MetricsModule;
+import de.rexlmanu.fairychat.plugin.core.metrics.RedisEnabledChart;
+import de.rexlmanu.fairychat.plugin.core.metrics.RedisUsersChart;
 import de.rexlmanu.fairychat.plugin.core.playerchat.PlayerChatListener;
 import de.rexlmanu.fairychat.plugin.core.playerchat.PlayerChatMessageSubscriber;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.redis.RedisPrivateMessagingSubscriber;
@@ -17,7 +20,6 @@ import de.rexlmanu.fairychat.plugin.core.user.listener.UserBukkitListener;
 import de.rexlmanu.fairychat.plugin.permission.PermissionModule;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
 import de.rexlmanu.fairychat.plugin.redis.channel.RedisSubscriberModule;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class FairyChatPlugin extends JavaPlugin {
@@ -35,7 +37,8 @@ public class FairyChatPlugin extends JavaPlugin {
             new PermissionModule(),
             new ConfigModule(),
             new CoreModule(this.configuration),
-            new RedisSubscriberModule());
+            new RedisSubscriberModule(),
+            new MetricsModule());
 
     this.injector.getInstance(RedisConnector.class).open();
 
@@ -48,7 +51,7 @@ public class FairyChatPlugin extends JavaPlugin {
     this.registerCommands();
     this.registerSubscribers();
 
-    new Metrics(this, Constants.BSTATS_ID);
+    this.registerMetricCharts();
   }
 
   private void registerSubscribers() {
@@ -73,5 +76,12 @@ public class FairyChatPlugin extends JavaPlugin {
   private void registerCommands() {
     this.injector.getInstance(BroadcastCommand.class);
     this.injector.getInstance(PrivateMessageCommand.class);
+  }
+
+  private void registerMetricCharts() {
+    this.injector.getInstance(RedisEnabledChart.class).register();
+    if (this.configuration.redisCredentials().enabled()) {
+      this.injector.getInstance(RedisUsersChart.class).register();
+    }
   }
 }

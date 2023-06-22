@@ -68,4 +68,8 @@ public class RedisUserService implements UserService {
           return Optional.of(userFactory.deserialize(json));
         });
   }
+
+  public long onlineUsersCount() {
+    return connector.useQuery(jedis -> jedis.hlen(REDIS_KEY));
+  }
 }
