@@ -21,7 +21,7 @@ public class RedisUserService implements UserService {
 
   @Override
   public void login(User user) {
-    connector.useResourceAsync(
+    connector.useResource(
         jedis -> {
           String serializedUser = userFactory.serialize(user);
           jedis.hset(REDIS_KEY, user.uniqueId().toString(), serializedUser);
@@ -31,7 +31,7 @@ public class RedisUserService implements UserService {
 
   @Override
   public void logout(User user) {
-    connector.useResourceAsync(
+    connector.useResource(
         jedis -> {
           jedis.hdel(REDIS_KEY, user.uniqueId().toString());
           jedis.hdel(USERNAME_KEY, user.username());
