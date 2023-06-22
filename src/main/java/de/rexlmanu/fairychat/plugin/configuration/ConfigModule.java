@@ -20,9 +20,15 @@ public class ConfigModule extends AbstractModule {
     return configuration.messages();
   }
 
-    @Provides
-    @Inject
-    public BroadcastConfig broadcast(FairyChatConfiguration configuration) {
-        return configuration.broadcast();
-    }
+  @Provides
+  @Inject
+  public BroadcastConfig broadcast(FairyChatConfiguration configuration) {
+    return configuration.broadcast();
+  }
+
+  @Provides
+  @Inject
+  public RedisCredentials redisCredentials(FairyChatConfiguration configuration) {
+    return configuration.redisCredentials();
+  }
 }

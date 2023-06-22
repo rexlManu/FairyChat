@@ -9,25 +9,25 @@ import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
-import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
 import de.rexlmanu.fairychat.plugin.configuration.RedisCredentials;
-import de.rexlmanu.fairychat.plugin.redis.channel.MessageChannelHandler;
 import de.rexlmanu.fairychat.plugin.core.broadcast.BroadcastMessageData;
 import de.rexlmanu.fairychat.plugin.core.playerchat.PlayerChatMessageData;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.redis.PrivateMessageData;
-import de.rexlmanu.fairychat.plugin.utility.annotation.PluginLogger;
+import de.rexlmanu.fairychat.plugin.redis.channel.MessageChannelHandler;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.logging.Logger;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPubSub;
 
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class RedisConnector {
   private final RedisCredentials credentials;
   private final Logger logger;
@@ -36,20 +36,6 @@ public class RedisConnector {
   private final Gson gson;
   private final Map<Class<?>, MessageChannelHandler<?>> handlers = new HashMap<>();
   private JedisPool jedisPool;
-
-  @Inject
-  public RedisConnector(
-      FairyChatConfiguration configuration,
-      @PluginLogger Logger logger,
-      Injector injector,
-      JavaPlugin plugin,
-      Gson gson) {
-    this.credentials = configuration.redisCredentials();
-    this.logger = logger;
-    this.injector = injector;
-    this.plugin = plugin;
-    this.gson = gson;
-  }
 
   public void open() {
     if (!this.credentials.enabled()) {
