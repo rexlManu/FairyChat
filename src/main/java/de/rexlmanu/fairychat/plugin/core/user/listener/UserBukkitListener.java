@@ -3,7 +3,7 @@ package de.rexlmanu.fairychat.plugin.core.user.listener;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.core.user.UserFactory;
-import de.rexlmanu.fairychat.plugin.core.user.redis.RedisUserService;
+import de.rexlmanu.fairychat.plugin.core.user.UserService;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -13,17 +13,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 @Singleton
 public class UserBukkitListener implements Listener {
-  private final RedisUserService userService;
+  private final UserService userService;
   private final UserFactory userFactory;
 
   @Inject
   public UserBukkitListener(
-      RedisUserService userService,
+      UserService userService,
       UserFactory userFactory,
       JavaPlugin plugin,
       PluginManager pluginManager) {
     this.userService = userService;
     this.userFactory = userFactory;
+
     pluginManager.registerEvents(this, plugin);
   }
 
