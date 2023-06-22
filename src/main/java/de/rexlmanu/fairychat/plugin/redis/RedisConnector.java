@@ -2,53 +2,40 @@ package de.rexlmanu.fairychat.plugin.redis;
 
 import static de.rexlmanu.fairychat.plugin.Constants.BROADCAST_CHANNEL;
 import static de.rexlmanu.fairychat.plugin.Constants.MESSAGING_CHANNEL;
+import static de.rexlmanu.fairychat.plugin.Constants.PRIVATE_MESSAGING_CHANNEL;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
-import de.rexlmanu.fairychat.plugin.Constants;
-import de.rexlmanu.fairychat.plugin.FairyChatConfiguration;
-import de.rexlmanu.fairychat.plugin.redis.data.BroadcastMessageData;
-import de.rexlmanu.fairychat.plugin.redis.data.PlayerChatMessageData;
-import de.rexlmanu.fairychat.plugin.utility.annotation.PluginLogger;
+import de.rexlmanu.fairychat.plugin.configuration.RedisCredentials;
+import de.rexlmanu.fairychat.plugin.core.broadcast.BroadcastMessageData;
+import de.rexlmanu.fairychat.plugin.core.playerchat.PlayerChatMessageData;
+import de.rexlmanu.fairychat.plugin.core.privatemessaging.redis.PrivateMessageData;
+import de.rexlmanu.fairychat.plugin.redis.channel.MessageChannelHandler;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.logging.Logger;
-import org.bukkit.Server;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.plugin.java.JavaPlugin;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPubSub;
 
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class RedisConnector {
   private final RedisCredentials credentials;
   private final Logger logger;
   private final Injector injector;
   private final JavaPlugin plugin;
   private final Gson gson;
-  private final Server server;
   private final Map<Class<?>, MessageChannelHandler<?>> handlers = new HashMap<>();
   private JedisPool jedisPool;
-
-  @Inject
-  public RedisConnector(
-      FairyChatConfiguration configuration,
-      @PluginLogger Logger logger,
-      Injector injector,
-      JavaPlugin plugin,
-      Gson gson,
-      Server server) {
-    this.credentials = configuration.redisCredentials();
-    this.logger = logger;
-    this.injector = injector;
-    this.plugin = plugin;
-    this.gson = gson;
-    this.server = server;
-  }
 
   public void open() {
     if (!this.credentials.enabled()) {
@@ -60,19 +47,7 @@ public class RedisConnector {
 
     this.registerHandler(MESSAGING_CHANNEL, PlayerChatMessageData.class);
     this.registerHandler(BROADCAST_CHANNEL, BroadcastMessageData.class);
-
-    this.listen(
-        PlayerChatMessageData.class,
-        data -> {
-          // If the server id is the same as the current server id, the message was sent by this
-          if (data.serverId().equals(Constants.SERVER_ID)) return;
-          this.server.getOnlinePlayers().forEach(player -> player.sendMessage(data.message()));
-        });
-
-    this.listen(
-        BroadcastMessageData.class,
-        data ->
-            this.server.getOnlinePlayers().forEach(player -> player.sendMessage(data.message())));
+    this.registerHandler(PRIVATE_MESSAGING_CHANNEL, PrivateMessageData.class);
   }
 
   public void close() {
@@ -106,11 +81,25 @@ public class RedisConnector {
     }
   }
 
+  public <T> T useQuery(Function<Jedis, T> queryFunction) {
+    // This case should not happen, if the redis is not available, resources should not be used.
+    if (!this.available()) {
+      throw new RuntimeException("Redis is not available.");
+    }
+    try (Jedis jedis = this.jedisPool.getResource()) {
+      return queryFunction.apply(jedis);
+    }
+  }
+
   public void useResourceAsync(Consumer<Jedis> consumer) {
     this.plugin
         .getServer()
         .getScheduler()
         .runTaskAsynchronously(this.plugin, () -> this.useResource(consumer));
+  }
+
+  public <T> CompletableFuture<T> useQueryAsync(Function<Jedis, T> function) {
+    return CompletableFuture.supplyAsync(() -> this.useQuery(function));
   }
 
   public <D> void listen(Class<D> dataClass, Consumer<D> listener) {

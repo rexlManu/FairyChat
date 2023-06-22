@@ -2,24 +2,38 @@
 
 The next generation chat plugin for managing your server's chat.
 
-*FairyChat is the future of chat management for your server, providing a range of features from customizable chat formats to multi-server message broadcasting. The perfect solution to bring a seamless chatting experience to your server users.*
+*FairyChat is the future of chat management for your server, providing a range of features from customizable
+chat
+formats to multi-server message broadcasting. The perfect solution to bring a seamless chatting experience to
+your
+server users.*
 
 ## Features
 
 - **Customizable Chat Format**: Personalize the chat format as per your needs.
 - **Per-Group Chat Format**: Differentiate chats based on the user group for better management.
-- **MiniMessage & MiniPlaceholders Support**: All formats are compatible with MiniMessage & MiniPlaceholders, making the customization process easier than ever.
-- **Optional Multi-Server Message Sending**: Have multiple servers? No problem. FairyChat supports sending messages across servers with Redis.
+- **Private Messaging**: Send private messages to other players with ease. Supports tab completion across multiple
+  servers.
+- **MiniMessage & MiniPlaceholders Support**: All formats are compatible with MiniMessage & MiniPlaceholders, making the
+  customization process easier than ever.
+- **Optional Multi-Server Message Sending**: Have multiple servers? No problem. FairyChat supports sending messages
+  across servers with Redis.
+- **Fully Paper Compatible**: FairyChat is fully compatible with Paper, and is optimized to provide the best
+  performance.
 
 ## Commands & Permissions
 
-| Command | Permission | Description |
-| ------- | ---------- | ----------- |
-| `/broadcast <message>` | `fairychat.command.broadcast` | Broadcast a message to all servers |
+| Command                                 | Permission                      | Description                        |
+|-----------------------------------------|---------------------------------|------------------------------------|
+| `/broadcast --type=broadcast <message>` | `fairychat.command.broadcast`   | Broadcast a message to all servers |
+|                                         | `fairychat.feature.minimessage` | Use mini message in chat           |
+| `/pm`                                   |                                 | Send a private message to a player |
+| `/r`                                    |                                 | Reply to a private message         |
 
 ## Placeholders
 
-For a list of all available placeholders, please refer to the [MiniPlaceholders wiki](https://github.com/MiniPlaceholders/MiniPlaceholders/wiki).
+For a list of all available placeholders, please refer to
+the [MiniPlaceholders wiki](https://github.com/MiniPlaceholders/MiniPlaceholders/wiki).
 
 ## Permission Providers
 
@@ -33,11 +47,15 @@ Please note that FairyChat will automatically detect the permission provider and
 
 ## Installation
 
-You need to have [Paper](https://papermc.io/) (or fork of paper) installed on your server. FairyChat is not compatible with other server software.
+You need to have [Paper](https://papermc.io/) (or fork of paper) installed on your server. FairyChat is not
+compatible
+with other server software.
 
-It's also important to have MiniPlaceholders installed on your server. You can download it from [here](https://modrinth.com/plugin/miniplaceholders).
+It's also important to have MiniPlaceholders installed on your server. You can download it
+from [here](https://modrinth.com/plugin/miniplaceholders).
 
-For the best experience, you also should install the player expansion for MiniPlaceholders. You can download it from [here](https://github.com/MiniPlaceholders/Player-Expansion).
+For the best experience, you also should install the player expansion for MiniPlaceholders. You can download it
+from [here](https://github.com/MiniPlaceholders/Player-Expansion).
 
 ## Support
 
@@ -47,21 +65,7 @@ For bug reports and feature requests, please open an issue on [GitHub](https://g
 
 ## Configuration
 
-```yaml
-# Redis credentials, used to broadcast messages to other servers.
-redisCredentials:
-  enabled: true
-  url: redis://localhost:6379
-# The format of chat messages as minimessage.
-# You can use any placeholder from
-# https://github.com/MiniPlaceholders/MiniPlaceholders/wiki/Placeholders
-chatFormat: <player_name> <dark_gray>» <gray><message>
-# Define formats based on the player's group.
-# Following permission systems are supported:
-# LuckPerms
-groupFormats:
-  admin: <dark_red><player_name> <dark_gray>» <white><message>
-```
+Please checkout the generated configuration file for more information on how to configure FairyChat.
 
 ## License
 

@@ -1,11 +1,8 @@
-package de.rexlmanu.fairychat.plugin.module;
+package de.rexlmanu.fairychat.plugin.permission;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
-import de.rexlmanu.fairychat.plugin.permission.DummyPermissionProvider;
-import de.rexlmanu.fairychat.plugin.permission.LuckPermsPermissionProvider;
-import de.rexlmanu.fairychat.plugin.permission.PermissionProvider;
 import de.rexlmanu.fairychat.plugin.utility.annotation.PluginLogger;
 import java.util.logging.Logger;
 import org.bukkit.Server;

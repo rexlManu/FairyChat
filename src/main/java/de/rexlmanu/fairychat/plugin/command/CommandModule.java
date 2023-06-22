@@ -1,4 +1,4 @@
-package de.rexlmanu.fairychat.plugin.module;
+package de.rexlmanu.fairychat.plugin.command;
 
 import cloud.commandframework.CommandManager;
 import cloud.commandframework.bukkit.CloudBukkitCapabilities;

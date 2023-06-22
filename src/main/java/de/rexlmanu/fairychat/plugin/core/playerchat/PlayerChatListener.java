@@ -1,11 +1,10 @@
-package de.rexlmanu.fairychat.plugin.listener;
+package de.rexlmanu.fairychat.plugin.core.playerchat;
 
 import static de.rexlmanu.fairychat.plugin.Constants.MESSAGING_CHANNEL;
 
 import com.google.inject.Inject;
 import de.rexlmanu.fairychat.plugin.Constants;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
-import de.rexlmanu.fairychat.plugin.redis.data.PlayerChatMessageData;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
@@ -14,8 +13,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class ChatListener implements Listener {
-  private final FormatChatRenderer renderer;
+public class PlayerChatListener implements Listener {
+  private final PlayerChatFormatRenderer renderer;
   private final RedisConnector redisConnector;
 
   @EventHandler(priority = EventPriority.MONITOR)
@@ -30,6 +29,6 @@ public class ChatListener implements Listener {
     this.redisConnector.publish(
         MESSAGING_CHANNEL,
         new PlayerChatMessageData(
-            Constants.SERVER_ID, event.getPlayer().getUniqueId(), formattedMessage));
+            Constants.SERVER_IDENTITY_ORIGIN, event.getPlayer().getUniqueId(), formattedMessage));
   }
 }

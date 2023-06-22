@@ -1,12 +1,18 @@
-package de.rexlmanu.fairychat.plugin.module;
+package de.rexlmanu.fairychat.plugin;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import com.google.inject.name.Names;
-import de.rexlmanu.fairychat.plugin.FairyChatConfiguration;
+import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
+import de.rexlmanu.fairychat.plugin.utility.ComponentTypeAdapter;
 import de.rexlmanu.fairychat.plugin.utility.annotation.PluginLogger;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
@@ -15,7 +21,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @RequiredArgsConstructor
-public class PluginModule extends AbstractModule {
+public class FairyChatModule extends AbstractModule {
   private final FairyChatConfiguration configuration;
   private final JavaPlugin plugin;
 
@@ -40,5 +46,15 @@ public class PluginModule extends AbstractModule {
                         .resolvers(StandardTags.color(), StandardTags.decorations())
                         .build())
                 .build());
+  }
+
+  @Provides
+  @Singleton
+  public Gson provideGson() {
+    return new GsonBuilder()
+        .serializeNulls()
+        .registerTypeAdapter(Component.class, new ComponentTypeAdapter())
+        .enableComplexMapKeySerialization()
+        .create();
   }
 }
