@@ -18,6 +18,8 @@ server users.*
   customization process easier than ever.
 - **Optional Multi-Server Message Sending**: Have multiple servers? No problem. FairyChat supports sending messages
   across servers with Redis.
+- **Fully Paper Compatible**: FairyChat is fully compatible with Paper, and is optimized to provide the best
+  performance.
 
 ## Commands & Permissions
 
