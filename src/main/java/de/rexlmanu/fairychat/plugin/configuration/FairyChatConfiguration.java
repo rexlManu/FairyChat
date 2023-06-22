@@ -29,6 +29,9 @@ public class FairyChatConfiguration {
           "admin",
           "<dark_red><player_name></dark_red> <dark_gray>»</dark_gray> <white><message></white>");
 
+  @Comment("Should the player chat messages be displayed in the console when sent via Redis?")
+  private boolean displayChatInConsole = true;
+
   @Comment("Configuration for private messages.")
   private PrivateMessagingConfig privateMessaging = new PrivateMessagingConfig();
 
