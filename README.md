@@ -12,6 +12,8 @@ server users.*
 
 - **Customizable Chat Format**: Personalize the chat format as per your needs.
 - **Per-Group Chat Format**: Differentiate chats based on the user group for better management.
+- **Private Messaging**: Send private messages to other players with ease. Supports tab completion across multiple
+  servers.
 - **MiniMessage & MiniPlaceholders Support**: All formats are compatible with MiniMessage & MiniPlaceholders, making the
   customization process easier than ever.
 - **Optional Multi-Server Message Sending**: Have multiple servers? No problem. FairyChat supports sending messages
@@ -61,21 +63,7 @@ For bug reports and feature requests, please open an issue on [GitHub](https://g
 
 ## Configuration
 
-```yaml
-# Redis credentials, used to broadcast messages to other servers.
-redisCredentials:
-  enabled: true
-  url: redis://localhost:6379
-# The format of chat messages as minimessage.
-# You can use any placeholder from
-# https://github.com/MiniPlaceholders/MiniPlaceholders/wiki/Placeholders
-chatFormat: <player_name> <dark_gray>» <gray><message>
-# Define formats based on the player's group.
-# Following permission systems are supported:
-# LuckPerms
-groupFormats:
-  admin: <dark_red><player_name> <dark_gray>» <white><message>
-```
+Please checkout the generated configuration file for more information on how to configure FairyChat.
 
 ## License
 
