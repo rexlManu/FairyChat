@@ -35,6 +35,8 @@ public class UserBukkitListener implements Listener {
 
   @EventHandler
   public void handlePlayerQuit(PlayerQuitEvent event) {
-    this.userService.logout(this.userFactory.createFromPlayer(event.getPlayer()));
+    this.userService
+        .findUserById(event.getPlayer().getUniqueId())
+        .ifPresent(this.userService::logout);
   }
 }
