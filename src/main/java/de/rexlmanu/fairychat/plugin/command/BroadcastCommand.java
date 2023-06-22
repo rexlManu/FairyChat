@@ -6,10 +6,12 @@ import cloud.commandframework.CommandManager;
 import cloud.commandframework.arguments.standard.StringArgument;
 import com.google.inject.Inject;
 import de.rexlmanu.fairychat.plugin.Constants;
+import de.rexlmanu.fairychat.plugin.configuration.BroadcastConfig;
+import de.rexlmanu.fairychat.plugin.core.broadcast.BroadcastMessageData;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
-import de.rexlmanu.fairychat.plugin.redis.data.BroadcastMessageData;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 
@@ -18,7 +20,9 @@ public class BroadcastCommand {
   public BroadcastCommand(
       CommandManager<CommandSender> commandManager,
       MiniMessage miniMessage,
-      RedisConnector connector, Server server) {
+      RedisConnector connector,
+      Server server,
+      BroadcastConfig config) {
     commandManager.command(
         commandManager
             .commandBuilder("broadcast")
@@ -27,7 +31,9 @@ public class BroadcastCommand {
             .handler(
                 commandContext -> {
                   String message = commandContext.get("message");
-                  Component component = miniMessage.deserialize(message);
+                  Component component =
+                      miniMessage.deserialize(
+                          config.format(), Placeholder.parsed("message", message));
 
                   /*
                    * If the redis connector isn't available, we send the message to all online players.
@@ -38,7 +44,8 @@ public class BroadcastCommand {
                   }
 
                   connector.publish(
-                      BROADCAST_CHANNEL, new BroadcastMessageData(Constants.SERVER_ID, component));
+                      BROADCAST_CHANNEL,
+                      new BroadcastMessageData(Constants.SERVER_IDENTITY_ORIGIN, component));
                 }));
   }
 }

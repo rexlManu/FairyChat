@@ -1,4 +1,4 @@
-package de.rexlmanu.fairychat.plugin.redis;
+package de.rexlmanu.fairychat.plugin.redis.channel;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

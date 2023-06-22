@@ -1,6 +1,6 @@
 package de.rexlmanu.fairychat.plugin;
 
-import java.util.UUID;
+import de.rexlmanu.fairychat.plugin.utility.ServerIdentity;
 
 public class Constants {
   private Constants() {
@@ -9,10 +9,12 @@ public class Constants {
   /*
    * The server id is used to identify the server in the redis network.
    */
-  public static final UUID SERVER_ID = UUID.randomUUID();
+  public static final ServerIdentity SERVER_IDENTITY_ORIGIN = ServerIdentity.random();
 
   public static final String MESSAGING_CHANNEL = "fairychat:messaging";
   public static final String BROADCAST_CHANNEL = "fairychat:broadcast";
+  public static final String PRIVATE_MESSAGING_CHANNEL = "fairychat:private_messaging";
+  public static final String LAST_RECIPIENTS_KEY = "fairychat:last_recipients";
 
   public static final int BSTATS_ID = 18786;
 }
