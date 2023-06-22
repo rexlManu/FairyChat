@@ -23,12 +23,12 @@ server users.*
 
 ## Commands & Permissions
 
-| Command                                 | Permission                      | Description                        |
-|-----------------------------------------|---------------------------------|------------------------------------|
-| `/broadcast --type=broadcast <message>` | `fairychat.command.broadcast`   | Broadcast a message to all servers |
-|                                         | `fairychat.feature.minimessage` | Use mini message in chat           |
-| `/pm`                                   |                                 | Send a private message to a player |
-| `/r`                                    |                                 | Reply to a private message         |
+| Command                | Permission                      | Description                        |
+|------------------------|---------------------------------|------------------------------------|
+| `/broadcast <message>` | `fairychat.command.broadcast`   | Broadcast a message to all servers |
+|                        | `fairychat.feature.minimessage` | Use mini message in chat           |
+| `/pm`                  |                                 | Send a private message to a player |
+| `/r`                   |                                 | Reply to a private message         |
 
 ## Placeholders
 
