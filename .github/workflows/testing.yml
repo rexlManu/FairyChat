@@ -2,7 +2,9 @@ name: Testing
 
 on:
   push:
-    branches: [ 'dev' ]
+    branches-ignore:
+      - master
+  pull_request:
 
 jobs:
   build:
