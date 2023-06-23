@@ -37,8 +37,7 @@ tasks {
     }
     processResources {
         filesMatching("paper-plugin.yml") {
-            expand("version" to project.version)
-            expand("description" to project.description)
+            expand("version" to project.version, "description" to project.description)
         }
         filteringCharset = Charsets.UTF_8.name()
 
