@@ -9,7 +9,7 @@ import de.rexlmanu.fairychat.plugin.configuration.PrivateMessagingConfig;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.PrivateMessagingService;
 import de.rexlmanu.fairychat.plugin.core.user.User;
 import de.rexlmanu.fairychat.plugin.core.user.UserService;
-import de.rexlmanu.fairychat.plugin.database.redis.RedisConnector;
+import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;

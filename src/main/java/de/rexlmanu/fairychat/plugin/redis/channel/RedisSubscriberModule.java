@@ -1,4 +1,4 @@
-package de.rexlmanu.fairychat.plugin.database.redis.channel;
+package de.rexlmanu.fairychat.plugin.redis.channel;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
@@ -7,7 +7,7 @@ import com.google.inject.matcher.Matchers;
 import com.google.inject.spi.InjectionListener;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
-import de.rexlmanu.fairychat.plugin.database.redis.RedisConnector;
+import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
 import lombok.RequiredArgsConstructor;
 
 public class RedisSubscriberModule extends AbstractModule {

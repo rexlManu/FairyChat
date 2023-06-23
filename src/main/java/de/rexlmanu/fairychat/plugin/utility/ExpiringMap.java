@@ -32,6 +32,27 @@ public class ExpiringMap<K, V> {
     return value != null && !value.isExpired() ? value.getValue() : null;
   }
 
+  public V computeIfAbsent(K key, long duration, TimeUnit unit, Callable<V> callable) {
+    ValueWithExpirationTime<V> value = map.get(key);
+    if (value != null && !value.isExpired()) {
+      return value.getValue();
+    }
+    try {
+      V newValue = callable.call();
+      put(key, newValue, duration, unit);
+      return newValue;
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public void remove(K key) {
+    ValueWithExpirationTime<V> oldValue = map.remove(key);
+    if (oldValue != null) {
+      oldValue.getRemovalTask().cancel(false);
+    }
+  }
+
   private static class ValueWithExpirationTime<V> {
     private final V value;
     private final long expirationTime;

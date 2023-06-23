@@ -2,7 +2,7 @@ package de.rexlmanu.fairychat.plugin.core.broadcast;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import de.rexlmanu.fairychat.plugin.database.redis.channel.RedisChannelSubscriber;
+import de.rexlmanu.fairychat.plugin.redis.channel.RedisChannelSubscriber;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Server;
 

@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import de.rexlmanu.fairychat.plugin.command.argument.UserArgument;
 import de.rexlmanu.fairychat.plugin.configuration.Messages;
 import de.rexlmanu.fairychat.plugin.configuration.PrivateMessagingConfig;
+import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.PrivateMessagingService;
 import de.rexlmanu.fairychat.plugin.core.user.User;
 import de.rexlmanu.fairychat.plugin.core.user.UserFactory;
@@ -24,6 +25,7 @@ public class PrivateMessageCommand {
       PrivateMessagingService privateMessagingService,
       MiniMessage miniMessage,
       UserFactory userFactory,
+      UserIgnoreService userIgnoreService,
       Messages messages) {
     commandManager.command(
         commandManager
@@ -50,6 +52,14 @@ public class PrivateMessageCommand {
                     commandContext
                         .getSender()
                         .sendMessage(miniMessage.deserialize(messages.youCantMessageYourself()));
+                    return;
+                  }
+
+                  if (userIgnoreService.isIgnored(recipient.uniqueId(), user.uniqueId())
+                      && !commandContext.getSender().hasPermission("fairychat.bypass.ignore")) {
+                    commandContext
+                        .getSender()
+                        .sendMessage(miniMessage.deserialize(messages.youCantMessageThisPlayer()));
                     return;
                   }
 
@@ -80,6 +90,14 @@ public class PrivateMessageCommand {
                     commandContext
                         .getSender()
                         .sendMessage(miniMessage.deserialize(messages.youDidntMessageAnyone()));
+                    return;
+                  }
+
+                  if (userIgnoreService.isIgnored(lastRecipient.uniqueId(), user.uniqueId())
+                      && !commandContext.getSender().hasPermission("fairychat.bypass.ignore")) {
+                    commandContext
+                        .getSender()
+                        .sendMessage(miniMessage.deserialize(messages.youCantMessageThisPlayer()));
                     return;
                   }
 

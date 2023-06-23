@@ -31,4 +31,10 @@ public class ConfigModule extends AbstractModule {
   public RedisCredentials redisCredentials(FairyChatConfiguration configuration) {
     return configuration.redisCredentials();
   }
+
+  @Provides
+  @Inject
+  public DatabaseConfig mysql(FairyChatConfiguration configuration) {
+    return configuration.database();
+  }
 }

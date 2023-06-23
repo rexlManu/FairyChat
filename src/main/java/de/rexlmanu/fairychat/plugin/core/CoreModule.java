@@ -2,6 +2,8 @@ package de.rexlmanu.fairychat.plugin.core;
 
 import com.google.inject.AbstractModule;
 import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
+import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
+import de.rexlmanu.fairychat.plugin.core.ignore.DefaultUserIgnoreService;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.PrivateMessagingService;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.defaults.DefaultPrivateMessagingService;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.redis.RedisPrivateMessagingService;
@@ -17,6 +19,7 @@ public class CoreModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    this.bind(UserIgnoreService.class).to(DefaultUserIgnoreService.class);
     if (configuration.redisCredentials().enabled()) {
       this.bind(PrivateMessagingService.class).to(RedisPrivateMessagingService.class);
       this.bind(UserService.class).to(RedisUserService.class);

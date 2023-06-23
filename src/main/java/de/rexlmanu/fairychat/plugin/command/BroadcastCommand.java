@@ -8,7 +8,7 @@ import com.google.inject.Inject;
 import de.rexlmanu.fairychat.plugin.Constants;
 import de.rexlmanu.fairychat.plugin.configuration.BroadcastConfig;
 import de.rexlmanu.fairychat.plugin.core.broadcast.BroadcastMessageData;
-import de.rexlmanu.fairychat.plugin.database.redis.RedisConnector;
+import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;

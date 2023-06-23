@@ -14,6 +14,9 @@ public class FairyChatConfiguration {
   @Comment("Redis credentials used for communicating between other servers.")
   private RedisCredentials redisCredentials = new RedisCredentials(false, "redis://localhost:6379");
 
+  @Comment("Configuration for database")
+  private DatabaseConfig database = new DatabaseConfig();
+
   @Comment({
     "The format of chat messages in minimessage format.",
     "You can use any placeholder from the following list:",

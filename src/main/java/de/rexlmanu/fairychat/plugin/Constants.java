@@ -19,6 +19,7 @@ public class Constants {
   public static final String USER_EVENTS_LOGIN = "fairychat:user-events:login";
   public static final String USER_EVENTS_LOGOUT = "fairychat:user-events:logout";
   public static final String LAST_RECIPIENTS_KEY = "fairychat:last_recipients";
+  public static final String USER_IGNORE_UPDATE_CHANNEL = "fairychat:user-ignore-update";
 
   public static final int BSTATS_ID = 18786;
 

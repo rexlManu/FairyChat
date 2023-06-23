@@ -4,7 +4,7 @@ import static de.rexlmanu.fairychat.plugin.Constants.MESSAGING_CHANNEL;
 
 import com.google.inject.Inject;
 import de.rexlmanu.fairychat.plugin.Constants;
-import de.rexlmanu.fairychat.plugin.database.redis.RedisConnector;
+import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
