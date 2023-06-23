@@ -21,29 +21,18 @@ server users.*
 - **Fully Paper Compatible**: FairyChat is fully compatible with Paper, and is optimized to provide the best
   performance.
 
+## Documentation
+
+You can find the documentation for FairyChat [here](https://github.com/rexlManu/FairyChat/wiki).
+
 ## Commands & Permissions
 
-| Command                | Permission                      | Description                        |
-|------------------------|---------------------------------|------------------------------------|
-| `/broadcast <message>` | `fairychat.command.broadcast`   | Broadcast a message to all servers |
-|                        | `fairychat.feature.minimessage` | Use mini message in chat           |
-| `/pm`                  |                                 | Send a private message to a player |
-| `/r`                   |                                 | Reply to a private message         |
-
-## Placeholders
-
-For a list of all available placeholders, please refer to
-the [MiniPlaceholders wiki](https://github.com/MiniPlaceholders/MiniPlaceholders/wiki).
-
-## Permission Providers
-
-FairyChat supports the following permission providers:
-
-- [LuckPerms](https://luckperms.net/)
-
-Please note that FairyChat will automatically detect the permission provider and use it.
-
-*If you would like to see support for another permission provider, please open an issue.*
+| Command                                 | Permission                      | Description                        |
+|-----------------------------------------|---------------------------------|------------------------------------|
+| `/broadcast --type=broadcast <message>` | `fairychat.command.broadcast`   | Broadcast a message to all servers |
+|                                         | `fairychat.feature.minimessage` | Use mini message in chat           |
+| `/pm`                                   |                                 | Send a private message to a player |
+| `/r`                                    |                                 | Reply to a private message         |
 
 ## Installation
 
