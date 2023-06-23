@@ -2,7 +2,7 @@ name: FairyChat
 version: '${version}'
 main: de.rexlmanu.fairychat.plugin.FairyChatPlugin
 loader: de.rexlmanu.fairychat.plugin.FairyChatLoader
-description: A plugin to manage the chat of your server.
+description: ${description}
 api-version: '1.19'
 folia-supported: true
 website: https://github.com/rexlManu/FairyChat
