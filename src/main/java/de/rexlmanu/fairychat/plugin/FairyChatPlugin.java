@@ -11,6 +11,7 @@ import de.rexlmanu.fairychat.plugin.configuration.ConfigModule;
 import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
 import de.rexlmanu.fairychat.plugin.core.CoreModule;
 import de.rexlmanu.fairychat.plugin.core.broadcast.BroadcastChannelSubscriber;
+import de.rexlmanu.fairychat.plugin.core.custommessages.CustomJoinQuitMessageListener;
 import de.rexlmanu.fairychat.plugin.core.ignore.redis.RedisUserIgnoreUpdateSubscriber;
 import de.rexlmanu.fairychat.plugin.core.metrics.MetricsModule;
 import de.rexlmanu.fairychat.plugin.core.metrics.RedisEnabledChart;
@@ -59,10 +60,16 @@ public class FairyChatPlugin extends JavaPlugin {
 
     this.registerCommands();
     this.registerSubscribers();
-
     this.registerMetricCharts();
+    this.registerListeners();
 
     this.injector.getInstance(UpdateChecker.class).checkAndNotify();
+  }
+
+  private void registerListeners() {
+    this.getServer()
+        .getPluginManager()
+        .registerEvents(this.injector.getInstance(CustomJoinQuitMessageListener.class), this);
   }
 
   private void registerSubscribers() {

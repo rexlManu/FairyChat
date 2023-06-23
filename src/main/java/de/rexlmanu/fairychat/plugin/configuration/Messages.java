@@ -1,5 +1,6 @@
 package de.rexlmanu.fairychat.plugin.configuration;
 
+import de.exlll.configlib.Comment;
 import de.exlll.configlib.Configuration;
 import lombok.Getter;
 
@@ -14,4 +15,10 @@ public class Messages {
       "<gray>You can receive messages from <#5E548E><name></#5E548E> again.</gray>";
   private String youIgnoredUser =
       "<gray>You will no longer receive messages from <#5E548E><name></#5E548E>.</gray>";
+
+  @Comment("All MiniPlaceholders are supported")
+  private String joinMessage = "<gray><#5E548E><player_name></#5E548E> joined the server.</gray>";
+
+  @Comment("All MiniPlaceholders are supported")
+  private String quitMessage = "<gray><#5E548E><player_name></#5E548E> left the server.</gray>";
 }
