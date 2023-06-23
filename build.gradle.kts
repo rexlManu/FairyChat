@@ -28,6 +28,7 @@ dependencies {
     compileOnly(libs.configlib)
     compileOnly(libs.guice)
     compileOnly(libs.luckperms)
+    compileOnly(libs.hikaridb)
 
     // Plugin dependencies
     compileOnly(libs.miniplaceholders)
