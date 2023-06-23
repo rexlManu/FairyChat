@@ -7,6 +7,8 @@ shadow = { id = "com.github.johnrengelman.shadow", version = "7.1.2" }
 lombok = { id = "io.freefair.lombok", version = "6.6.1" }
 hangar = { id = "io.papermc.hangar-publish-plugin", version = "0.0.5" }
 minotaur = { id = "com.modrinth.minotaur", version = "2.8.1" }
+paperyml = { id = "net.minecrell.plugin-yml.paper", version = "0.6.0" }
+pluginyml = { id = "net.minecrell.plugin-yml.bukkit", version = "0.6.0" }
 [libraries]
 annotations = { module = "org.jetbrains:annotations", version = "24.0.1" }
 jedis = { module = "redis.clients:jedis", version = "4.1.1" }

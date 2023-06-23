@@ -1,4 +1,5 @@
 import io.papermc.hangarpublishplugin.model.Platforms
+import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 
 plugins {
     `java-library`
@@ -6,8 +7,12 @@ plugins {
     alias(libs.plugins.runpaper)
     alias(libs.plugins.userdev)
     alias(libs.plugins.shadow)
+    // Plugins for publishing on platforms
     alias(libs.plugins.hangar)
     alias(libs.plugins.minotaur)
+    // Plugins to generate plugin metadata files
+    alias(libs.plugins.paperyml)
+    alias(libs.plugins.pluginyml)
 }
 
 repositories {
@@ -36,9 +41,6 @@ tasks {
         options.release.set(17)
     }
     processResources {
-        filesMatching("paper-plugin.yml") {
-            expand("version" to project.version, "description" to project.description)
-        }
         filteringCharset = Charsets.UTF_8.name()
 
     }
@@ -113,6 +115,36 @@ hangarPublish {
 //                    }
                 }
             }
+        }
+    }
+}
+
+bukkit {
+    author = "rexlManu"
+    main = "de.rexlmanu.fairychat.plugin.FairyChatPlugin"
+    website = "https://github.com/rexlManu/FairyChat"
+    foliaSupported = true
+    apiVersion = "1.19"
+    load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
+    depend = listOf("MiniPlaceholders")
+    softDepend = listOf("LuckPerms")
+    prefix = "FairyChat"
+}
+
+paper {
+    main = "de.rexlmanu.fairychat.plugin.FairyChatPlugin"
+    loader = "de.rexlmanu.fairychat.plugin.FairyChatLoader"
+    apiVersion = "1.19"
+    foliaSupported = true
+    author = "rexlManu"
+    website = "https://github.com/rexlManu/FairyChat"
+    prefix = "FairyChat"
+    serverDependencies {
+        register("MiniPlaceholders") {
+            required = true
+        }
+        register("LuckPerms") {
+            required = false
         }
     }
 }
