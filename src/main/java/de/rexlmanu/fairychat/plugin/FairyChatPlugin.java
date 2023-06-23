@@ -20,6 +20,7 @@ import de.rexlmanu.fairychat.plugin.core.user.listener.UserBukkitListener;
 import de.rexlmanu.fairychat.plugin.permission.PermissionModule;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
 import de.rexlmanu.fairychat.plugin.redis.channel.RedisSubscriberModule;
+import de.rexlmanu.fairychat.plugin.utility.update.UpdateChecker;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class FairyChatPlugin extends JavaPlugin {
@@ -52,6 +53,8 @@ public class FairyChatPlugin extends JavaPlugin {
     this.registerSubscribers();
 
     this.registerMetricCharts();
+
+    this.injector.getInstance(UpdateChecker.class).checkAndNotify();
   }
 
   private void registerSubscribers() {

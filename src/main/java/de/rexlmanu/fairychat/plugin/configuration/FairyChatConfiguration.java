@@ -8,6 +8,8 @@ import lombok.Getter;
 @Configuration
 @Getter
 public class FairyChatConfiguration {
+  @Comment("Should the plugin check for updates?")
+  private boolean checkForUpdates = true;
 
   @Comment("Redis credentials used for communicating between other servers.")
   private RedisCredentials redisCredentials = new RedisCredentials(false, "redis://localhost:6379");
