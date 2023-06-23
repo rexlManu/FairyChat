@@ -1,0 +1,13 @@
+name: FairyChat
+version: '${version}'
+main: de.rexlmanu.fairychat.plugin.FairyChatPlugin
+description: ${description}
+api-version: '1.19'
+folia-supported: true
+website: https://github.com/rexlManu/FairyChat
+depend: [MiniPlaceholders]
+softdepend: [LuckPerms]
+libraries:
+  - org.jetbrains:annotations:24.0.1
+  - com.google.inject:guice:7.0.0
+  - redis.clients:jedis:4.1.1
