@@ -14,6 +14,10 @@ public class Constants {
   public static final String MESSAGING_CHANNEL = "fairychat:messaging";
   public static final String BROADCAST_CHANNEL = "fairychat:broadcast";
   public static final String PRIVATE_MESSAGING_CHANNEL = "fairychat:private_messaging";
+  public static final String USERS_KEY = "fairychat:users";
+  public static final String USERNAMES_KEY = "fairychat:usernames";
+  public static final String USER_EVENTS_LOGIN = "fairychat:user-events:login";
+  public static final String USER_EVENTS_LOGOUT = "fairychat:user-events:logout";
   public static final String LAST_RECIPIENTS_KEY = "fairychat:last_recipients";
 
   public static final int BSTATS_ID = 18786;

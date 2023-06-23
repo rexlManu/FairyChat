@@ -1,10 +1,17 @@
 package de.rexlmanu.fairychat.plugin.core.user.redis;
 
+import static de.rexlmanu.fairychat.plugin.Constants.USERNAMES_KEY;
+import static de.rexlmanu.fairychat.plugin.Constants.USERS_KEY;
+import static de.rexlmanu.fairychat.plugin.Constants.USER_EVENTS_LOGIN;
+import static de.rexlmanu.fairychat.plugin.Constants.USER_EVENTS_LOGOUT;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.core.user.User;
 import de.rexlmanu.fairychat.plugin.core.user.UserFactory;
 import de.rexlmanu.fairychat.plugin.core.user.UserService;
+import de.rexlmanu.fairychat.plugin.core.user.redis.channel.UserLoginDto;
+import de.rexlmanu.fairychat.plugin.core.user.redis.channel.UserLogoutDto;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
 import java.util.List;
 import java.util.Optional;
@@ -14,39 +21,45 @@ import lombok.RequiredArgsConstructor;
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class RedisUserService implements UserService {
-  private static final String REDIS_KEY = "fairychat:users";
-  private static final String USERNAME_KEY = "fairychat:usernames";
   private final UserFactory userFactory;
   private final RedisConnector connector;
 
   @Override
   public void login(User user) {
-    connector.useResource(
-        jedis -> {
-          String serializedUser = userFactory.serialize(user);
-          jedis.hset(REDIS_KEY, user.uniqueId().toString(), serializedUser);
-          jedis.hset(USERNAME_KEY, user.username(), user.uniqueId().toString());
-        });
+    connector.publish(USER_EVENTS_LOGIN, new UserLoginDto(user));
   }
 
   @Override
   public void logout(User user) {
+    connector.publish(USER_EVENTS_LOGOUT, new UserLogoutDto(user));
+  }
+
+  public void addUser(User user) {
     connector.useResource(
         jedis -> {
-          jedis.hdel(REDIS_KEY, user.uniqueId().toString());
-          jedis.hdel(USERNAME_KEY, user.username());
+          String serializedUser = userFactory.serialize(user);
+          jedis.hset(USERS_KEY, user.uniqueId().toString(), serializedUser);
+          jedis.hset(USERNAMES_KEY, user.username(), user.uniqueId().toString());
+        });
+  }
+
+  public void removeUser(User user) {
+    connector.useResource(
+        jedis -> {
+          jedis.hdel(USERS_KEY, user.uniqueId().toString());
+          jedis.hdel(USERNAMES_KEY, user.username());
         });
   }
 
   public List<User> onlineUsers() {
     return connector.useQuery(
-        jedis -> jedis.hvals(REDIS_KEY).stream().map(userFactory::deserialize).toList());
+        jedis -> jedis.hvals(USERS_KEY).stream().map(userFactory::deserialize).toList());
   }
 
   public Optional<User> findUserById(UUID uniqueId) {
     return connector.useQuery(
         jedis -> {
-          String json = jedis.hget(REDIS_KEY, uniqueId.toString());
+          String json = jedis.hget(USERS_KEY, uniqueId.toString());
           if (json == null) {
             return Optional.empty();
           }
@@ -57,11 +70,11 @@ public class RedisUserService implements UserService {
   public Optional<User> findUserByUsername(String username) {
     return connector.useQuery(
         jedis -> {
-          String uniqueId = jedis.hget(USERNAME_KEY, username);
+          String uniqueId = jedis.hget(USERNAMES_KEY, username);
           if (uniqueId == null) {
             return Optional.empty();
           }
-          String json = jedis.hget(REDIS_KEY, uniqueId);
+          String json = jedis.hget(USERS_KEY, uniqueId);
           if (json == null) {
             return Optional.empty();
           }
@@ -70,6 +83,6 @@ public class RedisUserService implements UserService {
   }
 
   public long onlineUsersCount() {
-    return connector.useQuery(jedis -> jedis.hlen(REDIS_KEY));
+    return connector.useQuery(jedis -> jedis.hlen(USERS_KEY));
   }
 }

@@ -3,6 +3,8 @@ package de.rexlmanu.fairychat.plugin.redis;
 import static de.rexlmanu.fairychat.plugin.Constants.BROADCAST_CHANNEL;
 import static de.rexlmanu.fairychat.plugin.Constants.MESSAGING_CHANNEL;
 import static de.rexlmanu.fairychat.plugin.Constants.PRIVATE_MESSAGING_CHANNEL;
+import static de.rexlmanu.fairychat.plugin.Constants.USER_EVENTS_LOGIN;
+import static de.rexlmanu.fairychat.plugin.Constants.USER_EVENTS_LOGOUT;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -13,6 +15,8 @@ import de.rexlmanu.fairychat.plugin.configuration.RedisCredentials;
 import de.rexlmanu.fairychat.plugin.core.broadcast.BroadcastMessageData;
 import de.rexlmanu.fairychat.plugin.core.playerchat.PlayerChatMessageData;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.redis.PrivateMessageData;
+import de.rexlmanu.fairychat.plugin.core.user.redis.channel.UserLoginDto;
+import de.rexlmanu.fairychat.plugin.core.user.redis.channel.UserLogoutDto;
 import de.rexlmanu.fairychat.plugin.redis.channel.MessageChannelHandler;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +52,8 @@ public class RedisConnector {
     this.registerHandler(MESSAGING_CHANNEL, PlayerChatMessageData.class);
     this.registerHandler(BROADCAST_CHANNEL, BroadcastMessageData.class);
     this.registerHandler(PRIVATE_MESSAGING_CHANNEL, PrivateMessageData.class);
+    this.registerHandler(USER_EVENTS_LOGIN, UserLoginDto.class);
+    this.registerHandler(USER_EVENTS_LOGOUT, UserLogoutDto.class);
   }
 
   public void close() {
