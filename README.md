@@ -27,12 +27,14 @@ You can find the documentation for FairyChat [here](https://github.com/rexlManu/
 
 ## Commands & Permissions
 
-| Command                                 | Permission                      | Description                        |
-|-----------------------------------------|---------------------------------|------------------------------------|
-| `/broadcast --type=broadcast <message>` | `fairychat.command.broadcast`   | Broadcast a message to all servers |
-|                                         | `fairychat.feature.minimessage` | Use mini message in chat           |
-| `/pm`                                   |                                 | Send a private message to a player |
-| `/r`                                    |                                 | Reply to a private message         |
+| Command                    | Permission                      | Description                        |
+|----------------------------|---------------------------------|------------------------------------|
+| `/broadcast <message>`     | `fairychat.command.broadcast`   | Broadcast a message to all servers |
+|                            | `fairychat.feature.minimessage` | Use mini message in chat           |
+| `/pm <username> <message>` |                                 | Send a private message to a player |
+| `/r <message>`             |                                 | Reply to a private message         |
+| `/ignore <username>`       |                                 | Toggle ignoring a player           |
+|                            | `fairychat.bypass.ignore`       | Bypass ignoring a player           |
 
 ## Installation
 

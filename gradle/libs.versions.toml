@@ -18,3 +18,4 @@ configlib = { module = "com.github.Exlll.ConfigLib:configlib-paper", version = "
 guice = { module = "com.google.inject:guice", version = "7.0.0" }
 luckperms = { module = "net.luckperms:api", version = "5.4" }
 bstats = { module = "org.bstats:bstats-bukkit", version = "3.0.2" }
+hikaridb = { module = "com.zaxxer:HikariCP", version = "5.0.1" }

@@ -5,11 +5,13 @@ import com.google.inject.Injector;
 import de.exlll.configlib.YamlConfigurations;
 import de.rexlmanu.fairychat.plugin.command.BroadcastCommand;
 import de.rexlmanu.fairychat.plugin.command.CommandModule;
+import de.rexlmanu.fairychat.plugin.command.IgnoreCommand;
 import de.rexlmanu.fairychat.plugin.command.PrivateMessageCommand;
 import de.rexlmanu.fairychat.plugin.configuration.ConfigModule;
 import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
 import de.rexlmanu.fairychat.plugin.core.CoreModule;
 import de.rexlmanu.fairychat.plugin.core.broadcast.BroadcastChannelSubscriber;
+import de.rexlmanu.fairychat.plugin.core.ignore.redis.RedisUserIgnoreUpdateSubscriber;
 import de.rexlmanu.fairychat.plugin.core.metrics.MetricsModule;
 import de.rexlmanu.fairychat.plugin.core.metrics.RedisEnabledChart;
 import de.rexlmanu.fairychat.plugin.core.metrics.RedisUsersChart;
@@ -19,6 +21,8 @@ import de.rexlmanu.fairychat.plugin.core.privatemessaging.redis.RedisPrivateMess
 import de.rexlmanu.fairychat.plugin.core.user.listener.UserBukkitListener;
 import de.rexlmanu.fairychat.plugin.core.user.redis.channel.RedisUserLoginSubscriber;
 import de.rexlmanu.fairychat.plugin.core.user.redis.channel.RedisUserLogoutSubscriber;
+import de.rexlmanu.fairychat.plugin.database.DatabaseClient;
+import de.rexlmanu.fairychat.plugin.database.DatabaseModule;
 import de.rexlmanu.fairychat.plugin.permission.PermissionModule;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
 import de.rexlmanu.fairychat.plugin.redis.channel.RedisSubscriberModule;
@@ -41,9 +45,11 @@ public class FairyChatPlugin extends JavaPlugin {
             new ConfigModule(),
             new CoreModule(this.configuration),
             new RedisSubscriberModule(),
+            new DatabaseModule(this.configuration.database()),
             new MetricsModule());
 
     this.injector.getInstance(RedisConnector.class).open();
+    this.injector.getInstance(DatabaseClient.class).open();
 
     this.getServer()
         .getPluginManager()
@@ -67,11 +73,13 @@ public class FairyChatPlugin extends JavaPlugin {
     this.injector.getInstance(RedisPrivateMessagingSubscriber.class);
     this.injector.getInstance(RedisUserLoginSubscriber.class);
     this.injector.getInstance(RedisUserLogoutSubscriber.class);
+    this.injector.getInstance(RedisUserIgnoreUpdateSubscriber.class);
   }
 
   @Override
   public void onDisable() {
     this.injector.getInstance(RedisConnector.class).close();
+    this.injector.getInstance(DatabaseClient.class).close();
   }
 
   private void setupConfig() {
@@ -83,6 +91,7 @@ public class FairyChatPlugin extends JavaPlugin {
   private void registerCommands() {
     this.injector.getInstance(BroadcastCommand.class);
     this.injector.getInstance(PrivateMessageCommand.class);
+    this.injector.getInstance(IgnoreCommand.class);
   }
 
   private void registerMetricCharts() {
