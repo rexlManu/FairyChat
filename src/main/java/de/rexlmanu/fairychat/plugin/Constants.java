@@ -17,4 +17,7 @@ public class Constants {
   public static final String LAST_RECIPIENTS_KEY = "fairychat:last_recipients";
 
   public static final int BSTATS_ID = 18786;
+
+  public static final String VERSION_URL =
+      "https://api.github.com/repos/rexlManu/FairyChat/releases/latest";
 }
