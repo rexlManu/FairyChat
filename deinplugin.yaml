@@ -1,0 +1,94 @@
+specVersion: 1
+type: plugin
+name: FairyChat
+authors:
+  - rexlManu
+supportedGameVersions: ^1.19.2
+category: chat
+introduction: The next generation chat plugin for managing your server's chat.
+supportedPlatforms:
+  - paper
+dependencies:
+  - url: https://modrinth.com/plugin/miniplaceholders
+    name: MiniPlaceholders
+    required: true
+  - url: https://luckperms.net
+    name: LuckPerms
+    required: false
+tags:
+  - chat
+  - redis
+  - paper
+  - cross-server
+  - minimessage
+  - miniplaceholders
+  - private-msg
+  - broadcast
+images:
+  - https://raw.githubusercontent.com/rexlManu/FairyChat/master/.github/images/banner-3F82A7C.png
+  - https://raw.githubusercontent.com/rexlManu/FairyChat/master/.github/images/ingame-preview-6A9EF53.png
+  - https://raw.githubusercontent.com/rexlManu/FairyChat/master/.github/images/configuration-9E0BDFA.png
+icon:
+  - https://raw.githubusercontent.com/rexlManu/FairyChat/master/.github/images/icon-B45C1E9.png
+description: |
+  # FairyChat
+  
+  The next generation chat plugin for managing your server's chat.
+  
+  *FairyChat is the future of chat management for your server, providing a range of features from customizable
+  chat
+  formats to multi-server message broadcasting. The perfect solution to bring a seamless chatting experience to
+  your
+  server users.*
+
+  ## Features
+
+  - **Customizable Chat Format**: Personalize the chat format as per your needs.
+  - **Per-Group Chat Format**: Differentiate chats based on the user group for better management.
+  - **Private Messaging**: Send private messages to other players with ease. Supports tab completion across multiple
+              servers.
+  - **MiniMessage & MiniPlaceholders Support**: All formats are compatible with MiniMessage & MiniPlaceholders, making the
+                    customization process easier than ever.
+  - **Optional Multi-Server Message Sending**: Have multiple servers? No problem. FairyChat supports sending messages
+               across servers with Redis.
+  - **Fully Paper Compatible**: FairyChat is fully compatible with Paper, and is optimized to provide the best
+            performance.
+
+  ## Documentation
+  
+  You can find the documentation for FairyChat [here](https://github.com/rexlManu/FairyChat/wiki).
+
+  ## Commands & Permissions
+  
+  | Command                                 | Permission                      | Description                        |
+  |-----------------------------------------|---------------------------------|------------------------------------|
+  | `/broadcast --type=broadcast <message>` | `fairychat.command.broadcast`   | Broadcast a message to all servers |
+  |                                         | `fairychat.feature.minimessage` | Use mini message in chat           |
+  | `/pm`                                   |                                 | Send a private message to a player |
+  | `/r`                                    |                                 | Reply to a private message         |
+
+  ## Installation
+  
+  You need to have [Paper](https://papermc.io/) (or fork of paper) installed on your server. FairyChat is not
+  compatible
+  with other server software.
+  
+  It's also important to have MiniPlaceholders installed on your server. You can download it
+  from [here](https://modrinth.com/plugin/miniplaceholders).
+  
+  For the best experience, you also should install the player expansion for MiniPlaceholders. You can download it
+  from [here](https://github.com/MiniPlaceholders/Player-Expansion).
+  
+  ## Support
+  
+  If you need any help with FairyChat, feel free to join our [Discord server](https://discord.gg/bM8NtsJVeb).
+  
+  For bug reports and feature requests, please open an issue on [GitHub](https://github.com/rexlManu/FairyChat/issues).
+  
+  ## Configuration
+  
+  Please checkout the generated configuration file for more information on how to configure FairyChat.
+
+  ## License
+  
+  **FairyChat** is licensed under MIT License, which can be found [here](LICENSE).
