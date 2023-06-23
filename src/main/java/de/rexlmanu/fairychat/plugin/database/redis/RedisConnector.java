@@ -1,4 +1,4 @@
-package de.rexlmanu.fairychat.plugin.redis;
+package de.rexlmanu.fairychat.plugin.database.redis;
 
 import static de.rexlmanu.fairychat.plugin.Constants.BROADCAST_CHANNEL;
 import static de.rexlmanu.fairychat.plugin.Constants.MESSAGING_CHANNEL;
@@ -17,7 +17,7 @@ import de.rexlmanu.fairychat.plugin.core.playerchat.PlayerChatMessageData;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.redis.PrivateMessageData;
 import de.rexlmanu.fairychat.plugin.core.user.redis.channel.UserLoginDto;
 import de.rexlmanu.fairychat.plugin.core.user.redis.channel.UserLogoutDto;
-import de.rexlmanu.fairychat.plugin.redis.channel.MessageChannelHandler;
+import de.rexlmanu.fairychat.plugin.database.redis.channel.MessageChannelHandler;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;

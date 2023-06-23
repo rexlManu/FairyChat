@@ -1,6 +1,6 @@
-package de.rexlmanu.fairychat.plugin.redis.channel;
+package de.rexlmanu.fairychat.plugin.database.redis.channel;
 
-import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
+import de.rexlmanu.fairychat.plugin.database.redis.RedisConnector;
 
 public interface RedisChannelSubscriber<T> {
   Class<T> getDataType();

@@ -12,7 +12,7 @@ import de.rexlmanu.fairychat.plugin.core.user.UserFactory;
 import de.rexlmanu.fairychat.plugin.core.user.UserService;
 import de.rexlmanu.fairychat.plugin.core.user.redis.channel.UserLoginDto;
 import de.rexlmanu.fairychat.plugin.core.user.redis.channel.UserLogoutDto;
-import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
+import de.rexlmanu.fairychat.plugin.database.redis.RedisConnector;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

@@ -6,7 +6,7 @@ import de.rexlmanu.fairychat.plugin.Constants;
 import de.rexlmanu.fairychat.plugin.configuration.PrivateMessagingConfig;
 import de.rexlmanu.fairychat.plugin.core.user.User;
 import de.rexlmanu.fairychat.plugin.core.user.UserService;
-import de.rexlmanu.fairychat.plugin.redis.channel.RedisChannelSubscriber;
+import de.rexlmanu.fairychat.plugin.database.redis.channel.RedisChannelSubscriber;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.MiniMessage;

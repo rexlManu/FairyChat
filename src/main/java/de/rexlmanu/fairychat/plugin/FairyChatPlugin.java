@@ -20,8 +20,8 @@ import de.rexlmanu.fairychat.plugin.core.user.listener.UserBukkitListener;
 import de.rexlmanu.fairychat.plugin.core.user.redis.channel.RedisUserLoginSubscriber;
 import de.rexlmanu.fairychat.plugin.core.user.redis.channel.RedisUserLogoutSubscriber;
 import de.rexlmanu.fairychat.plugin.permission.PermissionModule;
-import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
-import de.rexlmanu.fairychat.plugin.redis.channel.RedisSubscriberModule;
+import de.rexlmanu.fairychat.plugin.database.redis.RedisConnector;
+import de.rexlmanu.fairychat.plugin.database.redis.channel.RedisSubscriberModule;
 import de.rexlmanu.fairychat.plugin.utility.update.UpdateChecker;
 import org.bukkit.plugin.java.JavaPlugin;
 
