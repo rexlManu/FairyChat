@@ -28,7 +28,8 @@ images:
   - https://raw.githubusercontent.com/rexlManu/FairyChat/master/.github/images/banner-3F82A7C.png
   - https://raw.githubusercontent.com/rexlManu/FairyChat/master/.github/images/ingame-preview-6A9EF53.png
   - https://raw.githubusercontent.com/rexlManu/FairyChat/master/.github/images/configuration-9E0BDFA.png
-icon: https://raw.githubusercontent.com/rexlManu/FairyChat/master/.github/images/icon-B45C1E9.png
+icon:
+  - https://raw.githubusercontent.com/rexlManu/FairyChat/master/.github/images/icon-B45C1E9.png
 description: |
   # FairyChat
   
