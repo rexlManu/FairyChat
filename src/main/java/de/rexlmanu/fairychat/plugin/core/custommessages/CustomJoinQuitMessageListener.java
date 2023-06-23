@@ -20,6 +20,10 @@ public class CustomJoinQuitMessageListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void handle(PlayerJoinEvent event) {
+    if (this.messages.joinMessage() == null || this.messages.joinMessage().isEmpty()) {
+      event.joinMessage(null);
+      return;
+    }
     event.joinMessage(
         this.miniMessage.deserialize(
             this.messages.joinMessage(),
@@ -28,6 +32,10 @@ public class CustomJoinQuitMessageListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void handle(PlayerQuitEvent event) {
+    if (this.messages.quitMessage() == null || this.messages.quitMessage().isEmpty()) {
+      event.quitMessage(null);
+      return;
+    }
     event.quitMessage(
         this.miniMessage.deserialize(
             this.messages.quitMessage(),
