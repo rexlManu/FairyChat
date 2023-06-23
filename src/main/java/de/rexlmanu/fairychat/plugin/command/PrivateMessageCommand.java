@@ -8,6 +8,7 @@ import de.rexlmanu.fairychat.plugin.configuration.Messages;
 import de.rexlmanu.fairychat.plugin.configuration.PrivateMessagingConfig;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.PrivateMessagingService;
 import de.rexlmanu.fairychat.plugin.core.user.User;
+import de.rexlmanu.fairychat.plugin.core.user.UserFactory;
 import de.rexlmanu.fairychat.plugin.core.user.UserService;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
@@ -22,6 +23,7 @@ public class PrivateMessageCommand {
       UserService userService,
       PrivateMessagingService privateMessagingService,
       MiniMessage miniMessage,
+      UserFactory userFactory,
       Messages messages) {
     commandManager.command(
         commandManager
@@ -35,7 +37,14 @@ public class PrivateMessageCommand {
                   User user =
                       userService
                           .findUserById(((Player) commandContext.getSender()).getUniqueId())
-                          .orElseThrow();
+                          .orElseGet(
+                              () -> {
+                                User createdUser =
+                                    userFactory.createFromPlayer(
+                                        (Player) commandContext.getSender());
+                                userService.login(createdUser);
+                                return createdUser;
+                              });
                   String message = commandContext.get("message");
                   if (user.equals(recipient)) {
                     commandContext
@@ -57,7 +66,14 @@ public class PrivateMessageCommand {
                   User user =
                       userService
                           .findUserById(((Player) commandContext.getSender()).getUniqueId())
-                          .orElseThrow();
+                          .orElseGet(
+                              () -> {
+                                User createdUser =
+                                    userFactory.createFromPlayer(
+                                        (Player) commandContext.getSender());
+                                userService.login(createdUser);
+                                return createdUser;
+                              });
                   String message = commandContext.get("message");
                   User lastRecipient = privateMessagingService.lastRecipient(user).orElse(null);
                   if (lastRecipient == null) {
