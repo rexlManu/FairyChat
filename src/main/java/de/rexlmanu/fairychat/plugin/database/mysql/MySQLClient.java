@@ -42,11 +42,11 @@ public class MySQLClient implements DatabaseClient, DatabaseQueries {
       return new HikariConfig(dataDirectory.resolve("mysql.properties").toString());
     }
 
-    HikariConfig hikariConfig = new HikariConfig();
-    hikariConfig.setJdbcUrl(this.config.url());
-    hikariConfig.setUsername(this.config.username());
-    hikariConfig.setPassword(this.config.password());
-    return hikariConfig;
+    HikariConfig createdConfig = new HikariConfig();
+    createdConfig.setJdbcUrl(this.config.url());
+    createdConfig.setUsername(this.config.username());
+    createdConfig.setPassword(this.config.password());
+    return createdConfig;
   }
 
   /**

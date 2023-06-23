@@ -3,8 +3,8 @@ package de.rexlmanu.fairychat.plugin.redis;
 import static de.rexlmanu.fairychat.plugin.Constants.BROADCAST_CHANNEL;
 import static de.rexlmanu.fairychat.plugin.Constants.MESSAGING_CHANNEL;
 import static de.rexlmanu.fairychat.plugin.Constants.PRIVATE_MESSAGING_CHANNEL;
-import static de.rexlmanu.fairychat.plugin.Constants.USER_EVENTS_LOGIN;
-import static de.rexlmanu.fairychat.plugin.Constants.USER_EVENTS_LOGOUT;
+import static de.rexlmanu.fairychat.plugin.Constants.USER_EVENTS_LOGIN_CHANNEL;
+import static de.rexlmanu.fairychat.plugin.Constants.USER_EVENTS_LOGOUT_CHANNEL;
 import static de.rexlmanu.fairychat.plugin.Constants.USER_IGNORE_UPDATE_CHANNEL;
 
 import com.google.gson.Gson;
@@ -55,8 +55,8 @@ public class RedisConnector implements Connector {
     this.registerHandler(MESSAGING_CHANNEL, PlayerChatMessageData.class);
     this.registerHandler(BROADCAST_CHANNEL, BroadcastMessageData.class);
     this.registerHandler(PRIVATE_MESSAGING_CHANNEL, PrivateMessageData.class);
-    this.registerHandler(USER_EVENTS_LOGIN, UserLoginDto.class);
-    this.registerHandler(USER_EVENTS_LOGOUT, UserLogoutDto.class);
+    this.registerHandler(USER_EVENTS_LOGIN_CHANNEL, UserLoginDto.class);
+    this.registerHandler(USER_EVENTS_LOGOUT_CHANNEL, UserLogoutDto.class);
     this.registerHandler(USER_IGNORE_UPDATE_CHANNEL, UserIgnoreDto.class);
   }
 

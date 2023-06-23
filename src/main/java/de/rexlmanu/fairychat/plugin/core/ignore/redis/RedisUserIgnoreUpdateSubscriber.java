@@ -8,8 +8,9 @@ import lombok.RequiredArgsConstructor;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class UserIgnoreUpdateSubscriber implements RedisChannelSubscriber<UserIgnoreDto> {
+public class RedisUserIgnoreUpdateSubscriber implements RedisChannelSubscriber<UserIgnoreDto> {
   private final DefaultUserIgnoreService userIgnoreService;
+
   @Override
   public Class<UserIgnoreDto> getDataType() {
     return UserIgnoreDto.class;

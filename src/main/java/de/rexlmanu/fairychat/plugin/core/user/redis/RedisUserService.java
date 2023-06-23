@@ -2,8 +2,8 @@ package de.rexlmanu.fairychat.plugin.core.user.redis;
 
 import static de.rexlmanu.fairychat.plugin.Constants.USERNAMES_KEY;
 import static de.rexlmanu.fairychat.plugin.Constants.USERS_KEY;
-import static de.rexlmanu.fairychat.plugin.Constants.USER_EVENTS_LOGIN;
-import static de.rexlmanu.fairychat.plugin.Constants.USER_EVENTS_LOGOUT;
+import static de.rexlmanu.fairychat.plugin.Constants.USER_EVENTS_LOGIN_CHANNEL;
+import static de.rexlmanu.fairychat.plugin.Constants.USER_EVENTS_LOGOUT_CHANNEL;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -26,12 +26,12 @@ public class RedisUserService implements UserService {
 
   @Override
   public void login(User user) {
-    connector.publish(USER_EVENTS_LOGIN, new UserLoginDto(user));
+    connector.publish(USER_EVENTS_LOGIN_CHANNEL, new UserLoginDto(user));
   }
 
   @Override
   public void logout(User user) {
-    connector.publish(USER_EVENTS_LOGOUT, new UserLogoutDto(user));
+    connector.publish(USER_EVENTS_LOGOUT_CHANNEL, new UserLogoutDto(user));
   }
 
   public void addUser(User user) {
