@@ -14,6 +14,7 @@ import de.rexlmanu.fairychat.plugin.core.user.UserService;
 import java.util.List;
 import java.util.Queue;
 import java.util.function.BiFunction;
+import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -100,9 +101,13 @@ public final class UserArgument<C> extends CommandArgument<C, User> {
     @Override
     public @NonNull List<@NonNull String> suggestions(
         @NonNull CommandContext<C> commandContext, @NonNull String input) {
-      return commandContext.inject(UserService.class).orElseThrow().onlineUsers().stream()
-          .map(User::username)
-          .toList();
+      if (commandContext.getSender() instanceof CommandSender sender) {
+        return commandContext.inject(UserService.class).orElseThrow().onlineUsers().stream()
+            .map(User::username)
+            .filter(name -> !name.equalsIgnoreCase(sender.getName()))
+            .toList();
+      }
+      return List.of();
     }
 
     @Override
