@@ -16,6 +16,8 @@ server users.*
   servers.
 - **MiniMessage & MiniPlaceholders Support**: All formats are compatible with MiniMessage & MiniPlaceholders, making the
   customization process easier than ever.
+- **Legacy Support**: Legacy Color codes are supported, so you don't have to worry about your old chat formats.
+  PlaceholderAPI is also supported.
 - **Optional Multi-Server Message Sending**: Have multiple servers? No problem. FairyChat supports sending messages
   across servers with Redis.
 - **Fully Paper Compatible**: FairyChat is fully compatible with Paper, and is optimized to provide the best
