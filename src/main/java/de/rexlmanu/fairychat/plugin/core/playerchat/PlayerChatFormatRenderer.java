@@ -9,12 +9,14 @@ import de.rexlmanu.fairychat.plugin.permission.PermissionProvider;
 import de.rexlmanu.fairychat.plugin.utility.LegacySupport;
 import io.github.miniplaceholders.api.MiniPlaceholders;
 import io.papermc.paper.chat.ChatRenderer;
+import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -52,8 +54,12 @@ public class PlayerChatFormatRenderer implements ChatRenderer {
 
     // Check if the player has the permission to use mini message
     if (source.hasPermission("fairychat.feature.minimessage")) {
-      String plainTextMessage = PlainTextComponentSerializer.plainText().serialize(message);
-      String miniMessageFormatted = LegacySupport.replaceLegacyWithTags(plainTextMessage);
+      Function<Component, String> serializer = PlainTextComponentSerializer.plainText()::serialize;
+      if (this.configuration.legacyColorSupport()) {
+        serializer = LegacyComponentSerializer.legacyAmpersand()::serialize;
+      }
+      String textMessage = serializer.apply(message);
+      String miniMessageFormatted = LegacySupport.replaceLegacyWithTags(textMessage);
       message = this.colorMiniMessage.deserialize(miniMessageFormatted);
     }
 
