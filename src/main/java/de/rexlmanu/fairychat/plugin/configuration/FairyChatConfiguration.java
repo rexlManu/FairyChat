@@ -49,6 +49,6 @@ public class FairyChatConfiguration {
   private Messages messages = new Messages();
 
   @Comment(
-      "Enable this if you have other plugins that messes with the chatt and introduces legacy chat colors")
+      "Enable this if you have other plugins that messes with the chat and introduces legacy chat colors")
   private boolean legacyColorSupport = false;
 }
