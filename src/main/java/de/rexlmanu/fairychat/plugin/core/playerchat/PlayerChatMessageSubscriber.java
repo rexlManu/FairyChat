@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.Constants;
 import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
+import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
 import de.rexlmanu.fairychat.plugin.redis.channel.RedisChannelSubscriber;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Server;
@@ -13,6 +14,7 @@ import org.bukkit.Server;
 public class PlayerChatMessageSubscriber implements RedisChannelSubscriber<PlayerChatMessageData> {
   private final Server server;
   private final FairyChatConfiguration configuration;
+  private final UserIgnoreService userIgnoreService;
 
   @Override
   public Class<PlayerChatMessageData> getDataType() {
@@ -22,7 +24,10 @@ public class PlayerChatMessageSubscriber implements RedisChannelSubscriber<Playe
   @Override
   public void handle(PlayerChatMessageData data) {
     if (data.origin().equals(Constants.SERVER_IDENTITY_ORIGIN)) return;
-    this.server.getOnlinePlayers().forEach(player -> player.sendMessage(data.message()));
+    this.server.getOnlinePlayers().stream()
+        .filter(
+            recipient -> this.userIgnoreService.isIgnored(recipient.getUniqueId(), data.senderId()))
+        .forEach(player -> player.sendMessage(data.message()));
 
     if (!configuration.displayChatInConsole()) return;
 
