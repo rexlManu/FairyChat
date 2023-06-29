@@ -20,7 +20,9 @@ public class FairyChatConfiguration {
   @Comment({
     "The format of chat messages in minimessage format.",
     "You can use any placeholder from the following list:",
-    "https://github.com/MiniPlaceholders/MiniPlaceholders/wiki/Placeholders"
+    "https://github.com/MiniPlaceholders/MiniPlaceholders/wiki/Placeholders",
+    "If you wise to use PlaceholderAPI placeholders, you need the following tag",
+    "<papi:(placeholder name)> e.g. <papi:player_displayname>"
   })
   private String chatFormat =
       "<#5E548E><player_name></#5E548E> <dark_gray>»</dark_gray> <gray><message></gray>";
