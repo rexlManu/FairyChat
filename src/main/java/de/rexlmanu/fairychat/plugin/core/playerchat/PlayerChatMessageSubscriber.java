@@ -26,7 +26,8 @@ public class PlayerChatMessageSubscriber implements RedisChannelSubscriber<Playe
     if (data.origin().equals(Constants.SERVER_IDENTITY_ORIGIN)) return;
     this.server.getOnlinePlayers().stream()
         .filter(
-            recipient -> this.userIgnoreService.isIgnored(recipient.getUniqueId(), data.senderId()))
+            recipient ->
+                !this.userIgnoreService.isIgnored(recipient.getUniqueId(), data.senderId()))
         .forEach(player -> player.sendMessage(data.message()));
 
     if (!configuration.displayChatInConsole()) return;
