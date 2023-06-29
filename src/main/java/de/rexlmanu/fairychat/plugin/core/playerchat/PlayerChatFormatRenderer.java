@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
 import de.rexlmanu.fairychat.plugin.permission.PermissionProvider;
+import de.rexlmanu.fairychat.plugin.utility.LegacySupport;
 import io.github.miniplaceholders.api.MiniPlaceholders;
 import io.papermc.paper.chat.ChatRenderer;
 import lombok.RequiredArgsConstructor;
@@ -47,9 +48,9 @@ public class PlayerChatFormatRenderer implements ChatRenderer {
 
     // Check if the player has the permission to use mini message
     if (source.hasPermission("fairychat.feature.minimessage")) {
-      message =
-          this.colorMiniMessage.deserialize(
-              PlainTextComponentSerializer.plainText().serialize(message));
+      String plainTextMessage = PlainTextComponentSerializer.plainText().serialize(message);
+      String miniMessageFormatted = LegacySupport.replaceLegacyWithTags(plainTextMessage);
+      message = this.colorMiniMessage.deserialize(miniMessageFormatted);
     }
 
     return this.miniMessage.deserialize(
