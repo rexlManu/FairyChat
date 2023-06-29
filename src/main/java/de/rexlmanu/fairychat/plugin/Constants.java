@@ -25,4 +25,6 @@ public class Constants {
 
   public static final String VERSION_URL =
       "https://api.github.com/repos/rexlManu/FairyChat/releases/latest";
+
+  public static final String PLACEHOLDER_API_NAME = "PlaceholderAPI";
 }

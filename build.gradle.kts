@@ -17,6 +17,7 @@ plugins {
 
 repositories {
     maven("https://jitpack.io")
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     mavenCentral()
 }
 
@@ -32,6 +33,7 @@ dependencies {
 
     // Plugin dependencies
     compileOnly(libs.miniplaceholders)
+    compileOnly(libs.placeholderapi)
 
     implementation(libs.bstats)
 }
@@ -128,7 +130,7 @@ bukkit {
     apiVersion = "1.19"
     load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
     depend = listOf("MiniPlaceholders")
-    softDepend = listOf("LuckPerms")
+    softDepend = listOf("LuckPerms", "PlaceholderAPI")
     prefix = "FairyChat"
 }
 
@@ -145,6 +147,9 @@ paper {
             required = true
         }
         register("LuckPerms") {
+            required = false
+        }
+        register("PlaceholderAPI") {
             required = false
         }
     }
