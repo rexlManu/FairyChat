@@ -15,6 +15,7 @@ public class Messages {
       "<gray>You can receive messages from <#5E548E><name></#5E548E> again.</gray>";
   private String youIgnoredUser =
       "<gray>You will no longer receive messages from <#5E548E><name></#5E548E>.</gray>";
+  private String invalidSyntax = "<red>Invalid syntax. Usage: <#5E548E><syntax></#5E548E></red>";
 
   @Comment("All MiniPlaceholders are supported")
   private String joinMessage = "<gray><#5E548E><player_name></#5E548E> joined the server.</gray>";
