@@ -20,8 +20,6 @@ import de.rexlmanu.fairychat.plugin.core.playerchat.PlayerChatListener;
 import de.rexlmanu.fairychat.plugin.core.playerchat.PlayerChatMessageSubscriber;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.redis.RedisPrivateMessagingSubscriber;
 import de.rexlmanu.fairychat.plugin.core.user.listener.UserBukkitListener;
-import de.rexlmanu.fairychat.plugin.core.user.redis.channel.RedisUserLoginSubscriber;
-import de.rexlmanu.fairychat.plugin.core.user.redis.channel.RedisUserLogoutSubscriber;
 import de.rexlmanu.fairychat.plugin.database.DatabaseClient;
 import de.rexlmanu.fairychat.plugin.database.DatabaseModule;
 import de.rexlmanu.fairychat.plugin.permission.PermissionModule;
@@ -78,8 +76,6 @@ public class FairyChatPlugin extends JavaPlugin {
     this.injector.getInstance(BroadcastChannelSubscriber.class);
     this.injector.getInstance(PlayerChatMessageSubscriber.class);
     this.injector.getInstance(RedisPrivateMessagingSubscriber.class);
-    this.injector.getInstance(RedisUserLoginSubscriber.class);
-    this.injector.getInstance(RedisUserLogoutSubscriber.class);
     this.injector.getInstance(RedisUserIgnoreUpdateSubscriber.class);
   }
 

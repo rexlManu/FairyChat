@@ -2,16 +2,12 @@ package de.rexlmanu.fairychat.plugin.core.user.redis;
 
 import static de.rexlmanu.fairychat.plugin.Constants.USERNAMES_KEY;
 import static de.rexlmanu.fairychat.plugin.Constants.USERS_KEY;
-import static de.rexlmanu.fairychat.plugin.Constants.USER_EVENTS_LOGIN_CHANNEL;
-import static de.rexlmanu.fairychat.plugin.Constants.USER_EVENTS_LOGOUT_CHANNEL;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.core.user.User;
 import de.rexlmanu.fairychat.plugin.core.user.UserFactory;
 import de.rexlmanu.fairychat.plugin.core.user.UserService;
-import de.rexlmanu.fairychat.plugin.core.user.redis.channel.UserLoginDto;
-import de.rexlmanu.fairychat.plugin.core.user.redis.channel.UserLogoutDto;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
 import java.util.List;
 import java.util.Optional;
@@ -26,16 +22,7 @@ public class RedisUserService implements UserService {
 
   @Override
   public void login(User user) {
-    connector.publish(USER_EVENTS_LOGIN_CHANNEL, new UserLoginDto(user));
-  }
-
-  @Override
-  public void logout(User user) {
-    connector.publish(USER_EVENTS_LOGOUT_CHANNEL, new UserLogoutDto(user));
-  }
-
-  public void addUser(User user) {
-    connector.useResource(
+    this.connector.useResource(
         jedis -> {
           String serializedUser = userFactory.serialize(user);
           jedis.hset(USERS_KEY, user.uniqueId().toString(), serializedUser);
@@ -43,8 +30,9 @@ public class RedisUserService implements UserService {
         });
   }
 
-  public void removeUser(User user) {
-    connector.useResource(
+  @Override
+  public void logout(User user) {
+    this.connector.useResource(
         jedis -> {
           jedis.hdel(USERS_KEY, user.uniqueId().toString());
           jedis.hdel(USERNAMES_KEY, user.username());

@@ -14,8 +14,6 @@ public class Constants {
   public static final String MESSAGING_CHANNEL = "fairychat:messaging";
   public static final String BROADCAST_CHANNEL = "fairychat:broadcast";
   public static final String PRIVATE_MESSAGING_CHANNEL = "fairychat:private_messaging";
-  public static final String USER_EVENTS_LOGIN_CHANNEL = "fairychat:user-events:login";
-  public static final String USER_EVENTS_LOGOUT_CHANNEL = "fairychat:user-events:logout";
   public static final String USER_IGNORE_UPDATE_CHANNEL = "fairychat:user-ignore-update";
   public static final String USERS_KEY = "fairychat:users";
   public static final String USERNAMES_KEY = "fairychat:usernames";
