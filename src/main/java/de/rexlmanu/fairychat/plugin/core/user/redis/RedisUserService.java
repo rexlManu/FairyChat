@@ -22,7 +22,7 @@ public class RedisUserService implements UserService {
 
   @Override
   public void login(User user) {
-    this.connector.useResource(
+    this.connector.useResourceAsync(
         jedis -> {
           String serializedUser = userFactory.serialize(user);
           jedis.hset(USERS_KEY, user.uniqueId().toString(), serializedUser);
