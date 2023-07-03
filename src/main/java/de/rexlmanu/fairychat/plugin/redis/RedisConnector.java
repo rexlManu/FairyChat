@@ -72,7 +72,13 @@ public class RedisConnector implements Connector {
     this.injector.injectMembers(handler);
     this.handlers.put(dataClass, handler);
 
-    this.useResourceAsync(jedis -> jedis.subscribe(handler, handler.channelName()));
+    this.plugin
+        .getServer()
+        .getScheduler()
+        .runTaskAsynchronously(this.plugin, () -> {
+          Jedis resource = this.jedisPool.getResource();
+          resource.subscribe(handler, handler.channelName());
+        });
   }
 
   public void useResource(Consumer<Jedis> consumer) {
