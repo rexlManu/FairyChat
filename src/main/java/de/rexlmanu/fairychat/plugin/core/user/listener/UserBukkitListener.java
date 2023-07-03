@@ -47,7 +47,9 @@ public class UserBukkitListener implements Listener {
 
   @EventHandler
   public void handlePlayerJoin(PlayerJoinEvent event) {
-    this.userService.login(this.userFactory.createFromPlayer(event.getPlayer()));
+    this.scheduler.runTaskAsynchronously(
+        this.plugin,
+        () -> this.userService.login(this.userFactory.createFromPlayer(event.getPlayer())));
   }
 
   @EventHandler
