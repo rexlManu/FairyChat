@@ -2,9 +2,11 @@ package de.rexlmanu.fairychat.plugin.redis.channel;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import redis.clients.jedis.JedisPubSub;
@@ -15,6 +17,7 @@ public class MessageChannelHandler<D> extends JedisPubSub {
   private final TypeToken<D> typeToken;
   private final List<Consumer<D>> listeners = new ArrayList<>();
   private final Gson gson;
+  @Inject private Logger logger;
 
   @Override
   public void onMessage(String channel, String message) {
@@ -24,7 +27,7 @@ public class MessageChannelHandler<D> extends JedisPubSub {
       D data = this.gson.fromJson(message, this.typeToken);
       this.listeners.forEach(listener -> listener.accept(data));
     } catch (Exception e) {
-      throw new RuntimeException("Failed to deserialize message.", e);
+      this.logger.warning("Failed to parse message from channel " + channel + ": " + message);
     }
   }
 
