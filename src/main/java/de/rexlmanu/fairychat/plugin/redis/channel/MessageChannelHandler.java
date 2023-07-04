@@ -3,8 +3,8 @@ package de.rexlmanu.fairychat.plugin.redis.channel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import redis.clients.jedis.JedisPubSub;
 public class MessageChannelHandler<D> extends JedisPubSub {
   @Getter private final String channelName;
   private final TypeToken<D> typeToken;
-  private final List<Consumer<D>> listeners = new ArrayList<>();
+  private final List<Consumer<D>> listeners = new CopyOnWriteArrayList<>();
   private final Gson gson;
   @Inject private Logger logger;
 
