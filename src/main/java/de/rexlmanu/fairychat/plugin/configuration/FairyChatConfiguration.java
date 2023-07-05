@@ -25,16 +25,19 @@ public class FairyChatConfiguration {
     "<papi:(placeholder name)> e.g. <papi:player_displayname>"
   })
   private String chatFormat =
-      "<#5E548E><player_name></#5E548E> <dark_gray>»</dark_gray> <gray><message></gray>";
+      "<#5E548E><sender_displayname></#5E548E> <dark_gray>»</dark_gray> <gray><message></gray>";
 
   @Comment({
     "Define formats based on the player's group.",
-    "Supported permission systems: LuckPerms"
+    "Supported permission systems: LuckPerms",
+    "You can use any placeholder from PlaceholderAPI or MiniPlaceholder",
+    "To use placeholders from PlaceholderAPI, use the following format:",
+    "<papi:(placeholder name)> e.g. <papi:player_displayname>"
   })
   private Map<String, String> groupFormats =
       Map.of(
           "admin",
-          "<dark_red><player_name></dark_red> <dark_gray>»</dark_gray> <white><message></white>");
+          "<dark_red><sender_displayname></dark_red> <dark_gray>»</dark_gray> <white><message></white>");
 
   @Comment("Should the player chat messages be displayed in the console when sent via Redis?")
   private boolean displayChatInConsole = true;
@@ -45,7 +48,12 @@ public class FairyChatConfiguration {
   @Comment("Configuration for broadcast messages.")
   private BroadcastConfig broadcast = new BroadcastConfig();
 
-  @Comment("Configure the plugin's messages.")
+  @Comment({
+    "Configure the plugin's messages.",
+    "https://github.com/MiniPlaceholders/MiniPlaceholders/wiki/Placeholders",
+    "If you wise to use PlaceholderAPI placeholders, you need the following tag",
+    "<papi:(placeholder name)> e.g. <papi:player_displayname>"
+  })
   private Messages messages = new Messages();
 
   @Comment(

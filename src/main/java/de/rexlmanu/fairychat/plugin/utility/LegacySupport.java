@@ -10,6 +10,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyFormat;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class LegacySupport {
 
@@ -83,7 +84,7 @@ public class LegacySupport {
     return output;
   }
 
-  public static @NotNull TagResolver papiTag(final @NotNull Player player) {
+  public static @NotNull TagResolver papiTag(final @Nullable Player player) {
     return TagResolver.resolver(
         "papi",
         (argumentQueue, context) -> {

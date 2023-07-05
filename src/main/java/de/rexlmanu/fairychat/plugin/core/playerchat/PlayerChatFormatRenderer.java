@@ -69,8 +69,11 @@ public class PlayerChatFormatRenderer implements ChatRenderer {
 
     List<TagResolver> tagResolvers =
         new ArrayList<>(
-            this.registry.getChatPlaceholders().stream()
-                .map(chatPlaceholder -> chatPlaceholder.resolve(source, finalMessage))
+            this.registry.getPlaceholderSupports().stream()
+                .map(
+                    chatPlaceholder ->
+                        chatPlaceholder.resolvePlayerPlaceholderWithChatMessage(
+                            source, finalMessage))
                 .toList());
 
     tagResolvers.add(Placeholder.component("message", message));

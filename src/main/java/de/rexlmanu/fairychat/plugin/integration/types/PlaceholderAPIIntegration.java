@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.Constants;
 import de.rexlmanu.fairychat.plugin.integration.Integration;
-import de.rexlmanu.fairychat.plugin.integration.chat.ChatPlaceholder;
+import de.rexlmanu.fairychat.plugin.integration.chat.PlaceholderSupport;
 import de.rexlmanu.fairychat.plugin.utility.LegacySupport;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
@@ -14,7 +14,7 @@ import org.bukkit.plugin.PluginManager;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class PlaceholderAPIIntegration implements ChatPlaceholder, Integration {
+public class PlaceholderAPIIntegration implements PlaceholderSupport, Integration {
   private final PluginManager pluginManager;
 
   @Override
@@ -23,10 +23,17 @@ public class PlaceholderAPIIntegration implements ChatPlaceholder, Integration {
   }
 
   @Override
-  public void enable() {}
+  public TagResolver resolvePlayerPlaceholderWithChatMessage(Player player, Component message) {
+    return LegacySupport.papiTag(player);
+  }
 
   @Override
-  public TagResolver resolve(Player player, Component message) {
+  public TagResolver resolvePlayerPlaceholder(Player player) {
     return LegacySupport.papiTag(player);
+  }
+
+  @Override
+  public TagResolver resolvePlaceholder() {
+    return LegacySupport.papiTag(null);
   }
 }

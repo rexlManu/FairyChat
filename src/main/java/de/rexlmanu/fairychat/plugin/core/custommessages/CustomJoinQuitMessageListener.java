@@ -3,9 +3,10 @@ package de.rexlmanu.fairychat.plugin.core.custommessages;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.configuration.Messages;
-import io.github.miniplaceholders.api.MiniPlaceholders;
+import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -17,6 +18,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class CustomJoinQuitMessageListener implements Listener {
   private final Messages messages;
   private final MiniMessage miniMessage;
+  private final IntegrationRegistry registry;
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void handle(PlayerJoinEvent event) {
@@ -24,10 +26,16 @@ public class CustomJoinQuitMessageListener implements Listener {
       event.joinMessage(null);
       return;
     }
+
     event.joinMessage(
         this.miniMessage.deserialize(
             this.messages.joinMessage(),
-            MiniPlaceholders.getAudienceGlobalPlaceholders(event.getPlayer())));
+            TagResolver.resolver(
+                this.registry.getPlaceholderSupports().stream()
+                    .map(
+                        placeholderSupport ->
+                            placeholderSupport.resolvePlayerPlaceholder(event.getPlayer()))
+                    .toList())));
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
@@ -39,6 +47,11 @@ public class CustomJoinQuitMessageListener implements Listener {
     event.quitMessage(
         this.miniMessage.deserialize(
             this.messages.quitMessage(),
-            MiniPlaceholders.getAudienceGlobalPlaceholders(event.getPlayer())));
+            TagResolver.resolver(
+                this.registry.getPlaceholderSupports().stream()
+                    .map(
+                        placeholderSupport ->
+                            placeholderSupport.resolvePlayerPlaceholder(event.getPlayer()))
+                    .toList())));
   }
 }

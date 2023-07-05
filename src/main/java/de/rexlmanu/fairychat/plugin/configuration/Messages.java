@@ -18,8 +18,8 @@ public class Messages {
   private String invalidSyntax = "<red>Invalid syntax. Usage: <#5E548E><syntax></#5E548E></red>";
 
   @Comment("All MiniPlaceholders are supported")
-  private String joinMessage = "<gray><#5E548E><player_name></#5E548E> joined the server.</gray>";
+  private String joinMessage = "<gray><#5E548E><sender_displayname></#5E548E> joined the server.</gray>";
 
   @Comment("All MiniPlaceholders are supported")
-  private String quitMessage = "<gray><#5E548E><player_name></#5E548E> left the server.</gray>";
+  private String quitMessage = "<gray><#5E548E><sender_displayname></#5E548E> left the server.</gray>";
 }

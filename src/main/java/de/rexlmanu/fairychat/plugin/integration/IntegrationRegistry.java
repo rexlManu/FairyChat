@@ -3,7 +3,8 @@ package de.rexlmanu.fairychat.plugin.integration;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
-import de.rexlmanu.fairychat.plugin.integration.chat.ChatPlaceholder;
+import de.rexlmanu.fairychat.plugin.integration.chat.PlaceholderSupport;
+import de.rexlmanu.fairychat.plugin.integration.types.BuiltInPlaceholdersIntegration;
 import de.rexlmanu.fairychat.plugin.integration.types.MiniPlaceholdersIntegration;
 import de.rexlmanu.fairychat.plugin.integration.types.PlaceholderAPIIntegration;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class IntegrationRegistry {
   public void init() {
     this.tryEnable(PlaceholderAPIIntegration.class);
     this.tryEnable(MiniPlaceholdersIntegration.class);
+    this.tryEnable(BuiltInPlaceholdersIntegration.class);
   }
 
   private void tryEnable(Class<? extends Integration> integrationClass) {
@@ -40,10 +42,10 @@ public class IntegrationRegistry {
     }
   }
 
-  public List<ChatPlaceholder> getChatPlaceholders() {
+  public List<PlaceholderSupport> getPlaceholderSupports() {
     return this.integrations.stream()
-        .filter(ChatPlaceholder.class::isInstance)
-        .map(ChatPlaceholder.class::cast)
+        .filter(PlaceholderSupport.class::isInstance)
+        .map(PlaceholderSupport.class::cast)
         .toList();
   }
 }
