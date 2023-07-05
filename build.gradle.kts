@@ -90,7 +90,7 @@ modrinth {
     loaders.addAll(listOf("paper", "purpur", "folia"))
     changelog.set(System.getenv("MODRINTH_CHANGELOG"))
     dependencies {
-        required.project("miniplaceholders")
+        optional.project("miniplaceholders")
         optional.project("luckperms")
     }
 }
@@ -110,7 +110,7 @@ hangarPublish {
                 platformVersions.set(versions)
                 dependencies {
                     hangar("MiniPlaceholders", "MiniPlaceholders") {
-                        required.set(true)
+                        required.set(false)
                     }
 //                  Luckperms is not yet available on hangar
 //                    hangar("luckPerms", "luckperms") {
@@ -129,8 +129,7 @@ bukkit {
     foliaSupported = true
     apiVersion = "1.19"
     load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
-    depend = listOf("MiniPlaceholders")
-    softDepend = listOf("LuckPerms", "PlaceholderAPI")
+    softDepend = listOf("MiniPlaceholders", "LuckPerms", "PlaceholderAPI")
     prefix = "FairyChat"
 }
 
@@ -144,7 +143,7 @@ paper {
     prefix = "FairyChat"
     serverDependencies {
         register("MiniPlaceholders") {
-            required = true
+            required = false
         }
         register("LuckPerms") {
             required = false

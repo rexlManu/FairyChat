@@ -3,12 +3,13 @@ package de.rexlmanu.fairychat.plugin.core.playerchat;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-import de.rexlmanu.fairychat.plugin.Constants;
 import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
+import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
 import de.rexlmanu.fairychat.plugin.permission.PermissionProvider;
 import de.rexlmanu.fairychat.plugin.utility.LegacySupport;
-import io.github.miniplaceholders.api.MiniPlaceholders;
 import io.papermc.paper.chat.ChatRenderer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.audience.Audience;
@@ -29,6 +30,7 @@ public class PlayerChatFormatRenderer implements ChatRenderer {
   private final MiniMessage miniMessage;
   private final PermissionProvider permissionProvider;
   private final PluginManager pluginManager;
+  private final IntegrationRegistry registry;
 
   @Named("colorMiniMessage")
   private final MiniMessage colorMiniMessage;
@@ -63,15 +65,16 @@ public class PlayerChatFormatRenderer implements ChatRenderer {
       message = this.colorMiniMessage.deserialize(miniMessageFormatted);
     }
 
-    TagResolver placeholderResolver = TagResolver.empty();
-    if (this.pluginManager.isPluginEnabled(Constants.PLACEHOLDER_API_NAME)) {
-      placeholderResolver = LegacySupport.papiTag(source);
-    }
+    @NotNull Component finalMessage = message;
 
-    return this.miniMessage.deserialize(
-        chatFormat,
-        MiniPlaceholders.getAudiencePlaceholders(source),
-        Placeholder.component("message", message),
-        placeholderResolver);
+    List<TagResolver> tagResolvers =
+        new ArrayList<>(
+            this.registry.getChatPlaceholders().stream()
+                .map(chatPlaceholder -> chatPlaceholder.resolve(source, finalMessage))
+                .toList());
+
+    tagResolvers.add(Placeholder.component("message", message));
+
+    return this.miniMessage.deserialize(chatFormat, TagResolver.resolver(tagResolvers));
   }
 }
