@@ -17,6 +17,7 @@ import de.rexlmanu.fairychat.plugin.core.playerchat.PlayerChatMessageData;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.redis.PrivateMessageData;
 import de.rexlmanu.fairychat.plugin.database.Connector;
 import de.rexlmanu.fairychat.plugin.redis.channel.MessageChannelHandler;
+import de.rexlmanu.fairychat.plugin.utility.PluginScheduler;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -36,6 +37,7 @@ public class RedisConnector implements Connector {
   private final Logger logger;
   private final Injector injector;
   private final JavaPlugin plugin;
+  private final PluginScheduler pluginScheduler;
   private final Gson gson;
   private final Map<Class<?>, MessageChannelHandler<?>> handlers = new HashMap<>();
   private JedisPool jedisPool;
@@ -72,15 +74,11 @@ public class RedisConnector implements Connector {
     this.injector.injectMembers(handler);
     this.handlers.put(dataClass, handler);
 
-    this.plugin
-        .getServer()
-        .getAsyncScheduler()
-        .runNow(
-            this.plugin,
-            (task) -> {
-              Jedis resource = this.jedisPool.getResource();
-              resource.subscribe(handler, handler.channelName());
-            });
+    this.pluginScheduler.runAsync(
+        () -> {
+          Jedis resource = this.jedisPool.getResource();
+          resource.subscribe(handler, handler.channelName());
+        });
   }
 
   public void useResource(Consumer<Jedis> consumer) {
@@ -104,10 +102,7 @@ public class RedisConnector implements Connector {
   }
 
   public void useResourceAsync(Consumer<Jedis> consumer) {
-    this.plugin
-        .getServer()
-        .getAsyncScheduler()
-        .runNow(this.plugin, (task) -> this.useResource(consumer));
+    this.pluginScheduler.runAsync(() -> this.useResource(consumer));
   }
 
   public <T> CompletableFuture<T> useQueryAsync(Function<Jedis, T> function) {
