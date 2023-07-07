@@ -74,10 +74,10 @@ public class RedisConnector implements Connector {
 
     this.plugin
         .getServer()
-        .getScheduler()
-        .runTaskAsynchronously(
+        .getAsyncScheduler()
+        .runNow(
             this.plugin,
-            () -> {
+            (task) -> {
               Jedis resource = this.jedisPool.getResource();
               resource.subscribe(handler, handler.channelName());
             });
@@ -106,8 +106,8 @@ public class RedisConnector implements Connector {
   public void useResourceAsync(Consumer<Jedis> consumer) {
     this.plugin
         .getServer()
-        .getScheduler()
-        .runTaskAsynchronously(this.plugin, () -> this.useResource(consumer));
+        .getAsyncScheduler()
+        .runNow(this.plugin, (task) -> this.useResource(consumer));
   }
 
   public <T> CompletableFuture<T> useQueryAsync(Function<Jedis, T> function) {

@@ -5,6 +5,8 @@ import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.Constants;
 import de.rexlmanu.fairychat.plugin.core.user.UserFactory;
 import de.rexlmanu.fairychat.plugin.core.user.UserService;
+import java.util.concurrent.TimeUnit;
+import net.kyori.adventure.util.Ticks;
 import org.bukkit.Server;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,17 +17,15 @@ import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 @Singleton
 public class UserBukkitListener implements Listener {
   // After how much time a player is logged out after leaving the server.
   // This is to prevent the race condition on server switching.
-  private static final long LOGOUT_TIMEOUT = 20L * 5L;
+  private static final long LOGOUT_TIMEOUT_MILLIS = 5L * Ticks.SINGLE_TICK_DURATION_MS;
   private final UserService userService;
   private final UserFactory userFactory;
   private final Plugin plugin;
-  private final BukkitScheduler scheduler;
   private final Server server;
 
   @Inject
@@ -34,12 +34,10 @@ public class UserBukkitListener implements Listener {
       UserFactory userFactory,
       JavaPlugin plugin,
       PluginManager pluginManager,
-      BukkitScheduler scheduler,
       Server server) {
     this.userService = userService;
     this.userFactory = userFactory;
     this.plugin = plugin;
-    this.scheduler = scheduler;
     this.server = server;
 
     pluginManager.registerEvents(this, plugin);
@@ -52,15 +50,18 @@ public class UserBukkitListener implements Listener {
 
   @EventHandler
   public void handlePlayerQuit(PlayerQuitEvent event) {
-    this.scheduler.runTaskLaterAsynchronously(
-        this.plugin,
-        () ->
-            this.userService
-                .findUserById(event.getPlayer().getUniqueId())
-                .filter(user -> user.serverIdentity().equals(Constants.SERVER_IDENTITY_ORIGIN))
-                .filter(user -> this.server.getPlayer(user.uniqueId()) == null)
-                .ifPresent(this.userService::logout),
-        20L * 5L);
+    this.server
+        .getAsyncScheduler()
+        .runDelayed(
+            this.plugin,
+            (task) ->
+                this.userService
+                    .findUserById(event.getPlayer().getUniqueId())
+                    .filter(user -> user.serverIdentity().equals(Constants.SERVER_IDENTITY_ORIGIN))
+                    .filter(user -> this.server.getPlayer(user.uniqueId()) == null)
+                    .ifPresent(this.userService::logout),
+            LOGOUT_TIMEOUT_MILLIS,
+            TimeUnit.MILLISECONDS);
   }
 
   @EventHandler
