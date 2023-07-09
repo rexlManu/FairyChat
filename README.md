@@ -29,14 +29,15 @@ You can find the documentation for FairyChat [here](https://github.com/rexlManu/
 
 ## Commands & Permissions
 
-| Command                    | Permission                      | Description                        |
-|----------------------------|---------------------------------|------------------------------------|
-| `/broadcast <message>`     | `fairychat.command.broadcast`   | Broadcast a message to all servers |
-|                            | `fairychat.feature.minimessage` | Use mini message in chat           |
-| `/pm <username> <message>` |                                 | Send a private message to a player |
-| `/r <message>`             |                                 | Reply to a private message         |
-| `/ignore <username>`       |                                 | Toggle ignoring a player           |
-|                            | `fairychat.bypass.ignore`       | Bypass ignoring a player           |
+| Command                    | Permission                      | Description                              |
+|----------------------------|---------------------------------|------------------------------------------|
+| `/broadcast <message>`     | `fairychat.command.broadcast`   | Broadcast a message to all servers       |
+|                            | `fairychat.feature.minimessage` | Allows MiniMessage & Color Codes in chat |
+| `/pm <username> <message>` |                                 | Send a private message to a player       |
+| `/r <message>`             |                                 | Reply to a private message               |
+| `/ignore <username>`       |                                 | Toggle ignoring a player                 |
+|                            | `fairychat.bypass.ignore`       | Bypass ignoring a player                 |
+|                            | `fairychat.notify-update`       | Notify about updates on join             |
 
 ## Installation
 
@@ -44,11 +45,11 @@ You need to have [Paper](https://papermc.io/) (or fork of paper) installed on yo
 compatible
 with other server software.
 
-It's also important to have MiniPlaceholders installed on your server. You can download it
-from [here](https://modrinth.com/plugin/miniplaceholders).
-
-For the best experience, you also should install the player expansion for MiniPlaceholders. You can download it
-from [here](https://github.com/MiniPlaceholders/Player-Expansion).
+1. Download the latest FairyChat version from [here](https://github.com/rexlManu/FairyChat/releases).
+2. Place the downloaded jar file in your server's `plugins` folder.
+3. Restart your server.
+4. Configure FairyChat to your liking.
+5. Restart your server again.
 
 ## Support
 
