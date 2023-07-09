@@ -19,7 +19,7 @@ public class PlaceholderAPIIntegration implements PlaceholderSupport, Integratio
 
   @Override
   public boolean available() {
-    return this.pluginManager.isPluginEnabled(Constants.PLACEHOLDER_API_NAME);
+    return this.pluginManager.getPlugin(Constants.PLACEHOLDER_API_NAME) != null;
   }
 
   @Override

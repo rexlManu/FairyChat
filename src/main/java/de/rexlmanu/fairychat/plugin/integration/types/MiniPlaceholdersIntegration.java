@@ -18,7 +18,7 @@ public class MiniPlaceholdersIntegration implements Integration, PlaceholderSupp
 
   @Override
   public boolean available() {
-    return this.pluginManager.isPluginEnabled("MiniPlaceholders");
+    return this.pluginManager.getPlugin("MiniPlaceholders") != null;
   }
 
   @Override
