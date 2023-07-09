@@ -6,6 +6,7 @@ import de.rexlmanu.fairychat.plugin.Constants;
 import de.rexlmanu.fairychat.plugin.core.user.UserFactory;
 import de.rexlmanu.fairychat.plugin.core.user.UserService;
 import de.rexlmanu.fairychat.plugin.utility.PluginScheduler;
+import de.rexlmanu.fairychat.plugin.utility.update.UpdateChecker;
 import net.kyori.adventure.util.Ticks;
 import org.bukkit.Server;
 import org.bukkit.event.EventHandler;
@@ -26,6 +27,7 @@ public class UserBukkitListener implements Listener {
   private final UserFactory userFactory;
   private final Server server;
   private final PluginScheduler pluginScheduler;
+  private final UpdateChecker updateChecker;
 
   @Inject
   public UserBukkitListener(
@@ -34,11 +36,13 @@ public class UserBukkitListener implements Listener {
       JavaPlugin plugin,
       PluginManager pluginManager,
       Server server,
-      PluginScheduler pluginScheduler) {
+      PluginScheduler pluginScheduler,
+      UpdateChecker updateChecker) {
     this.userService = userService;
     this.userFactory = userFactory;
     this.server = server;
     this.pluginScheduler = pluginScheduler;
+    this.updateChecker = updateChecker;
 
     pluginManager.registerEvents(this, plugin);
   }
@@ -46,6 +50,8 @@ public class UserBukkitListener implements Listener {
   @EventHandler
   public void handlePlayerJoin(PlayerJoinEvent event) {
     this.userService.login(this.userFactory.createFromPlayer(event.getPlayer()));
+
+    this.updateChecker.notifyPlayer(event.getPlayer());
   }
 
   @EventHandler

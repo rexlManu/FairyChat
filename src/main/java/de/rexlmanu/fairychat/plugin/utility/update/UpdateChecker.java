@@ -15,7 +15,11 @@ import java.net.http.HttpResponse;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Nullable;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
@@ -25,8 +29,15 @@ public class UpdateChecker {
   private final JavaPlugin plugin;
   private final FairyChatConfiguration configuration;
   @PluginLogger private final Logger logger;
+  private final MiniMessage miniMessage;
+
+  @Nullable private Release latestRelease;
 
   public void fetchLatestVersion(Consumer<Release> consumer) {
+    if (this.latestRelease != null) {
+      consumer.accept(this.latestRelease);
+      return;
+    }
     HttpClient client = HttpClient.newHttpClient();
     client
         .sendAsync(
@@ -39,8 +50,9 @@ public class UpdateChecker {
               String version = object.get("tag_name").getAsString();
               if (version.startsWith("v")) version = version.substring(1);
               String url = object.get("html_url").getAsString();
-              return new Release(version, url);
+              return new Release("0.3.2", url);
             })
+        .thenApply(release -> this.latestRelease = release)
         .thenAccept(consumer)
         // catch exceptions
         .exceptionally(
@@ -62,6 +74,24 @@ public class UpdateChecker {
           } else {
             this.logger.info("You are using the latest version of FairyChat.");
           }
+        });
+  }
+
+  public void notifyPlayer(Player player) {
+    if (!this.configuration.checkForUpdates()) return;
+    if (!player.isOp() && !player.hasPermission("fairychat.notify-update")) {
+      return;
+    }
+
+    this.fetchLatestVersion(
+        release -> {
+          if (this.plugin.getPluginMeta().getVersion().equals(release.version())) {
+            return;
+          }
+
+          player.sendMessage(this.miniMessage.deserialize(this.configuration.messages().updateNotification(),
+              Placeholder.parsed("url", release.url()),
+              Placeholder.parsed("version", release.version())));
         });
   }
 }
