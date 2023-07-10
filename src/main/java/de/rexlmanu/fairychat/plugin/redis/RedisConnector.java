@@ -76,8 +76,27 @@ public class RedisConnector implements Connector {
 
     this.pluginScheduler.runAsync(
         () -> {
-          Jedis resource = this.jedisPool.getResource();
-          resource.subscribe(handler, handler.channelName());
+          boolean firstTime = true;
+          while (!Thread.interrupted() && !this.jedisPool.isClosed()) {
+            try (Jedis resource = this.jedisPool.getResource()) {
+              if (!firstTime) {
+                this.logger.info("Successfully reconnected to redis.");
+              }
+              firstTime = false;
+              resource.subscribe(handler, handler.channelName());
+            } catch (Exception e) {
+              try {
+                handler.unsubscribe();
+              } catch (Exception ignored) {
+              }
+
+              try {
+                Thread.sleep(2000);
+              } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+              }
+            }
+          }
         });
   }
 
