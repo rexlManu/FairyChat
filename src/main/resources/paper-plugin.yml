@@ -1,0 +1,24 @@
+api-version: "1.19"
+name: FairyChat
+version: 0.3.2
+main: de.rexlmanu.fairychat.plugin.FairyChatPlugin
+loader: de.rexlmanu.fairychat.plugin.FairyChatLoader
+description: The next generation chat plugin for managing your server's chat.
+author: rexlManu
+website: https://github.com/rexlManu/FairyChat
+prefix: FairyChat
+folia-supported: true
+dependencies:
+  - name: LuckPerms
+    required: false
+  - name: MiniPlaceholders
+    required: false
+  - name: PlaceholderAPI
+    required: false
+load-before:
+  - name: LuckPerms
+    required: false
+  - name: MiniPlaceholders
+    required: false
+  - name: PlaceholderAPI
+    required: false
