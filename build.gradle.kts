@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.hangar)
     alias(libs.plugins.minotaur)
     // Plugins to generate plugin metadata files
-    alias(libs.plugins.paperyml)
+//    alias(libs.plugins.paperyml)
     alias(libs.plugins.pluginyml)
 }
 
@@ -133,23 +133,23 @@ bukkit {
     prefix = "FairyChat"
 }
 
-paper {
-    main = "de.rexlmanu.fairychat.plugin.FairyChatPlugin"
-    loader = "de.rexlmanu.fairychat.plugin.FairyChatLoader"
-    apiVersion = "1.19"
-    foliaSupported = true
-    author = "rexlManu"
-    website = "https://github.com/rexlManu/FairyChat"
-    prefix = "FairyChat"
-    serverDependencies {
-        register("MiniPlaceholders") {
-            required = false
-        }
-        register("LuckPerms") {
-            required = false
-        }
-        register("PlaceholderAPI") {
-            required = false
-        }
-    }
-}
+//paper {
+//    main = "de.rexlmanu.fairychat.plugin.FairyChatPlugin"
+//    loader = "de.rexlmanu.fairychat.plugin.FairyChatLoader"
+//    apiVersion = "1.19"
+//    foliaSupported = true
+//    author = "rexlManu"
+//    website = "https://github.com/rexlManu/FairyChat"
+//    prefix = "FairyChat"
+//    serverDependencies {
+//        register("MiniPlaceholders") {
+//            required = false
+//        }
+//        register("LuckPerms") {
+//            required = false
+//        }
+//        register("PlaceholderAPI") {
+//            required = false
+//        }
+//    }
+//}
