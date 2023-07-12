@@ -26,6 +26,7 @@ import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
 import de.rexlmanu.fairychat.plugin.permission.PermissionModule;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
 import de.rexlmanu.fairychat.plugin.redis.channel.RedisSubscriberModule;
+import de.rexlmanu.fairychat.plugin.utility.scheduler.PluginSchedulerModule;
 import de.rexlmanu.fairychat.plugin.utility.update.UpdateChecker;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -40,6 +41,7 @@ public class FairyChatPlugin extends JavaPlugin {
     this.injector =
         Guice.createInjector(
             new FairyChatModule(this.configuration, this),
+            new PluginSchedulerModule(),
             new CommandModule(),
             new PermissionModule(),
             new ConfigModule(),

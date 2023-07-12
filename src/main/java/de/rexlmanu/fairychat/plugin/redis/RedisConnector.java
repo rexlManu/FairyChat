@@ -17,7 +17,7 @@ import de.rexlmanu.fairychat.plugin.core.playerchat.PlayerChatMessageData;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.redis.PrivateMessageData;
 import de.rexlmanu.fairychat.plugin.database.Connector;
 import de.rexlmanu.fairychat.plugin.redis.channel.MessageChannelHandler;
-import de.rexlmanu.fairychat.plugin.utility.PluginScheduler;
+import de.rexlmanu.fairychat.plugin.utility.scheduler.PluginScheduler;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;

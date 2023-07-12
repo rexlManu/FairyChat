@@ -5,7 +5,7 @@ import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.Constants;
 import de.rexlmanu.fairychat.plugin.core.user.UserFactory;
 import de.rexlmanu.fairychat.plugin.core.user.UserService;
-import de.rexlmanu.fairychat.plugin.utility.PluginScheduler;
+import de.rexlmanu.fairychat.plugin.utility.scheduler.PluginScheduler;
 import de.rexlmanu.fairychat.plugin.utility.update.UpdateChecker;
 import net.kyori.adventure.util.Ticks;
 import org.bukkit.Server;
