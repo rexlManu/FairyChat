@@ -77,6 +77,7 @@ public class PlayerChatFormatRenderer implements ChatRenderer {
                 .toList());
 
     tagResolvers.add(Placeholder.component("message", message));
+    tagResolvers.add(Placeholder.unparsed("server_name", configuration.serverName()));
 
     return this.miniMessage.deserialize(chatFormat, TagResolver.resolver(tagResolvers));
   }

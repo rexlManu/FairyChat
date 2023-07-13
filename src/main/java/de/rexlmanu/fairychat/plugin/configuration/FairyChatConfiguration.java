@@ -11,6 +11,9 @@ public class FairyChatConfiguration {
   @Comment("Should the plugin check for updates?")
   private boolean checkForUpdates = true;
 
+  @Comment("The server name that should be displayed for the <server_name> placeholder.")
+  private String serverName = "";
+
   @Comment("Redis credentials used for communicating between other servers.")
   private RedisCredentials redisCredentials = new RedisCredentials(false, "redis://localhost:6379");
 
@@ -22,7 +25,12 @@ public class FairyChatConfiguration {
     "You can use any placeholder from the following list:",
     "https://github.com/MiniPlaceholders/MiniPlaceholders/wiki/Placeholders",
     "If you wise to use PlaceholderAPI placeholders, you need the following tag",
-    "<papi:(placeholder name)> e.g. <papi:player_displayname>"
+    "<papi:(placeholder name)> e.g. <papi:player_displayname>",
+    "Built-in placeholders:",
+    "<sender_name> - The name of the player who sent the message",
+    "<sender_displayname> - The display name of the player who sent the message",
+    "<message> - The message that was sent",
+    "<server_name> - The server name that was configured in the config.yml",
   })
   private String chatFormat =
       "<#5E548E><sender_displayname></#5E548E> <dark_gray>»</dark_gray> <gray><message></gray>";

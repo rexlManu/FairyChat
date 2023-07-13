@@ -22,7 +22,8 @@ public class BuiltInPlaceholdersIntegration implements Integration, PlaceholderS
   public TagResolver resolvePlayerPlaceholder(Player player) {
     return TagResolver.resolver(
         Placeholder.unparsed("sender_name", player.getName()),
-        Placeholder.component("sender_displayname", player.displayName()));
+        Placeholder.component("sender_displayname", player.displayName())
+    );
   }
 
   @Override
