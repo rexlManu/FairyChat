@@ -1,13 +1,19 @@
 package de.rexlmanu.fairychat.plugin.integration.types;
 
+import com.google.inject.Inject;
+import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
 import de.rexlmanu.fairychat.plugin.integration.Integration;
 import de.rexlmanu.fairychat.plugin.integration.chat.PlaceholderSupport;
+import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
 
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class BuiltInPlaceholdersIntegration implements Integration, PlaceholderSupport {
+  private final FairyChatConfiguration configuration;
+
   @Override
   public boolean available() {
     return true;
@@ -22,12 +28,12 @@ public class BuiltInPlaceholdersIntegration implements Integration, PlaceholderS
   public TagResolver resolvePlayerPlaceholder(Player player) {
     return TagResolver.resolver(
         Placeholder.unparsed("sender_name", player.getName()),
-        Placeholder.component("sender_displayname", player.displayName())
-    );
+        Placeholder.component("sender_displayname", player.displayName()),
+        this.resolvePlaceholder());
   }
 
   @Override
   public TagResolver resolvePlaceholder() {
-    return TagResolver.empty();
+    return TagResolver.resolver(Placeholder.unparsed("server_name", configuration.serverName()));
   }
 }

@@ -37,4 +37,10 @@ public class ConfigModule extends AbstractModule {
   public DatabaseConfig mysql(FairyChatConfiguration configuration) {
     return configuration.database();
   }
+
+  @Provides
+  @Inject
+  public CustomMessages customMessages(FairyChatConfiguration configuration) {
+    return configuration.customMessages();
+  }
 }

@@ -17,14 +17,20 @@ public class Messages {
       "<gray>You will no longer receive messages from <#5E548E><name></#5E548E>.</gray>";
   private String invalidSyntax = "<red>Invalid syntax. Usage: <#5E548E><syntax></#5E548E></red>";
 
-  @Comment("All MiniPlaceholders are supported")
+  @Comment("All Placeholders are supported")
   private String joinMessage =
       "<gray><#5E548E><sender_displayname></#5E548E> joined the server.</gray>";
 
-  @Comment("All MiniPlaceholders are supported")
+  @Comment("All Placeholders are supported")
   private String quitMessage =
       "<gray><#5E548E><sender_displayname></#5E548E> left the server.</gray>";
 
   private String updateNotification =
       "<newline><gray>A new version of <gradient:#BE95C4:#9F86C0:#5E548E>FairyChat</gradient> is available. You can download it at <#5E548E><click:open_url:'<url>'>here</click></#5E548E>.</gray><newline>";
+
+  @Comment("Configure the death message. Keep empty to disable it. Placeholders are supported!")
+  private String deathMessage = "<gray><death_message></gray>";
+
+  @Comment("Configure the advancement done message. Keep empty to disable it. Placeholders are supported!")
+  private String advancementDoneMessage = "<gray><advancement_message></gray>";
 }

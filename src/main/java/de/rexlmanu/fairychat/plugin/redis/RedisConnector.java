@@ -1,6 +1,7 @@
 package de.rexlmanu.fairychat.plugin.redis;
 
 import static de.rexlmanu.fairychat.plugin.Constants.BROADCAST_CHANNEL;
+import static de.rexlmanu.fairychat.plugin.Constants.CUSTOM_MESSAGE_CHANNEL;
 import static de.rexlmanu.fairychat.plugin.Constants.MESSAGING_CHANNEL;
 import static de.rexlmanu.fairychat.plugin.Constants.PRIVATE_MESSAGING_CHANNEL;
 import static de.rexlmanu.fairychat.plugin.Constants.USER_IGNORE_UPDATE_CHANNEL;
@@ -12,6 +13,7 @@ import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.configuration.RedisCredentials;
 import de.rexlmanu.fairychat.plugin.core.broadcast.BroadcastMessageData;
+import de.rexlmanu.fairychat.plugin.core.custommessages.redis.CustomMessageDto;
 import de.rexlmanu.fairychat.plugin.core.ignore.redis.UserIgnoreDto;
 import de.rexlmanu.fairychat.plugin.core.playerchat.PlayerChatMessageData;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.redis.PrivateMessageData;
@@ -54,6 +56,7 @@ public class RedisConnector implements Connector {
     this.registerHandler(BROADCAST_CHANNEL, BroadcastMessageData.class);
     this.registerHandler(PRIVATE_MESSAGING_CHANNEL, PrivateMessageData.class);
     this.registerHandler(USER_IGNORE_UPDATE_CHANNEL, UserIgnoreDto.class);
+    this.registerHandler(CUSTOM_MESSAGE_CHANNEL, CustomMessageDto.class);
   }
 
   public void close() {
@@ -76,15 +79,15 @@ public class RedisConnector implements Connector {
 
     this.pluginScheduler.runAsync(
         () -> {
-          boolean firstTime = true;
+          boolean wasBroken = false;
           while (!Thread.interrupted() && !this.jedisPool.isClosed()) {
             try (Jedis resource = this.jedisPool.getResource()) {
-              if (!firstTime) {
-                this.logger.info("Successfully reconnected to redis.");
+              if (wasBroken) {
+                this.logger.warning("Redis connection re-established %s.".formatted(channelName));
               }
-              firstTime = false;
               resource.subscribe(handler, handler.channelName());
             } catch (Exception e) {
+              wasBroken = true;
               try {
                 handler.unsubscribe();
               } catch (Exception ignored) {
