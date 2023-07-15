@@ -31,6 +31,9 @@ public class Messages {
   @Comment("Configure the death message. Keep empty to disable it. Placeholders are supported!")
   private String deathMessage = "<gray><death_message></gray>";
 
-  @Comment("Configure the advancement done message. Keep empty to disable it. Placeholders are supported!")
+  @Comment(
+      "Configure the advancement done message. Keep empty to disable it. Placeholders are supported!")
   private String advancementDoneMessage = "<gray><advancement_message></gray>";
+
+  private String chatCleared = "<gray>The chat was cleared.</gray>";
 }

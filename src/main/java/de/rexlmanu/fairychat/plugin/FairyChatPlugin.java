@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import de.exlll.configlib.YamlConfigurations;
 import de.rexlmanu.fairychat.plugin.command.BroadcastCommand;
+import de.rexlmanu.fairychat.plugin.command.ChatClearCommand;
 import de.rexlmanu.fairychat.plugin.command.CommandModule;
 import de.rexlmanu.fairychat.plugin.command.IgnoreCommand;
 import de.rexlmanu.fairychat.plugin.command.PrivateMessageCommand;
@@ -11,6 +12,7 @@ import de.rexlmanu.fairychat.plugin.configuration.ConfigModule;
 import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
 import de.rexlmanu.fairychat.plugin.core.CoreModule;
 import de.rexlmanu.fairychat.plugin.core.broadcast.BroadcastChannelSubscriber;
+import de.rexlmanu.fairychat.plugin.core.chatclear.redis.ChatClearChannelSubscriber;
 import de.rexlmanu.fairychat.plugin.core.custommessages.CustomMessageBukkitListener;
 import de.rexlmanu.fairychat.plugin.core.custommessages.redis.CustomMessageSubscriber;
 import de.rexlmanu.fairychat.plugin.core.ignore.redis.RedisUserIgnoreUpdateSubscriber;
@@ -83,6 +85,7 @@ public class FairyChatPlugin extends JavaPlugin {
     this.injector.getInstance(RedisPrivateMessagingSubscriber.class);
     this.injector.getInstance(RedisUserIgnoreUpdateSubscriber.class);
     this.injector.getInstance(CustomMessageSubscriber.class);
+    this.injector.getInstance(ChatClearChannelSubscriber.class);
   }
 
   @Override
@@ -101,6 +104,7 @@ public class FairyChatPlugin extends JavaPlugin {
     this.injector.getInstance(BroadcastCommand.class);
     this.injector.getInstance(PrivateMessageCommand.class);
     this.injector.getInstance(IgnoreCommand.class);
+    this.injector.getInstance(ChatClearCommand.class);
   }
 
   private void registerMetricCharts() {

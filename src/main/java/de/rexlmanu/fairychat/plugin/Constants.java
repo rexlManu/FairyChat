@@ -11,11 +11,14 @@ public class Constants {
    */
   public static final ServerIdentity SERVER_IDENTITY_ORIGIN = ServerIdentity.random();
 
+  public static final int CLEAR_CHAT_MAX_LINES = 120;
+
   public static final String MESSAGING_CHANNEL = "fairychat:messaging";
   public static final String BROADCAST_CHANNEL = "fairychat:broadcast";
   public static final String PRIVATE_MESSAGING_CHANNEL = "fairychat:private_messaging";
   public static final String USER_IGNORE_UPDATE_CHANNEL = "fairychat:user-ignore-update";
   public static final String CUSTOM_MESSAGE_CHANNEL = "fairychat:custom-message";
+  public static final String CLEAR_CHAT_CHANNEL = "fairychat:clear-chat";
   public static final String USERS_KEY = "fairychat:users";
   public static final String USERNAMES_KEY = "fairychat:usernames";
   public static final String LAST_RECIPIENTS_KEY = "fairychat:last_recipients";
