@@ -18,7 +18,6 @@ import de.rexlmanu.fairychat.plugin.core.custommessages.redis.CustomMessageSubsc
 import de.rexlmanu.fairychat.plugin.core.ignore.redis.RedisUserIgnoreUpdateSubscriber;
 import de.rexlmanu.fairychat.plugin.core.metrics.MetricsModule;
 import de.rexlmanu.fairychat.plugin.core.metrics.RedisEnabledChart;
-import de.rexlmanu.fairychat.plugin.core.metrics.RedisUsersChart;
 import de.rexlmanu.fairychat.plugin.core.playerchat.PlayerChatListener;
 import de.rexlmanu.fairychat.plugin.core.playerchat.PlayerChatMessageSubscriber;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.redis.RedisPrivateMessagingSubscriber;
@@ -109,8 +108,5 @@ public class FairyChatPlugin extends JavaPlugin {
 
   private void registerMetricCharts() {
     this.injector.getInstance(RedisEnabledChart.class).register();
-    if (this.configuration.redisCredentials().enabled()) {
-      this.injector.getInstance(RedisUsersChart.class).register();
-    }
   }
 }
