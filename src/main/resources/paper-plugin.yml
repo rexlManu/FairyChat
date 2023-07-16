@@ -1,9 +1,9 @@
-api-version: "1.19"
-name: FairyChat
-version: 0.3.2
+api-version: "$apiVersion"
+name: $name
+version: $version
 main: de.rexlmanu.fairychat.plugin.FairyChatPlugin
 loader: de.rexlmanu.fairychat.plugin.FairyChatLoader
-description: The next generation chat plugin for managing your server's chat.
+description: $description
 author: rexlManu
 website: https://github.com/rexlManu/FairyChat
 prefix: FairyChat

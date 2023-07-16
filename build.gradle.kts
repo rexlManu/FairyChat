@@ -45,7 +45,16 @@ tasks {
     }
     processResources {
         filteringCharset = Charsets.UTF_8.name()
-
+        val props = mapOf(
+            "name" to project.name,
+            "version" to project.version,
+            "description" to project.description,
+            "apiVersion" to "1.19"
+        )
+        inputs.properties(props)
+        filesMatching("paper-plugin.yml") {
+            expand(props)
+        }
     }
     javadoc {
         options.encoding = Charsets.UTF_8.name()
