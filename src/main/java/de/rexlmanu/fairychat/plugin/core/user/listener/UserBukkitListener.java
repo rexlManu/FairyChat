@@ -7,7 +7,6 @@ import de.rexlmanu.fairychat.plugin.core.user.UserFactory;
 import de.rexlmanu.fairychat.plugin.core.user.UserService;
 import de.rexlmanu.fairychat.plugin.utility.scheduler.PluginScheduler;
 import de.rexlmanu.fairychat.plugin.utility.update.UpdateChecker;
-import net.kyori.adventure.util.Ticks;
 import org.bukkit.Server;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,9 +19,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 @Singleton
 public class UserBukkitListener implements Listener {
-  // After how much time a player is logged out after leaving the server.
-  // This is to prevent the race condition on server switching.
-  private static final long LOGOUT_TIMEOUT_MILLIS = 5L * Ticks.SINGLE_TICK_DURATION_MS;
   private final UserService userService;
   private final UserFactory userFactory;
   private final Server server;
@@ -56,14 +52,12 @@ public class UserBukkitListener implements Listener {
 
   @EventHandler
   public void handlePlayerQuit(PlayerQuitEvent event) {
-    this.pluginScheduler.runDelayedAsync(
+    this.pluginScheduler.runAsync(
         () ->
             this.userService
                 .findUserById(event.getPlayer().getUniqueId())
                 .filter(user -> user.serverIdentity().equals(Constants.SERVER_IDENTITY_ORIGIN))
-                .filter(user -> this.server.getPlayer(user.uniqueId()) == null)
-                .ifPresent(this.userService::logout),
-        LOGOUT_TIMEOUT_MILLIS);
+                .ifPresent(this.userService::logout));
   }
 
   @EventHandler
