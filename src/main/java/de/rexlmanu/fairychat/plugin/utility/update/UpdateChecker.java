@@ -50,7 +50,7 @@ public class UpdateChecker {
               String version = object.get("tag_name").getAsString();
               if (version.startsWith("v")) version = version.substring(1);
               String url = object.get("html_url").getAsString();
-              return new Release("0.3.2", url);
+              return new Release(version, url);
             })
         .thenApply(release -> this.latestRelease = release)
         .thenAccept(consumer)
@@ -89,9 +89,11 @@ public class UpdateChecker {
             return;
           }
 
-          player.sendMessage(this.miniMessage.deserialize(this.configuration.messages().updateNotification(),
-              Placeholder.parsed("url", release.url()),
-              Placeholder.parsed("version", release.version())));
+          player.sendMessage(
+              this.miniMessage.deserialize(
+                  this.configuration.messages().updateNotification(),
+                  Placeholder.parsed("url", release.url()),
+                  Placeholder.parsed("version", release.version())));
         });
   }
 }
