@@ -1,6 +1,7 @@
 package de.rexlmanu.fairychat.plugin.redis;
 
 import static de.rexlmanu.fairychat.plugin.Constants.BROADCAST_CHANNEL;
+import static de.rexlmanu.fairychat.plugin.Constants.CLEAR_CHAT_CHANNEL;
 import static de.rexlmanu.fairychat.plugin.Constants.CUSTOM_MESSAGE_CHANNEL;
 import static de.rexlmanu.fairychat.plugin.Constants.MESSAGING_CHANNEL;
 import static de.rexlmanu.fairychat.plugin.Constants.PRIVATE_MESSAGING_CHANNEL;
@@ -13,6 +14,7 @@ import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.configuration.RedisCredentials;
 import de.rexlmanu.fairychat.plugin.core.broadcast.BroadcastMessageData;
+import de.rexlmanu.fairychat.plugin.core.chatclear.redis.ChatClearData;
 import de.rexlmanu.fairychat.plugin.core.custommessages.redis.CustomMessageDto;
 import de.rexlmanu.fairychat.plugin.core.ignore.redis.UserIgnoreDto;
 import de.rexlmanu.fairychat.plugin.core.playerchat.PlayerChatMessageData;
@@ -57,6 +59,7 @@ public class RedisConnector implements Connector {
     this.registerHandler(PRIVATE_MESSAGING_CHANNEL, PrivateMessageData.class);
     this.registerHandler(USER_IGNORE_UPDATE_CHANNEL, UserIgnoreDto.class);
     this.registerHandler(CUSTOM_MESSAGE_CHANNEL, CustomMessageDto.class);
+    this.registerHandler(CLEAR_CHAT_CHANNEL, ChatClearData.class);
   }
 
   public void close() {
