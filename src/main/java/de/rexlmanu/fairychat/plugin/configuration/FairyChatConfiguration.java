@@ -70,4 +70,12 @@ public class FairyChatConfiguration {
 
   @Comment("Configuration for custom messages.")
   private CustomMessages customMessages = new CustomMessages();
+
+  @Comment("Configuration for mentions.")
+  private MentionConfig mention =
+      new MentionConfig(
+          "<#5E548E>@</#5E548E><#BE95C4><highlight_name></#BE95C4>",
+          "block.note_block.pling",
+          1F,
+          1.30F);
 }

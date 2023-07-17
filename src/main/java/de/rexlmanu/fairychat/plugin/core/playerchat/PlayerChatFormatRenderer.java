@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
+import de.rexlmanu.fairychat.plugin.core.mentions.MentionService;
 import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
 import de.rexlmanu.fairychat.plugin.permission.PermissionProvider;
 import de.rexlmanu.fairychat.plugin.utility.LegacySupport;
@@ -20,7 +21,6 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 
 @Singleton
@@ -29,7 +29,7 @@ public class PlayerChatFormatRenderer implements ChatRenderer {
   private final FairyChatConfiguration configuration;
   private final MiniMessage miniMessage;
   private final PermissionProvider permissionProvider;
-  private final PluginManager pluginManager;
+  private final MentionService mentionService;
   private final IntegrationRegistry registry;
 
   @Named("colorMiniMessage")
@@ -42,7 +42,11 @@ public class PlayerChatFormatRenderer implements ChatRenderer {
       @NotNull Component message,
       @NotNull Audience viewer) {
 
-    return formatMessage(source, message);
+    Component formattedMessage = formatMessage(source, message);
+    if (!(viewer instanceof Player player)) {
+      return formattedMessage;
+    }
+    return this.mentionService.checkMentions(player, formattedMessage);
   }
 
   @NotNull

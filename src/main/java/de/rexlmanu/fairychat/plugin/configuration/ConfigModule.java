@@ -43,4 +43,10 @@ public class ConfigModule extends AbstractModule {
   public CustomMessages customMessages(FairyChatConfiguration configuration) {
     return configuration.customMessages();
   }
+
+  @Provides
+  @Inject
+  public MentionConfig mentionConfig(FairyChatConfiguration configuration) {
+    return configuration.mention();
+  }
 }

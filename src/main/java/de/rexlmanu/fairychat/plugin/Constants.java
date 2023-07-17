@@ -29,4 +29,6 @@ public class Constants {
       "https://api.github.com/repos/rexlManu/FairyChat/releases/latest";
 
   public static final String PLACEHOLDER_API_NAME = "PlaceholderAPI";
+
+  public static final char HIGHLIGHT_CHAR = '@';
 }

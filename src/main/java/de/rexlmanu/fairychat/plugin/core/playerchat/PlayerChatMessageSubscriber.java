@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.Constants;
 import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
 import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
+import de.rexlmanu.fairychat.plugin.core.mentions.MentionService;
 import de.rexlmanu.fairychat.plugin.redis.channel.RedisChannelSubscriber;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Server;
@@ -15,6 +16,7 @@ public class PlayerChatMessageSubscriber implements RedisChannelSubscriber<Playe
   private final Server server;
   private final FairyChatConfiguration configuration;
   private final UserIgnoreService userIgnoreService;
+  private final MentionService mentionService;
 
   @Override
   public Class<PlayerChatMessageData> getDataType() {
@@ -28,7 +30,9 @@ public class PlayerChatMessageSubscriber implements RedisChannelSubscriber<Playe
         .filter(
             recipient ->
                 !this.userIgnoreService.isIgnored(recipient.getUniqueId(), data.senderId()))
-        .forEach(player -> player.sendMessage(data.message()));
+        .forEach(
+            player ->
+                player.sendMessage(this.mentionService.checkMentions(player, data.message())));
 
     if (!configuration.displayChatInConsole()) return;
 
