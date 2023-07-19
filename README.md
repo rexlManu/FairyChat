@@ -22,6 +22,12 @@ server users.*
   across servers with Redis.
 - **Fully Paper Compatible**: FairyChat is fully compatible with Paper, and is optimized to provide the best
   performance.
+- **Cooldown for Chat**: Prevent spamming by adding a cooldown to chat messages with a configurable threshold.
+- **Reloadable Configuration**: All configuration changes can be reloaded without restarting the server.
+- **Mentions**: Mention other players in chat with ease using the `@` symbol. Get notified with a sound when you are
+  mentioned.
+- **Ignore Players**: Ignore players you don't want to see messages from.
+- **Chat clear**: Clear the chat with a single command in multiple servers at once.
 
 ## Documentation
 
@@ -29,15 +35,18 @@ You can find the documentation for FairyChat [here](https://github.com/rexlManu/
 
 ## Commands & Permissions
 
-| Command                    | Permission                      | Description                              |
-|----------------------------|---------------------------------|------------------------------------------|
-| `/broadcast <message>`     | `fairychat.command.broadcast`   | Broadcast a message to all servers       |
-|                            | `fairychat.feature.minimessage` | Allows MiniMessage & Color Codes in chat |
-| `/pm <username> <message>` |                                 | Send a private message to a player       |
-| `/r <message>`             |                                 | Reply to a private message               |
-| `/ignore <username>`       |                                 | Toggle ignoring a player                 |
-|                            | `fairychat.bypass.ignore`       | Bypass ignoring a player                 |
-|                            | `fairychat.notify-update`       | Notify about updates on join             |
+| Command                    | Permission                           | Description                                         |
+|----------------------------|--------------------------------------|-----------------------------------------------------|
+| `/broadcast <message>`     | `fairychat.command.broadcast`        | Broadcast a message to all servers                  |
+|                            | `fairychat.feature.minimessage`      | Allows MiniMessage & Color Codes in chat            |
+| `/pm <username> <message>` |                                      | Send a private message to a player                  |
+| `/r <message>`             |                                      | Reply to a private message                          |
+| `/ignore <username>`       |                                      | Toggle ignoring a player                            |
+|                            | `fairychat.bypass.ignore`            | Bypass ignoring a player                            |
+|                            | `fairychat.notify-update`            | Notify about updates on join                        |
+| `/clearchat [player]`      | `fairychat.command.chatclear`        | Clear the chat for all players or a optional player |
+| `/fairychat`               |                                      | Show information about FairyChat                    |
+| `/fairychat reload`        | `fairychat.command.fairychat.reload` | Reload the configuration                            |
 
 ## Installation
 
@@ -50,6 +59,12 @@ with other server software.
 3. Restart your server.
 4. Configure FairyChat to your liking.
 5. Restart your server again.
+
+### Recommended Plugin
+
+It's recommended to install [FreedomChat](https://modrinth.com/plugin/freedomchat) alongside FairyChat. FreedomChat fixes the issue with random kicks because
+of invalid chat signatures.
+
 
 ## Support
 
