@@ -3,8 +3,9 @@ package de.rexlmanu.fairychat.plugin.core.playerchat;
 import static de.rexlmanu.fairychat.plugin.Constants.MESSAGING_CHANNEL;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import de.rexlmanu.fairychat.plugin.Constants;
-import de.rexlmanu.fairychat.plugin.configuration.Messages;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
 import de.rexlmanu.fairychat.plugin.core.playerchat.cooldown.PlayerChatCooldownService;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
@@ -24,7 +25,7 @@ public class PlayerChatListener implements Listener {
   private final RedisConnector redisConnector;
   private final UserIgnoreService userIgnoreService;
   private final PlayerChatCooldownService playerChatCooldownService;
-  private final Messages messages;
+  private final Provider<PluginConfiguration> configurationProvider;
   private final MiniMessage miniMessage;
 
   @EventHandler(priority = EventPriority.MONITOR)
@@ -34,7 +35,7 @@ public class PlayerChatListener implements Listener {
         && this.playerChatCooldownService.isCooldowned(player.getUniqueId())) {
       player.sendMessage(
           this.miniMessage.deserialize(
-              this.messages.onCooldown(),
+              this.configurationProvider.get().messages().onCooldown(),
               Formatter.number(
                   "time", this.playerChatCooldownService.getTime(player.getUniqueId()) / 1000D)));
       event.setCancelled(true);

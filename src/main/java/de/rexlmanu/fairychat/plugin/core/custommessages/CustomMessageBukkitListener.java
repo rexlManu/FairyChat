@@ -1,10 +1,10 @@
 package de.rexlmanu.fairychat.plugin.core.custommessages;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.Constants;
-import de.rexlmanu.fairychat.plugin.configuration.CustomMessages;
-import de.rexlmanu.fairychat.plugin.configuration.Messages;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.custommessages.redis.CustomMessageDto;
 import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
@@ -27,10 +27,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CustomMessageBukkitListener implements Listener {
-  private final Messages messages;
   private final MiniMessage miniMessage;
   private final IntegrationRegistry registry;
-  private final CustomMessages customMessages;
+  private final Provider<PluginConfiguration> configurationProvider;
   private final RedisConnector connector;
 
   @EventHandler(priority = EventPriority.HIGHEST)
@@ -40,8 +39,8 @@ public class CustomMessageBukkitListener implements Listener {
         event::joinMessage,
         event::joinMessage,
         TagResolver::empty,
-        this.messages.joinMessage(),
-        this.customMessages.broadcastJoinMessages());
+        this.configurationProvider.get().messages().joinMessage(),
+        this.configurationProvider.get().customMessages().broadcastJoinMessages());
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
@@ -51,8 +50,8 @@ public class CustomMessageBukkitListener implements Listener {
         event::quitMessage,
         event::quitMessage,
         TagResolver::empty,
-        this.messages.quitMessage(),
-        this.customMessages.broadcastQuitMessages());
+        this.configurationProvider.get().messages().quitMessage(),
+        this.configurationProvider.get().customMessages().broadcastQuitMessages());
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
@@ -62,8 +61,8 @@ public class CustomMessageBukkitListener implements Listener {
         event::deathMessage,
         event::deathMessage,
         () -> Placeholder.component("death_message", event.deathMessage()),
-        this.messages.deathMessage(),
-        this.customMessages.broadcastDeathMessages());
+        this.configurationProvider.get().messages().deathMessage(),
+        this.configurationProvider.get().customMessages().broadcastDeathMessages());
   }
 
   @EventHandler(priority = EventPriority.HIGHEST)
@@ -73,8 +72,8 @@ public class CustomMessageBukkitListener implements Listener {
         event::message,
         event::message,
         () -> Placeholder.component("advancement_message", event.message()),
-        this.messages.advancementDoneMessage(),
-        this.customMessages.broadcastAdvancementMessages());
+        this.configurationProvider.get().messages().advancementDoneMessage(),
+        this.configurationProvider.get().customMessages().broadcastAdvancementMessages());
   }
 
   private void handleEventMessage(

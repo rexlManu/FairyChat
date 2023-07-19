@@ -1,9 +1,10 @@
 package de.rexlmanu.fairychat.plugin.core.privatemessaging.redis;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.Constants;
-import de.rexlmanu.fairychat.plugin.configuration.PrivateMessagingConfig;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.user.User;
 import de.rexlmanu.fairychat.plugin.core.user.UserService;
 import de.rexlmanu.fairychat.plugin.redis.channel.RedisChannelSubscriber;
@@ -19,7 +20,7 @@ import org.bukkit.entity.Player;
 public class RedisPrivateMessagingSubscriber implements RedisChannelSubscriber<PrivateMessageData> {
   private final UserService userService;
   private final MiniMessage miniMessage;
-  private final PrivateMessagingConfig config;
+  private final Provider<PluginConfiguration> configurationProvider;
   private final Server server;
 
   @Override
@@ -43,7 +44,7 @@ public class RedisPrivateMessagingSubscriber implements RedisChannelSubscriber<P
             player ->
                 player.sendMessage(
                     this.miniMessage.deserialize(
-                        this.config.format(),
+                        this.configurationProvider.get().privateMessaging().format(),
                         Placeholder.unparsed("message", data.message()),
                         Placeholder.unparsed("sender_name", sender.username()),
                         Placeholder.unparsed("recipient_name", recipient.username()))));

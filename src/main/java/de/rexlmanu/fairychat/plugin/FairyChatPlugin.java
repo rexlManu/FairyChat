@@ -2,14 +2,14 @@ package de.rexlmanu.fairychat.plugin;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import de.exlll.configlib.YamlConfigurations;
 import de.rexlmanu.fairychat.plugin.command.BroadcastCommand;
 import de.rexlmanu.fairychat.plugin.command.ChatClearCommand;
 import de.rexlmanu.fairychat.plugin.command.CommandModule;
+import de.rexlmanu.fairychat.plugin.command.FairyChatCommand;
 import de.rexlmanu.fairychat.plugin.command.IgnoreCommand;
 import de.rexlmanu.fairychat.plugin.command.PrivateMessageCommand;
 import de.rexlmanu.fairychat.plugin.configuration.ConfigModule;
-import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfigurationProvider;
 import de.rexlmanu.fairychat.plugin.core.CoreModule;
 import de.rexlmanu.fairychat.plugin.core.broadcast.BroadcastChannelSubscriber;
 import de.rexlmanu.fairychat.plugin.core.chatclear.redis.ChatClearChannelSubscriber;
@@ -33,23 +33,22 @@ import de.rexlmanu.fairychat.plugin.utility.update.UpdateChecker;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class FairyChatPlugin extends JavaPlugin {
-  private FairyChatConfiguration configuration;
+  private PluginConfigurationProvider configurationProvider;
   private Injector injector;
 
   @Override
   public void onEnable() {
-    this.setupConfig();
-
+    this.configurationProvider = new PluginConfigurationProvider(this.getDataFolder().toPath());
     this.injector =
         Guice.createInjector(
-            new FairyChatModule(this.configuration, this),
+            new FairyChatModule(this.configurationProvider, this),
             new PluginSchedulerModule(),
             new CommandModule(),
             new PermissionModule(),
             new ConfigModule(),
-            new CoreModule(this.configuration),
+            new CoreModule(this.configurationProvider),
             new RedisSubscriberModule(),
-            new DatabaseModule(this.configuration.database()),
+            new DatabaseModule(this.configurationProvider),
             new MetricsModule());
 
     this.injector.getInstance(RedisConnector.class).open();
@@ -77,7 +76,7 @@ public class FairyChatPlugin extends JavaPlugin {
   }
 
   private void registerSubscribers() {
-    if (!this.configuration.redisCredentials().enabled()) return;
+    if (!this.configurationProvider.configuration().redisCredentials().enabled()) return;
 
     this.injector.getInstance(BroadcastChannelSubscriber.class);
     this.injector.getInstance(PlayerChatMessageSubscriber.class);
@@ -93,17 +92,12 @@ public class FairyChatPlugin extends JavaPlugin {
     this.injector.getInstance(DatabaseClient.class).close();
   }
 
-  private void setupConfig() {
-    this.configuration =
-        YamlConfigurations.update(
-            this.getDataFolder().toPath().resolve("config.yml"), FairyChatConfiguration.class);
-  }
-
   private void registerCommands() {
     this.injector.getInstance(BroadcastCommand.class);
     this.injector.getInstance(PrivateMessageCommand.class);
     this.injector.getInstance(IgnoreCommand.class);
     this.injector.getInstance(ChatClearCommand.class);
+    this.injector.getInstance(FairyChatCommand.class);
   }
 
   private void registerMetricCharts() {

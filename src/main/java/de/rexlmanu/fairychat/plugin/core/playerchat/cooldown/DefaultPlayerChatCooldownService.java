@@ -2,7 +2,7 @@ package de.rexlmanu.fairychat.plugin.core.playerchat.cooldown;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.utility.ExpiringMap;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class DefaultPlayerChatCooldownService implements PlayerChatCooldownService {
-  private final FairyChatConfiguration configuration;
+  private final PluginConfiguration configuration;
   private final ExpiringMap<UUID, Integer> map = new ExpiringMap<>();
 
   @Override

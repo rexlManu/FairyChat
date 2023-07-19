@@ -3,7 +3,7 @@ package de.rexlmanu.fairychat.plugin.core.playerchat.cooldown.redis;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.Constants;
-import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.playerchat.cooldown.PlayerChatCooldownService;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
 import java.util.UUID;
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class RedisPlayerChatCooldownService implements PlayerChatCooldownService {
   private final RedisConnector connector;
-  private final FairyChatConfiguration configuration;
+  private final PluginConfiguration configuration;
 
   @Override
   public void trigger(UUID playerId) {

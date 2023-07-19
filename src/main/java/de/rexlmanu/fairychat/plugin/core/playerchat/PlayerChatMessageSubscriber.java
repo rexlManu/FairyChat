@@ -3,7 +3,7 @@ package de.rexlmanu.fairychat.plugin.core.playerchat;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.Constants;
-import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
 import de.rexlmanu.fairychat.plugin.core.mentions.MentionService;
 import de.rexlmanu.fairychat.plugin.redis.channel.RedisChannelSubscriber;
@@ -14,7 +14,7 @@ import org.bukkit.Server;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PlayerChatMessageSubscriber implements RedisChannelSubscriber<PlayerChatMessageData> {
   private final Server server;
-  private final FairyChatConfiguration configuration;
+  private final PluginConfiguration configuration;
   private final UserIgnoreService userIgnoreService;
   private final MentionService mentionService;
 

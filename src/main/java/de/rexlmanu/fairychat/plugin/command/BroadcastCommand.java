@@ -5,8 +5,9 @@ import static de.rexlmanu.fairychat.plugin.Constants.BROADCAST_CHANNEL;
 import cloud.commandframework.CommandManager;
 import cloud.commandframework.arguments.standard.StringArgument;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import de.rexlmanu.fairychat.plugin.Constants;
-import de.rexlmanu.fairychat.plugin.configuration.BroadcastConfig;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.broadcast.BroadcastMessageData;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
 import net.kyori.adventure.text.Component;
@@ -22,7 +23,7 @@ public class BroadcastCommand {
       MiniMessage miniMessage,
       RedisConnector connector,
       Server server,
-      BroadcastConfig config) {
+      Provider<PluginConfiguration> configurationProvider) {
     commandManager.command(
         commandManager
             .commandBuilder("broadcast")
@@ -33,7 +34,8 @@ public class BroadcastCommand {
                   String message = commandContext.get("message");
                   Component component =
                       miniMessage.deserialize(
-                          config.format(), Placeholder.parsed("message", message));
+                          configurationProvider.get().broadcast().format(),
+                          Placeholder.parsed("message", message));
 
                   /*
                    * If the redis connector isn't available, we send the message to all online players.

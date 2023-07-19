@@ -3,7 +3,7 @@ package de.rexlmanu.fairychat.plugin.core.playerchat;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.mentions.MentionService;
 import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
 import de.rexlmanu.fairychat.plugin.permission.PermissionProvider;
@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class PlayerChatFormatRenderer implements ChatRenderer {
-  private final FairyChatConfiguration configuration;
+  private final PluginConfiguration configuration;
   private final MiniMessage miniMessage;
   private final PermissionProvider permissionProvider;
   private final MentionService mentionService;

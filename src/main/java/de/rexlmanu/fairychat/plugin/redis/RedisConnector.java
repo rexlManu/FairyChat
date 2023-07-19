@@ -11,8 +11,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
-import de.rexlmanu.fairychat.plugin.configuration.RedisCredentials;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.broadcast.BroadcastMessageData;
 import de.rexlmanu.fairychat.plugin.core.chatclear.redis.ChatClearData;
 import de.rexlmanu.fairychat.plugin.core.custommessages.redis.CustomMessageDto;
@@ -37,7 +38,7 @@ import redis.clients.jedis.JedisPubSub;
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class RedisConnector implements Connector {
-  private final RedisCredentials credentials;
+  private final Provider<PluginConfiguration> configurationProvider;
   private final Logger logger;
   private final Injector injector;
   private final JavaPlugin plugin;
@@ -47,10 +48,10 @@ public class RedisConnector implements Connector {
   private JedisPool jedisPool;
 
   public void open() {
-    if (!this.credentials.enabled()) {
+    if (!this.configurationProvider.get().redisCredentials().enabled()) {
       return;
     }
-    this.jedisPool = new JedisPool(this.credentials.url());
+    this.jedisPool = new JedisPool(this.configurationProvider.get().redisCredentials().url());
 
     this.logger.info("Using redis for broadcasting messages.");
 

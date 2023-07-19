@@ -2,8 +2,9 @@ package de.rexlmanu.fairychat.plugin.command;
 
 import cloud.commandframework.CommandManager;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import de.rexlmanu.fairychat.plugin.command.argument.UserArgument;
-import de.rexlmanu.fairychat.plugin.configuration.Messages;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
 import de.rexlmanu.fairychat.plugin.core.user.User;
 import de.rexlmanu.fairychat.plugin.core.user.UserFactory;
@@ -21,7 +22,7 @@ public class IgnoreCommand {
       UserService userService,
       UserFactory userFactory,
       UserIgnoreService userIgnoreService,
-      Messages messages) {
+      Provider<PluginConfiguration> configurationProvider) {
     commandManager.command(
         commandManager
             .commandBuilder("ignore")
@@ -44,7 +45,9 @@ public class IgnoreCommand {
                   if (user.equals(target)) {
                     commandContext
                         .getSender()
-                        .sendMessage(miniMessage.deserialize(messages.youCantIgnoreYourself()));
+                        .sendMessage(
+                            miniMessage.deserialize(
+                                configurationProvider.get().messages().youCantIgnoreYourself()));
                     return;
                   }
 
@@ -54,7 +57,7 @@ public class IgnoreCommand {
                         .getSender()
                         .sendMessage(
                             miniMessage.deserialize(
-                                messages.youUnignoredUser(),
+                                configurationProvider.get().messages().youUnignoredUser(),
                                 Placeholder.unparsed("name", target.username())));
                     return;
                   }
@@ -64,7 +67,7 @@ public class IgnoreCommand {
                       .getSender()
                       .sendMessage(
                           miniMessage.deserialize(
-                              messages.youIgnoredUser(),
+                              configurationProvider.get().messages().youIgnoredUser(),
                               Placeholder.unparsed("name", target.username())));
                 }));
   }

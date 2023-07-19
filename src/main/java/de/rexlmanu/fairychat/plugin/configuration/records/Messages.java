@@ -1,4 +1,4 @@
-package de.rexlmanu.fairychat.plugin.configuration;
+package de.rexlmanu.fairychat.plugin.configuration.records;
 
 import de.exlll.configlib.Comment;
 import de.exlll.configlib.Configuration;
@@ -37,5 +37,8 @@ public class Messages {
 
   private String chatCleared = "<gray>The chat was cleared.</gray>";
 
-  private String onCooldown = "<gray>You are on cooldown. Please wait <#5E548E><time:'#.0'></#5E548E> seconds.</gray>";
+  private String onCooldown =
+      "<gray>You are on cooldown. Please wait <#5E548E><time:'#.0'></#5E548E> seconds.</gray>";
+  private String pluginReloaded =
+      "<gray>The plugin configuration was successfully reloaded.</gray>";
 }

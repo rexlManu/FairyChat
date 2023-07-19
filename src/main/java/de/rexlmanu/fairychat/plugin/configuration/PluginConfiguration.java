@@ -2,12 +2,19 @@ package de.rexlmanu.fairychat.plugin.configuration;
 
 import de.exlll.configlib.Comment;
 import de.exlll.configlib.Configuration;
+import de.rexlmanu.fairychat.plugin.configuration.records.BroadcastConfig;
+import de.rexlmanu.fairychat.plugin.configuration.records.CustomMessages;
+import de.rexlmanu.fairychat.plugin.configuration.records.DatabaseConfig;
+import de.rexlmanu.fairychat.plugin.configuration.records.MentionConfig;
+import de.rexlmanu.fairychat.plugin.configuration.records.Messages;
+import de.rexlmanu.fairychat.plugin.configuration.records.PrivateMessagingConfig;
+import de.rexlmanu.fairychat.plugin.configuration.records.RedisCredentials;
 import java.util.Map;
 import lombok.Getter;
 
 @Configuration
 @Getter
-public class FairyChatConfiguration {
+public class PluginConfiguration {
   @Comment("Should the plugin check for updates?")
   private boolean checkForUpdates = true;
 

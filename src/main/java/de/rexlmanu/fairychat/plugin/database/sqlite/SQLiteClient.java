@@ -1,11 +1,12 @@
 package de.rexlmanu.fairychat.plugin.database.sqlite;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import de.rexlmanu.fairychat.plugin.configuration.DatabaseConfig;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.database.DatabaseClient;
 import de.rexlmanu.fairychat.plugin.database.DatabaseQueries;
 import de.rexlmanu.fairychat.plugin.database.statement.StatementBuilder;
@@ -21,7 +22,7 @@ public class SQLiteClient implements DatabaseClient, DatabaseQueries {
   @Named("dataFolder")
   private final Path dataDirectory;
 
-  private final DatabaseConfig config;
+  private final Provider<PluginConfiguration> configurationProvider;
 
   private Path databaseFile;
   private HikariDataSource dataSource;
@@ -77,25 +78,25 @@ public class SQLiteClient implements DatabaseClient, DatabaseQueries {
   public void createTables() {
     this.newBuilder(
             "CREATE TABLE IF NOT EXISTS %s (user_id TEXT NOT NULL, target_id TEXT NOT NULL, PRIMARY KEY (user_id, target_id));"
-                .formatted(this.config.playerIgnoreTable()))
+                .formatted(this.configurationProvider.get().database().playerIgnoreTable()))
         .execute();
   }
 
   @Override
   public String selectUserIgnore() {
     return "SELECT * FROM %s WHERE user_id = ? AND target_id = ? LIMIT 1;"
-        .formatted(this.config.playerIgnoreTable());
+        .formatted(this.configurationProvider.get().database().playerIgnoreTable());
   }
 
   @Override
   public String insertUserIgnore() {
     return "INSERT INTO %s (user_id, target_id) VALUES (?, ?);"
-        .formatted(this.config.playerIgnoreTable());
+        .formatted(this.configurationProvider.get().database().playerIgnoreTable());
   }
 
   @Override
   public String deleteUserIgnore() {
     return "DELETE FROM %s WHERE user_id = ? AND target_id = ?;"
-        .formatted(this.config.playerIgnoreTable());
+        .formatted(this.configurationProvider.get().database().playerIgnoreTable());
   }
 }

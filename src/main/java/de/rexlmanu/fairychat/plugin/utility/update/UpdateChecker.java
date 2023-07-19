@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import de.rexlmanu.fairychat.plugin.configuration.FairyChatConfiguration;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.utility.annotation.PluginLogger;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -27,7 +27,7 @@ public class UpdateChecker {
   public record Release(String version, String url) {}
 
   private final JavaPlugin plugin;
-  private final FairyChatConfiguration configuration;
+  private final PluginConfiguration configuration;
   @PluginLogger private final Logger logger;
   private final MiniMessage miniMessage;
 

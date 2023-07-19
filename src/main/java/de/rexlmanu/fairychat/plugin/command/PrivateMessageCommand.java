@@ -3,9 +3,9 @@ package de.rexlmanu.fairychat.plugin.command;
 import cloud.commandframework.CommandManager;
 import cloud.commandframework.arguments.standard.StringArgument;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import de.rexlmanu.fairychat.plugin.command.argument.UserArgument;
-import de.rexlmanu.fairychat.plugin.configuration.Messages;
-import de.rexlmanu.fairychat.plugin.configuration.PrivateMessagingConfig;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.PrivateMessagingService;
 import de.rexlmanu.fairychat.plugin.core.user.User;
@@ -20,16 +20,21 @@ public class PrivateMessageCommand {
   @Inject
   public PrivateMessageCommand(
       CommandManager<CommandSender> commandManager,
-      PrivateMessagingConfig config,
       UserService userService,
       PrivateMessagingService privateMessagingService,
       MiniMessage miniMessage,
       UserFactory userFactory,
       UserIgnoreService userIgnoreService,
-      Messages messages) {
+      Provider<PluginConfiguration> configurationProvider) {
     commandManager.command(
         commandManager
-            .commandBuilder("pm", config.aliases().getOrDefault("pm", new String[0]))
+            .commandBuilder(
+                "pm",
+                configurationProvider
+                    .get()
+                    .privateMessaging()
+                    .aliases()
+                    .getOrDefault("pm", new String[0]))
             .senderType(Player.class)
             .argument(UserArgument.of("recipient"))
             .argument(StringArgument.greedy("message"))
@@ -51,7 +56,9 @@ public class PrivateMessageCommand {
                   if (user.equals(recipient)) {
                     commandContext
                         .getSender()
-                        .sendMessage(miniMessage.deserialize(messages.youCantMessageYourself()));
+                        .sendMessage(
+                            miniMessage.deserialize(
+                                configurationProvider.get().messages().youCantMessageYourself()));
                     return;
                   }
 
@@ -59,7 +66,9 @@ public class PrivateMessageCommand {
                       && !commandContext.getSender().hasPermission("fairychat.bypass.ignore")) {
                     commandContext
                         .getSender()
-                        .sendMessage(miniMessage.deserialize(messages.youCantMessageThisPlayer()));
+                        .sendMessage(
+                            miniMessage.deserialize(
+                                configurationProvider.get().messages().youCantMessageThisPlayer()));
                     return;
                   }
 
@@ -68,7 +77,13 @@ public class PrivateMessageCommand {
 
     commandManager.command(
         commandManager
-            .commandBuilder("reply", config.aliases().getOrDefault("reply", new String[0]))
+            .commandBuilder(
+                "reply",
+                configurationProvider
+                    .get()
+                    .privateMessaging()
+                    .aliases()
+                    .getOrDefault("reply", new String[0]))
             .senderType(Player.class)
             .argument(StringArgument.greedy("message"))
             .handler(
@@ -89,7 +104,9 @@ public class PrivateMessageCommand {
                   if (lastRecipient == null) {
                     commandContext
                         .getSender()
-                        .sendMessage(miniMessage.deserialize(messages.youDidntMessageAnyone()));
+                        .sendMessage(
+                            miniMessage.deserialize(
+                                configurationProvider.get().messages().youDidntMessageAnyone()));
                     return;
                   }
 
@@ -97,7 +114,9 @@ public class PrivateMessageCommand {
                       && !commandContext.getSender().hasPermission("fairychat.bypass.ignore")) {
                     commandContext
                         .getSender()
-                        .sendMessage(miniMessage.deserialize(messages.youCantMessageThisPlayer()));
+                        .sendMessage(
+                            miniMessage.deserialize(
+                                configurationProvider.get().messages().youCantMessageThisPlayer()));
                     return;
                   }
 

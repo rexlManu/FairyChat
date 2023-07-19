@@ -3,9 +3,10 @@ package de.rexlmanu.fairychat.plugin.core.privatemessaging.redis;
 import static de.rexlmanu.fairychat.plugin.Constants.LAST_RECIPIENTS_KEY;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.Constants;
-import de.rexlmanu.fairychat.plugin.configuration.PrivateMessagingConfig;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.PrivateMessagingService;
 import de.rexlmanu.fairychat.plugin.core.user.User;
 import de.rexlmanu.fairychat.plugin.core.user.UserService;
@@ -24,7 +25,7 @@ import org.bukkit.entity.Player;
 public class RedisPrivateMessagingService implements PrivateMessagingService {
   private final RedisConnector connector;
   private final UserService userService;
-  private final PrivateMessagingConfig config;
+  private final Provider<PluginConfiguration> configurationProvider;
   private final MiniMessage miniMessage;
   private final Server server;
 
@@ -32,7 +33,9 @@ public class RedisPrivateMessagingService implements PrivateMessagingService {
     this.connector.useResourceAsync(
         jedis -> {
           jedis.hset(LAST_RECIPIENTS_KEY, senderId.toString(), recipientId.toString());
-          jedis.expire(LAST_RECIPIENTS_KEY, config.recipientExpirationSeconds());
+          jedis.expire(
+              LAST_RECIPIENTS_KEY,
+              configurationProvider.get().privateMessaging().recipientExpirationSeconds());
         });
   }
 
@@ -42,7 +45,7 @@ public class RedisPrivateMessagingService implements PrivateMessagingService {
 
     Component formattedMessage =
         this.miniMessage.deserialize(
-            this.config.format(),
+            this.configurationProvider.get().privateMessaging().format(),
             Placeholder.unparsed("message", message),
             Placeholder.unparsed("sender_name", user.username()),
             Placeholder.unparsed("recipient_name", recipient.username()));

@@ -1,4 +1,4 @@
-package de.rexlmanu.fairychat.plugin.configuration;
+package de.rexlmanu.fairychat.plugin.configuration.records;
 
 import de.exlll.configlib.Comment;
 

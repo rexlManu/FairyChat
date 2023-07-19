@@ -7,9 +7,10 @@ import cloud.commandframework.execution.AsynchronousCommandExecutionCoordinator;
 import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import de.rexlmanu.fairychat.plugin.configuration.Messages;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -22,7 +23,10 @@ public class CommandModule extends AbstractModule {
   @Provides
   @Singleton
   public final CommandManager<CommandSender> provideCommandManager(
-      JavaPlugin javaPlugin, Injector injector, MiniMessage miniMessage, Messages messages) {
+      JavaPlugin javaPlugin,
+      Injector injector,
+      MiniMessage miniMessage,
+      Provider<PluginConfiguration> configurationProvider) {
     try {
       Function<CommandSender, CommandSender> mapper = Function.identity();
 
@@ -46,7 +50,7 @@ public class CommandModule extends AbstractModule {
           (sender, e) ->
               sender.sendMessage(
                   miniMessage.deserialize(
-                      messages.invalidSyntax(),
+                      configurationProvider.get().messages().invalidSyntax(),
                       Placeholder.unparsed("syntax", e.getCorrectSyntax()))));
 
       return commandManager;

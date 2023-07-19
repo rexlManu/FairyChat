@@ -1,8 +1,9 @@
 package de.rexlmanu.fairychat.plugin.core.privatemessaging.defaults;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
-import de.rexlmanu.fairychat.plugin.configuration.PrivateMessagingConfig;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.PrivateMessagingService;
 import de.rexlmanu.fairychat.plugin.core.user.User;
 import de.rexlmanu.fairychat.plugin.core.user.UserService;
@@ -22,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class DefaultPrivateMessagingService implements PrivateMessagingService {
-  private final PrivateMessagingConfig config;
+  private final Provider<PluginConfiguration> configurationProvider;
   private final MiniMessage miniMessage;
   private final Server server;
   private final UserService userService;
@@ -33,7 +34,7 @@ public class DefaultPrivateMessagingService implements PrivateMessagingService {
     Audience.audience(this.getPlayer(user), this.getPlayer(recipient))
         .sendMessage(
             this.miniMessage.deserialize(
-                config.format(),
+                configurationProvider.get().privateMessaging().format(),
                 Placeholder.unparsed("message", message),
                 Placeholder.unparsed("sender_name", user.username()),
                 Placeholder.unparsed("recipient_name", recipient.username())));
@@ -41,7 +42,7 @@ public class DefaultPrivateMessagingService implements PrivateMessagingService {
     this.lastMessageRecipient.put(
         recipient.uniqueId(),
         user.uniqueId(),
-        config.recipientExpirationSeconds(),
+        configurationProvider.get().privateMessaging().recipientExpirationSeconds(),
         TimeUnit.SECONDS);
   }
 
