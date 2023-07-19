@@ -78,4 +78,10 @@ public class FairyChatConfiguration {
           "block.note_block.pling",
           1F,
           1.30F);
+
+  @Comment("The cooldown, in seconds, that a player has to wait before chatting again.")
+  private int chattingCooldown = 0;
+
+  @Comment("The threshold, how many messages a player can send before the cooldown is applied.")
+  private int chattingThreshold = 0;
 }

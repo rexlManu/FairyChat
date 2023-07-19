@@ -15,7 +15,7 @@ public class Messages {
       "<gray>You can receive messages from <#5E548E><name></#5E548E> again.</gray>";
   private String youIgnoredUser =
       "<gray>You will no longer receive messages from <#5E548E><name></#5E548E>.</gray>";
-  private String invalidSyntax = "<red>Invalid syntax. Usage: <#5E548E><syntax></#5E548E></red>";
+  private String invalidSyntax = "<gray>Invalid syntax. Usage: <#5E548E><syntax></#5E548E></gray>";
 
   @Comment("All Placeholders are supported")
   private String joinMessage =
@@ -36,4 +36,6 @@ public class Messages {
   private String advancementDoneMessage = "<gray><advancement_message></gray>";
 
   private String chatCleared = "<gray>The chat was cleared.</gray>";
+
+  private String onCooldown = "<gray>You are on cooldown. Please wait <#5E548E><time:'#.0'></#5E548E> seconds.</gray>";
 }

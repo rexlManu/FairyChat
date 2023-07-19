@@ -1,5 +1,6 @@
 package de.rexlmanu.fairychat.plugin.utility;
 
+import java.util.Optional;
 import java.util.concurrent.*;
 
 public class ExpiringMap<K, V> {
@@ -30,6 +31,15 @@ public class ExpiringMap<K, V> {
   public V get(K key) {
     ValueWithExpirationTime<V> value = map.get(key);
     return value != null && !value.isExpired() ? value.getValue() : null;
+  }
+
+  public Optional<V> getOptional(K key) {
+    return Optional.ofNullable(get(key));
+  }
+
+  public long getExpirationTime(K key) {
+    ValueWithExpirationTime<V> value = map.get(key);
+    return value != null ? value.expirationTime : 0;
   }
 
   public V computeIfAbsent(K key, long duration, TimeUnit unit, Callable<V> callable) {
