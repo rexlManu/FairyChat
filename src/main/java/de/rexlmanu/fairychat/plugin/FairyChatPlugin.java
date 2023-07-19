@@ -38,7 +38,7 @@ public class FairyChatPlugin extends JavaPlugin {
 
   @Override
   public void onEnable() {
-    this.configurationProvider = new PluginConfigurationProvider(this.getDataFolder().toPath());
+    this.configurationProvider = new PluginConfigurationProvider(this.getDataFolder().toPath(), this.getLogger());
     this.injector =
         Guice.createInjector(
             new FairyChatModule(this.configurationProvider, this),
