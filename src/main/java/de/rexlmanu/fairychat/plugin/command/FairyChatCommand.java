@@ -31,7 +31,7 @@ public class FairyChatCommand {
         commandManager
             .commandBuilder("fairychat")
             .literal("reload")
-            .permission("fairychat.command.fairychat.admin")
+            .permission("fairychat.command.fairychat.reload")
             .handler(
                 commandContext -> {
                   configurationProvider.loadConfig();
