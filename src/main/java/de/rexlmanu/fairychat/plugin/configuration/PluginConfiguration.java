@@ -82,6 +82,8 @@ public class PluginConfiguration {
   private MentionConfig mention =
       new MentionConfig(
           "<#5E548E>@</#5E548E><#BE95C4><highlight_name></#BE95C4>",
+          "<sender_name>",
+          "<sender_name>",
           "block.note_block.pling",
           1F,
           1.30F);
