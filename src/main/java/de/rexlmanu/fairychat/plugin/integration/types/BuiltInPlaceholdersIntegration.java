@@ -1,6 +1,7 @@
 package de.rexlmanu.fairychat.plugin.integration.types;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.integration.Integration;
 import de.rexlmanu.fairychat.plugin.integration.chat.PlaceholderSupport;
@@ -12,7 +13,7 @@ import org.bukkit.entity.Player;
 
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class BuiltInPlaceholdersIntegration implements Integration, PlaceholderSupport {
-  private final PluginConfiguration configuration;
+  private final Provider<PluginConfiguration> configurationProvider;
 
   @Override
   public boolean available() {
@@ -34,6 +35,7 @@ public class BuiltInPlaceholdersIntegration implements Integration, PlaceholderS
 
   @Override
   public TagResolver resolvePlaceholder() {
-    return TagResolver.resolver(Placeholder.parsed("server_name", configuration.serverName()));
+    return TagResolver.resolver(
+        Placeholder.parsed("server_name", this.configurationProvider.get().serverName()));
   }
 }

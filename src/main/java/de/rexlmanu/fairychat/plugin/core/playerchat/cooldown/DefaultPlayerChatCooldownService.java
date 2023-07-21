@@ -1,6 +1,7 @@
 package de.rexlmanu.fairychat.plugin.core.playerchat.cooldown;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.utility.ExpiringMap;
@@ -11,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class DefaultPlayerChatCooldownService implements PlayerChatCooldownService {
-  private final PluginConfiguration configuration;
+  private final Provider<PluginConfiguration> configurationProvider;
   private final ExpiringMap<UUID, Integer> map = new ExpiringMap<>();
 
   @Override
@@ -19,7 +20,7 @@ public class DefaultPlayerChatCooldownService implements PlayerChatCooldownServi
     this.map.put(
         playerId,
         this.map.getOptional(playerId).orElse(0) + 1,
-        this.configuration.chattingCooldown(),
+        this.configurationProvider.get().chattingCooldown(),
         TimeUnit.SECONDS);
   }
 
@@ -27,7 +28,7 @@ public class DefaultPlayerChatCooldownService implements PlayerChatCooldownServi
   public boolean isCooldowned(UUID playerId) {
     return this.map
         .getOptional(playerId)
-        .filter(count -> count >= this.configuration.chattingThreshold())
+        .filter(count -> count >= this.configurationProvider.get().chattingThreshold())
         .isPresent();
   }
 
@@ -38,6 +39,6 @@ public class DefaultPlayerChatCooldownService implements PlayerChatCooldownServi
 
   @Override
   public boolean enabled() {
-    return this.configuration.chattingCooldown() > 0;
+    return this.configurationProvider.get().chattingCooldown() > 0;
   }
 }

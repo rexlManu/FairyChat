@@ -1,6 +1,7 @@
 package de.rexlmanu.fairychat.plugin.core.playerchat.cooldown.redis;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.Constants;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
@@ -13,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class RedisPlayerChatCooldownService implements PlayerChatCooldownService {
   private final RedisConnector connector;
-  private final PluginConfiguration configuration;
+  private final Provider<PluginConfiguration> configurationProvider;
 
   @Override
   public void trigger(UUID playerId) {
@@ -21,7 +22,8 @@ public class RedisPlayerChatCooldownService implements PlayerChatCooldownService
         jedis -> {
           jedis.incr(Constants.CHAT_COOLDOWN_KEY + playerId.toString());
           jedis.expire(
-              Constants.CHAT_COOLDOWN_KEY + playerId.toString(), configuration.chattingCooldown());
+              Constants.CHAT_COOLDOWN_KEY + playerId.toString(),
+              this.configurationProvider.get().chattingCooldown());
         });
   }
 
@@ -30,7 +32,7 @@ public class RedisPlayerChatCooldownService implements PlayerChatCooldownService
     return connector.useQuery(
         jedis -> {
           String value = jedis.get(Constants.CHAT_COOLDOWN_KEY + playerId.toString());
-          return value != null && Integer.parseInt(value) >= configuration.chattingThreshold();
+          return value != null && Integer.parseInt(value) >= this.configurationProvider.get().chattingThreshold();
         });
   }
 
@@ -42,6 +44,6 @@ public class RedisPlayerChatCooldownService implements PlayerChatCooldownService
 
   @Override
   public boolean enabled() {
-    return this.configuration.chattingCooldown() > 0;
+    return this.configurationProvider.get().chattingCooldown() > 0;
   }
 }

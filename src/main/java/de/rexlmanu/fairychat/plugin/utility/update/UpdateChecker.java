@@ -5,6 +5,7 @@ import static de.rexlmanu.fairychat.plugin.Constants.VERSION_URL;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.utility.annotation.PluginLogger;
@@ -27,7 +28,7 @@ public class UpdateChecker {
   public record Release(String version, String url) {}
 
   private final JavaPlugin plugin;
-  private final PluginConfiguration configuration;
+  private final Provider<PluginConfiguration> configurationProvider;
   @PluginLogger private final Logger logger;
   private final MiniMessage miniMessage;
 
@@ -64,7 +65,7 @@ public class UpdateChecker {
 
   @SuppressWarnings("UnstableApiUsage")
   public void checkAndNotify() {
-    if (!this.configuration.checkForUpdates()) return;
+    if (!this.configurationProvider.get().checkForUpdates()) return;
     this.logger.info("Checking for updates...");
     this.fetchLatestVersion(
         release -> {
@@ -78,7 +79,7 @@ public class UpdateChecker {
   }
 
   public void notifyPlayer(Player player) {
-    if (!this.configuration.checkForUpdates()) return;
+    if (!this.configurationProvider.get().checkForUpdates()) return;
     if (!player.isOp() && !player.hasPermission("fairychat.notify-update")) {
       return;
     }
@@ -91,7 +92,7 @@ public class UpdateChecker {
 
           player.sendMessage(
               this.miniMessage.deserialize(
-                  this.configuration.messages().updateNotification(),
+                  this.configurationProvider.get().messages().updateNotification(),
                   Placeholder.parsed("url", release.url()),
                   Placeholder.parsed("version", release.version())));
         });

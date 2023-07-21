@@ -1,6 +1,7 @@
 package de.rexlmanu.fairychat.plugin.core.custommessages.redis;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import de.rexlmanu.fairychat.plugin.Constants;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.redis.channel.RedisChannelSubscriber;
@@ -10,7 +11,7 @@ import org.bukkit.Server;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class CustomMessageSubscriber implements RedisChannelSubscriber<CustomMessageDto> {
   private final Server server;
-  private final PluginConfiguration configuration;
+  private final Provider<PluginConfiguration> configurationProvider;
 
   @Override
   public Class<CustomMessageDto> getDataType() {
@@ -23,7 +24,7 @@ public class CustomMessageSubscriber implements RedisChannelSubscriber<CustomMes
 
     this.server.getOnlinePlayers().forEach(player -> player.sendMessage(data.component()));
 
-    if (configuration.displayChatInConsole())
+    if (this.configurationProvider.get().displayChatInConsole())
       this.server.getConsoleSender().sendMessage(data.component());
   }
 }
