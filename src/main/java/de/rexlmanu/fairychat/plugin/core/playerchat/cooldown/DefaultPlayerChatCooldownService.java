@@ -33,7 +33,7 @@ public class DefaultPlayerChatCooldownService implements PlayerChatCooldownServi
 
   @Override
   public long getTime(UUID playerId) {
-    return this.map.getExpirationTime(playerId);
+    return this.map.getExpirationTime(playerId) - System.currentTimeMillis();
   }
 
   @Override
