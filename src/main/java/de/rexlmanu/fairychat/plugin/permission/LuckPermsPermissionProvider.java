@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import java.util.Optional;
 import java.util.UUID;
 import net.luckperms.api.LuckPerms;
+import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import org.bukkit.Server;
 import org.jetbrains.annotations.NotNull;
@@ -23,6 +24,8 @@ public class LuckPermsPermissionProvider implements PermissionProvider {
   public @Nullable String getGroup(@NotNull UUID playerId) {
     return Optional.ofNullable(this.luckPerms.getUserManager().getUser(playerId))
         .map(User::getPrimaryGroup)
+        .map(s -> this.luckPerms.getGroupManager().getGroup(s))
+        .map(Group::getName)
         .orElse(null);
   }
 }
