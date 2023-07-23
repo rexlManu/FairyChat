@@ -1,9 +1,11 @@
 package de.rexlmanu.fairychat.plugin.utility;
 
+import static io.github.miniplaceholders.api.utils.LegacyUtils.LEGACY_HEX_SERIALIZER;
+import static net.kyori.adventure.text.minimessage.MiniMessage.miniMessage;
+
 import java.util.regex.Pattern;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -96,12 +98,20 @@ public class LegacySupport {
           final String parsedPlaceholder =
               PlaceholderAPI.setPlaceholders(player, '%' + papiPlaceholder + '%');
 
+          if (parsedPlaceholder.indexOf('&') == -1) {
+            return Tag.selfClosingInserting(miniMessage().deserialize(parsedPlaceholder));
+          }
           // We need to turn this ugly legacy string into a nice component.
-          final Component componentPlaceholder =
-              MiniMessage.miniMessage().deserialize(replaceLegacyWithTags(parsedPlaceholder));
+          Component component =
+              miniMessage()
+                  .deserialize(
+                      miniMessage()
+                          .serialize(LEGACY_HEX_SERIALIZER.deserialize(parsedPlaceholder))
+                          .replace("\\<", "<")
+                          .replace("\\>", ">"));
 
           // Finally, return the tag instance to insert the placeholder!
-          return Tag.selfClosingInserting(componentPlaceholder);
+          return Tag.selfClosingInserting(component);
         });
   }
 }
