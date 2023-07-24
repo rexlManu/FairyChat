@@ -102,16 +102,23 @@ public class LegacySupport {
             return Tag.selfClosingInserting(miniMessage().deserialize(parsedPlaceholder));
           }
           // We need to turn this ugly legacy string into a nice component.
-          Component component =
-              miniMessage()
-                  .deserialize(
-                      miniMessage()
-                          .serialize(LEGACY_HEX_SERIALIZER.deserialize(parsedPlaceholder))
-                          .replace("\\<", "<")
-                          .replace("\\>", ">"));
+          Component component = parsePossibleLegacy(parsedPlaceholder);
 
           // Finally, return the tag instance to insert the placeholder!
           return Tag.selfClosingInserting(component);
         });
+  }
+
+  public static @NotNull Component parsePossibleLegacy(final @Nullable String string) {
+    if (string == null || string.isBlank()) return Component.empty();
+    if (string.indexOf('&') == -1) {
+      return miniMessage().deserialize(string);
+    }
+    return miniMessage()
+        .deserialize(
+            miniMessage()
+                .serialize(LEGACY_HEX_SERIALIZER.deserialize(string))
+                .replace("\\<", "<")
+                .replace("\\>", ">"));
   }
 }
