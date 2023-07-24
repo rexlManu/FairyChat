@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.integration.chat.PlaceholderSupport;
 import de.rexlmanu.fairychat.plugin.integration.types.BuiltInPlaceholdersIntegration;
+import de.rexlmanu.fairychat.plugin.integration.types.LuckPermsIntegration;
 import de.rexlmanu.fairychat.plugin.integration.types.MiniPlaceholdersIntegration;
 import de.rexlmanu.fairychat.plugin.integration.types.PlaceholderAPIIntegration;
 import java.util.ArrayList;
@@ -20,9 +21,10 @@ public class IntegrationRegistry {
   private final List<Integration> integrations = new ArrayList<>();
 
   public void init() {
+    this.tryEnable(BuiltInPlaceholdersIntegration.class);
     this.tryEnable(PlaceholderAPIIntegration.class);
     this.tryEnable(MiniPlaceholdersIntegration.class);
-    this.tryEnable(BuiltInPlaceholdersIntegration.class);
+    this.tryEnable(LuckPermsIntegration.class);
   }
 
   private void tryEnable(Class<? extends Integration> integrationClass) {

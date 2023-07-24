@@ -5,9 +5,15 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
 
 public interface PlaceholderSupport {
-  TagResolver resolvePlayerPlaceholderWithChatMessage(Player player, Component message);
+  default TagResolver resolvePlayerPlaceholderWithChatMessage(Player player, Component message) {
+    return this.resolvePlayerPlaceholder(player);
+  }
 
-  TagResolver resolvePlayerPlaceholder(Player player);
+  default TagResolver resolvePlayerPlaceholder(Player player) {
+    return TagResolver.empty();
+  }
 
-  TagResolver resolvePlaceholder();
+  default TagResolver resolvePlaceholder() {
+    return TagResolver.empty();
+  }
 }

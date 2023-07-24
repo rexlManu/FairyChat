@@ -19,6 +19,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @RequiredArgsConstructor
@@ -32,6 +33,7 @@ public class FairyChatModule extends AbstractModule {
     this.bind(PluginConfigurationProvider.class).toInstance(this.configurationProvider);
     this.bind(Server.class).toInstance(this.plugin.getServer());
     this.bind(PluginManager.class).toInstance(this.plugin.getServer().getPluginManager());
+    this.bind(ServicesManager.class).toInstance(this.plugin.getServer().getServicesManager());
     this.bind(Path.class)
         .annotatedWith(Names.named("dataFolder"))
         .toInstance(this.plugin.getDataFolder().toPath());
