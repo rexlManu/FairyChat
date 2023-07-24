@@ -62,9 +62,13 @@ with other server software.
 
 ### Recommended Plugin
 
-It's recommended to install [FreedomChat](https://modrinth.com/plugin/freedomchat) alongside FairyChat. FreedomChat fixes the issue with random kicks because
+It's recommended to install [FreedomChat](https://modrinth.com/plugin/freedomchat) alongside FairyChat. FreedomChat
+fixes the issue with random kicks because
 of invalid chat signatures.
 
+## Placeholders
+
+For more information on how to use placeholders, please checkout the [this](.github/docs/PLACEHOLDERS.md) file.
 
 ## Support
 
