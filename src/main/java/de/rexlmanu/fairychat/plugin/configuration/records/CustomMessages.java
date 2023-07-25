@@ -21,4 +21,8 @@ public class CustomMessages {
     "Be careful, with quick connect like velocity does, the quit event is triggered after the join event, so the message quit message will be sent after the join message."
   })
   private boolean broadcastQuitMessages = false;
+
+  @Comment(
+      "This will be used for the death and advancement message for replacing the normal player name")
+  private String customName = "<sender_displayname>";
 }

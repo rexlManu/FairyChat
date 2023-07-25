@@ -8,10 +8,12 @@ import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.custommessages.redis.CustomMessageDto;
 import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
+import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -56,6 +58,9 @@ public class CustomMessageBukkitListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void handlePlayerDeath(PlayerDeathEvent event) {
+    if (event.deathMessage() instanceof TranslatableComponent translatableComponent) {
+      event.deathMessage(this.replaceFirstArgument(event.getPlayer(), translatableComponent));
+    }
     this.handleEventMessage(
         event.getPlayer(),
         event::deathMessage,
@@ -67,6 +72,9 @@ public class CustomMessageBukkitListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST)
   public void handlePlayerAdvancementDone(PlayerAdvancementDoneEvent event) {
+    if (event.message() instanceof TranslatableComponent translatableComponent) {
+      event.message(this.replaceFirstArgument(event.getPlayer(), translatableComponent));
+    }
     this.handleEventMessage(
         event.getPlayer(),
         event::message,
@@ -104,5 +112,20 @@ public class CustomMessageBukkitListener implements Listener {
     this.connector.publish(
         Constants.CUSTOM_MESSAGE_CHANNEL,
         new CustomMessageDto(Constants.SERVER_IDENTITY_ORIGIN, messageSupplier.get()));
+  }
+
+  private Component replaceFirstArgument(Player player, TranslatableComponent component) {
+    ArrayList<Component> args = new ArrayList<>(component.args());
+
+    args.set(
+        0,
+        this.miniMessage.deserialize(
+            this.configurationProvider.get().customMessages().customName(),
+            TagResolver.resolver(
+                this.registry.getPlaceholderSupports().stream()
+                    .map(placeholderSupport -> placeholderSupport.resolvePlayerPlaceholder(player))
+                    .toList())));
+
+    return component.args(args);
   }
 }
