@@ -1,6 +1,5 @@
 package de.rexlmanu.fairychat.plugin.utility;
 
-import static io.github.miniplaceholders.api.utils.LegacyUtils.LEGACY_HEX_SERIALIZER;
 import static net.kyori.adventure.text.minimessage.MiniMessage.miniMessage;
 
 import java.util.regex.Pattern;
@@ -63,6 +62,11 @@ public class LegacySupport {
       Pattern.compile(
           "[§&]#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])");
   private static final String RGB_REPLACEMENT = "<#$1$2$3$4$5$6>";
+
+  public static final LegacyComponentSerializer LEGACY_HEX_SERIALIZER = LegacyComponentSerializer.builder()
+      .character('&')
+      .hexColors()
+      .build();
 
   // https://github.com/Hexaoxide/Carbon/blob/2.1/api/src/main/java/net/draycia/carbon/api/util/ColorUtils.java#L42
   public static String replaceLegacyWithTags(String input) {
