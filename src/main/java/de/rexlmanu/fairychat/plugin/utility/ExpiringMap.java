@@ -42,6 +42,10 @@ public class ExpiringMap<K, V> {
     return value != null ? value.expirationTime : 0;
   }
 
+  public boolean containsKey(K key) {
+    return map.containsKey(key);
+  }
+
   public V computeIfAbsent(K key, long duration, TimeUnit unit, Callable<V> callable) {
     ValueWithExpirationTime<V> value = map.get(key);
     if (value != null && !value.isExpired()) {
