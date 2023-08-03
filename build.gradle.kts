@@ -30,6 +30,7 @@ dependencies {
     compileOnly(libs.guice)
     compileOnly(libs.luckperms)
     compileOnly(libs.hikaridb)
+    compileOnly(libs.stringsimilarity)
 
     // Plugin dependencies
     compileOnly(libs.miniplaceholders)
