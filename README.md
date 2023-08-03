@@ -28,6 +28,7 @@ server users.*
   mentioned.
 - **Ignore Players**: Ignore players you don't want to see messages from.
 - **Chat clear**: Clear the chat with a single command in multiple servers at once.
+- **Similarity Check**: Prevent players from sending similar messages in a short period of time.
 
 ## Documentation
 
@@ -47,6 +48,7 @@ You can find the documentation for FairyChat [here](https://github.com/rexlManu/
 | `/clearchat [player]`      | `fairychat.command.chatclear`        | Clear the chat for all players or a optional player |
 | `/fairychat`               |                                      | Show information about FairyChat                    |
 | `/fairychat reload`        | `fairychat.command.fairychat.reload` | Reload the configuration                            |
+|                            | `fairychat.bypass.similarity`        | Bypass the similarity check for last message        |
 
 ## Installation
 
