@@ -28,11 +28,10 @@ public class PlayerChatListener implements Listener {
   private final Provider<PluginConfiguration> configurationProvider;
   private final MiniMessage miniMessage;
 
-  @EventHandler(priority = EventPriority.HIGHEST)
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handle(AsyncChatEvent event) {
-    if(event.isCancelled()) return;
+    Player player = event.getPlayer();
 
-     Player player = event.getPlayer();
     if (this.playerChatCooldownService.enabled()
         && this.playerChatCooldownService.isCooldowned(player.getUniqueId())) {
       player.sendMessage(

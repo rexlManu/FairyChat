@@ -21,11 +21,11 @@ public class MessageSimilarityBukkitListener implements Listener {
   private final Provider<PluginConfiguration> configurationProvider;
   private final MiniMessage miniMessage;
 
-  @EventHandler(priority = EventPriority.NORMAL)
+  @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
   public void handle(AsyncChatEvent event) {
     Player player = event.getPlayer();
 
-    if(player.hasPermission("fairychat.bypass.similarity")) return;
+    if (player.hasPermission("fairychat.bypass.similarity")) return;
 
     if (this.lastMessages.containsKey(player.getUniqueId())) {
       String lastMessage = this.lastMessages.get(player.getUniqueId());
@@ -44,12 +44,14 @@ public class MessageSimilarityBukkitListener implements Listener {
         player.sendMessage(
             this.miniMessage.deserialize(
                 configurationProvider.get().messages().yourLastMessageWasTooSimilar()));
-        return;
       }
     }
+  }
 
+  @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+  public void handleChatAfterProcess(AsyncChatEvent event) {
     this.lastMessages.put(
-        player.getUniqueId(),
+        event.getPlayer().getUniqueId(),
         PlainTextComponentSerializer.plainText().serialize(event.message()),
         this.configurationProvider.get().similarityMessageCacheSeconds(),
         TimeUnit.SECONDS);
