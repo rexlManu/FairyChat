@@ -24,6 +24,9 @@ public class MessageSimilarityBukkitListener implements Listener {
   @EventHandler(priority = EventPriority.NORMAL)
   public void handle(AsyncChatEvent event) {
     Player player = event.getPlayer();
+
+    if(player.hasPermission("fairychat.bypass.similarity")) return;
+
     if (this.lastMessages.containsKey(player.getUniqueId())) {
       String lastMessage = this.lastMessages.get(player.getUniqueId());
       String currentMessage = PlainTextComponentSerializer.plainText().serialize(event.message());
