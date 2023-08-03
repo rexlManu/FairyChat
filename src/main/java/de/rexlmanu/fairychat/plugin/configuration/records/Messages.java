@@ -41,4 +41,7 @@ public class Messages {
       "<gray>You are on cooldown. Please wait <#5E548E><time:'#.0'></#5E548E> seconds.</gray>";
   private String pluginReloaded =
       "<gray>The plugin configuration was successfully reloaded.</gray>";
+
+  private String yourLastMessageWasTooSimilar =
+      "<red>Your last message was <dark_red>too similar</dark_red> to your previous message.</red>";
 }

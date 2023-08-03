@@ -16,6 +16,7 @@ import de.rexlmanu.fairychat.plugin.core.chatclear.redis.ChatClearChannelSubscri
 import de.rexlmanu.fairychat.plugin.core.custommessages.CustomMessageBukkitListener;
 import de.rexlmanu.fairychat.plugin.core.custommessages.redis.CustomMessageSubscriber;
 import de.rexlmanu.fairychat.plugin.core.ignore.redis.RedisUserIgnoreUpdateSubscriber;
+import de.rexlmanu.fairychat.plugin.core.messagesimilarity.MessageSimilarityBukkitListener;
 import de.rexlmanu.fairychat.plugin.core.metrics.MetricsModule;
 import de.rexlmanu.fairychat.plugin.core.metrics.RedisEnabledChart;
 import de.rexlmanu.fairychat.plugin.core.playerchat.PlayerChatListener;
@@ -38,7 +39,8 @@ public class FairyChatPlugin extends JavaPlugin {
 
   @Override
   public void onEnable() {
-    this.configurationProvider = new PluginConfigurationProvider(this.getDataFolder().toPath(), this.getLogger());
+    this.configurationProvider =
+        new PluginConfigurationProvider(this.getDataFolder().toPath(), this.getLogger());
     this.injector =
         Guice.createInjector(
             new FairyChatModule(this.configurationProvider, this),
@@ -73,6 +75,12 @@ public class FairyChatPlugin extends JavaPlugin {
     this.getServer()
         .getPluginManager()
         .registerEvents(this.injector.getInstance(CustomMessageBukkitListener.class), this);
+
+    if (this.configurationProvider.configuration().preventSimilarMessages()) {
+      this.getServer()
+          .getPluginManager()
+          .registerEvents(this.injector.getInstance(MessageSimilarityBukkitListener.class), this);
+    }
   }
 
   private void registerSubscribers() {

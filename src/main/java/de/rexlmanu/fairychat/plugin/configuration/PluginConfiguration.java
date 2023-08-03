@@ -9,6 +9,7 @@ import de.rexlmanu.fairychat.plugin.configuration.records.MentionConfig;
 import de.rexlmanu.fairychat.plugin.configuration.records.Messages;
 import de.rexlmanu.fairychat.plugin.configuration.records.PrivateMessagingConfig;
 import de.rexlmanu.fairychat.plugin.configuration.records.RedisCredentials;
+import de.rexlmanu.fairychat.plugin.core.messagesimilarity.SimilarityAlgorithmsStrategy;
 import java.util.Map;
 import lombok.Getter;
 
@@ -63,14 +64,6 @@ public class PluginConfiguration {
   @Comment("Configuration for broadcast messages.")
   private BroadcastConfig broadcast = new BroadcastConfig();
 
-  @Comment({
-    "Configure the plugin's messages.",
-    "https://github.com/MiniPlaceholders/MiniPlaceholders/wiki/Placeholders",
-    "If you wise to use PlaceholderAPI placeholders, you need the following tag",
-    "<papi:(placeholder name)> e.g. <papi:player_displayname>"
-  })
-  private Messages messages = new Messages();
-
   @Comment(
       "Enable this if you have other plugins that messes with the chat and introduces legacy chat colors")
   private boolean legacyColorSupport = false;
@@ -93,4 +86,29 @@ public class PluginConfiguration {
 
   @Comment("The threshold, how many messages a player can send before the cooldown is applied.")
   private int chattingThreshold = 0;
+
+  @Comment("Prevent duplicate messages from being sent.")
+  private boolean preventSimilarMessages = true;
+
+  @Comment("How similar the messages have to be to be considered a duplicate.")
+  private double similarityPercentage = 0.75;
+
+  @Comment({
+    "The similarity algorithm that should be used.",
+    "Supported algorithms:",
+    "LEVENSHTEIN, JARO_WINKLER, JARO, DICE_COEFFICIENT"
+  })
+  private SimilarityAlgorithmsStrategy similarityAlgorithm =
+      SimilarityAlgorithmsStrategy.LEVENSHTEIN;
+
+  @Comment("How long the last messages should be cached for")
+  private int similarityMessageCacheSeconds = 5;
+
+  @Comment({
+    "Configure the plugin's messages.",
+    "https://github.com/MiniPlaceholders/MiniPlaceholders/wiki/Placeholders",
+    "If you wise to use PlaceholderAPI placeholders, you need the following tag",
+    "<papi:(placeholder name)> e.g. <papi:player_displayname>"
+  })
+  private Messages messages = new Messages();
 }
