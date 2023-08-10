@@ -13,53 +13,56 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
+import org.jetbrains.annotations.Nullable;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class LuckPermsIntegration implements Integration, PlaceholderSupport {
-  private final PluginManager pluginManager;
-  private final ServicesManager servicesManager;
-  private LuckPerms luckPerms;
+    private final PluginManager pluginManager;
+    private final ServicesManager servicesManager;
+    private @Nullable RegisteredServiceProvider<LuckPerms> luckPermsService;
 
-  @Override
-  public boolean available() {
-    return this.pluginManager.getPlugin(Constants.LUCKPERMS_NAME) != null;
-  }
+    @Override
+    public boolean available() {
+        return this.pluginManager.getPlugin(Constants.LUCKPERMS_NAME) != null;
+    }
 
-  @Override
-  public void enable() {
-    this.luckPerms = servicesManager.load(LuckPerms.class);
-  }
+    @Override
+    public void enable() {
+        this.luckPermsService = servicesManager.getRegistration(LuckPerms.class);
+    }
 
-  @Override
-  public TagResolver resolvePlayerPlaceholder(Player player) {
-    CachedMetaData metaData = this.luckPerms.getPlayerAdapter(Player.class).getMetaData(player);
+    @Override
+    public TagResolver resolvePlayerPlaceholder(Player player) {
+        CachedMetaData metaData = this.luckPermsService.getProvider().getPlayerAdapter(Player.class)
+                .getMetaData(player);
 
-    return TagResolver.resolver(
-        TagResolver.resolver(
-            "fc_luckperms_prefix",
-            Tag.selfClosingInserting(LegacySupport.parsePossibleLegacy(metaData.getPrefix()))),
-        TagResolver.resolver(
-            "fc_luckperms_suffix",
-            Tag.selfClosingInserting(LegacySupport.parsePossibleLegacy(metaData.getSuffix()))),
-        TagResolver.resolver(
-            "fc_luckperms_prefixes",
-            Tag.selfClosingInserting(
-                LegacySupport.parsePossibleLegacy(
-                    String.join("", metaData.getPrefixes().values())))),
-        TagResolver.resolver(
-            "fc_luckperms_suffixes",
-            Tag.selfClosingInserting(
-                LegacySupport.parsePossibleLegacy(
-                    String.join("", metaData.getSuffixes().values())))),
-        TagResolver.resolver(
-            "fc_luckperms_username_color",
-            Tag.inserting(
-                LegacySupport.parsePossibleLegacy(metaData.getMetaValue("username-color")))),
-        TagResolver.resolver(
-            "fc_luckperms_message_color",
-            Tag.inserting(
-                LegacySupport.parsePossibleLegacy(metaData.getMetaValue("message-color")))));
-  }
+        return TagResolver.resolver(
+                TagResolver.resolver(
+                        "fc_luckperms_prefix",
+                        Tag.selfClosingInserting(LegacySupport.parsePossibleLegacy(metaData.getPrefix()))),
+                TagResolver.resolver(
+                        "fc_luckperms_suffix",
+                        Tag.selfClosingInserting(LegacySupport.parsePossibleLegacy(metaData.getSuffix()))),
+                TagResolver.resolver(
+                        "fc_luckperms_prefixes",
+                        Tag.selfClosingInserting(
+                                LegacySupport.parsePossibleLegacy(
+                                        String.join("", metaData.getPrefixes().values())))),
+                TagResolver.resolver(
+                        "fc_luckperms_suffixes",
+                        Tag.selfClosingInserting(
+                                LegacySupport.parsePossibleLegacy(
+                                        String.join("", metaData.getSuffixes().values())))),
+                TagResolver.resolver(
+                        "fc_luckperms_username_color",
+                        Tag.inserting(
+                                LegacySupport.parsePossibleLegacy(metaData.getMetaValue("username-color")))),
+                TagResolver.resolver(
+                        "fc_luckperms_message_color",
+                        Tag.inserting(
+                                LegacySupport.parsePossibleLegacy(metaData.getMetaValue("message-color")))));
+    }
 }
