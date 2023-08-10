@@ -43,19 +43,27 @@ public class RedisPrivateMessagingService implements PrivateMessagingService {
   public void sendMessage(User user, User recipient, String message) {
     this.setLastRecipient(recipient.uniqueId(), user.uniqueId());
 
-    Component formattedMessage =
-        this.miniMessage.deserialize(
-            this.configurationProvider.get().privateMessaging().format(),
-            Placeholder.unparsed("message", message),
-            Placeholder.unparsed("sender_name", user.username()),
-            Placeholder.unparsed("recipient_name", recipient.username()));
-    this.getPlayer(user).ifPresent(player -> player.sendMessage(formattedMessage));
+    this.getPlayer(user)
+        .ifPresent(
+            player ->
+                player.sendMessage(
+                    this.miniMessage.deserialize(
+                        this.configurationProvider.get().privateMessaging().senderFormat(),
+                        Placeholder.unparsed("message", message),
+                        Placeholder.unparsed("sender_name", user.username()),
+                        Placeholder.unparsed("recipient_name", recipient.username()))));
 
     // If the recipient is on the same server, we send directly to the player.
     // Otherwise, we send the message over redis to the recipient.
     this.getPlayer(recipient)
         .ifPresentOrElse(
-            player -> player.sendMessage(formattedMessage),
+            player ->
+                player.sendMessage(
+                    this.miniMessage.deserialize(
+                        this.configurationProvider.get().privateMessaging().receiverFormat(),
+                        Placeholder.unparsed("message", message),
+                        Placeholder.unparsed("sender_name", user.username()),
+                        Placeholder.unparsed("recipient_name", recipient.username()))),
             () ->
                 connector.publish(
                     Constants.PRIVATE_MESSAGING_CHANNEL,

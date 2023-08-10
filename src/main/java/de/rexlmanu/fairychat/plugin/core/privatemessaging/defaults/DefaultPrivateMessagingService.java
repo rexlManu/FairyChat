@@ -31,10 +31,17 @@ public class DefaultPrivateMessagingService implements PrivateMessagingService {
 
   @Override
   public void sendMessage(User user, User recipient, String message) {
-    Audience.audience(this.getPlayer(user), this.getPlayer(recipient))
+    this.getPlayer(user)
         .sendMessage(
             this.miniMessage.deserialize(
-                configurationProvider.get().privateMessaging().format(),
+                configurationProvider.get().privateMessaging().senderFormat(),
+                Placeholder.unparsed("message", message),
+                Placeholder.unparsed("sender_name", user.username()),
+                Placeholder.unparsed("recipient_name", recipient.username())));
+    this.getPlayer(recipient)
+        .sendMessage(
+            this.miniMessage.deserialize(
+                configurationProvider.get().privateMessaging().receiverFormat(),
                 Placeholder.unparsed("message", message),
                 Placeholder.unparsed("sender_name", user.username()),
                 Placeholder.unparsed("recipient_name", recipient.username())));

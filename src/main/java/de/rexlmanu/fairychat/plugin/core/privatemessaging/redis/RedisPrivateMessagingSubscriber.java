@@ -44,7 +44,7 @@ public class RedisPrivateMessagingSubscriber implements RedisChannelSubscriber<P
             player ->
                 player.sendMessage(
                     this.miniMessage.deserialize(
-                        this.configurationProvider.get().privateMessaging().format(),
+                        this.configurationProvider.get().privateMessaging().receiverFormat(),
                         Placeholder.unparsed("message", data.message()),
                         Placeholder.unparsed("sender_name", sender.username()),
                         Placeholder.unparsed("recipient_name", recipient.username()))));
