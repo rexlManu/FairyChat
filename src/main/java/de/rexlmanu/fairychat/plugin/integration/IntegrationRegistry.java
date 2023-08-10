@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.integration.chat.PlaceholderSupport;
 import de.rexlmanu.fairychat.plugin.integration.types.BuiltInPlaceholdersIntegration;
+import de.rexlmanu.fairychat.plugin.integration.types.DisplayItemChatIntegration;
 import de.rexlmanu.fairychat.plugin.integration.types.LuckPermsIntegration;
 import de.rexlmanu.fairychat.plugin.integration.types.MiniPlaceholdersIntegration;
 import de.rexlmanu.fairychat.plugin.integration.types.PlaceholderAPIIntegration;
@@ -22,6 +23,7 @@ public class IntegrationRegistry {
 
   public void init() {
     this.tryEnable(BuiltInPlaceholdersIntegration.class);
+    this.tryEnable(DisplayItemChatIntegration.class);
     this.tryEnable(PlaceholderAPIIntegration.class);
     this.tryEnable(MiniPlaceholdersIntegration.class);
     this.tryEnable(LuckPermsIntegration.class);
@@ -38,9 +40,8 @@ public class IntegrationRegistry {
       }
     } catch (Exception exception) {
       this.logger.warning(
-          () ->
-              String.format(
-                  "Failed to enable integration %s: %s", integrationName, exception.getMessage()));
+          () -> String.format(
+              "Failed to enable integration %s: %s", integrationName, exception.getMessage()));
     }
   }
 

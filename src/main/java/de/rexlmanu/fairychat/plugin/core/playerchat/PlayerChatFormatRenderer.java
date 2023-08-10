@@ -67,19 +67,23 @@ public class PlayerChatFormatRenderer implements ChatRenderer {
       }
       String textMessage = serializer.apply(message);
       String miniMessageFormatted = LegacySupport.replaceLegacyWithTags(textMessage);
-      message = this.colorMiniMessage.deserialize(miniMessageFormatted);
+      message = this.colorMiniMessage.deserialize(miniMessageFormatted,
+          TagResolver.resolver(this.registry.getPlaceholderSupports().stream()
+              .map(
+                  chatPlaceholder -> chatPlaceholder.resolveChatMessagePlaceholder(
+                      source, textMessage))
+              .toList()));
     }
 
-    @NotNull Component finalMessage = message;
+    @NotNull
+    Component finalMessage = message;
 
-    List<TagResolver> tagResolvers =
-        new ArrayList<>(
-            this.registry.getPlaceholderSupports().stream()
-                .map(
-                    chatPlaceholder ->
-                        chatPlaceholder.resolvePlayerPlaceholderWithChatMessage(
-                            source, finalMessage))
-                .toList());
+    List<TagResolver> tagResolvers = new ArrayList<>(
+        this.registry.getPlaceholderSupports().stream()
+            .map(
+                chatPlaceholder -> chatPlaceholder.resolvePlayerPlaceholderWithChatMessage(
+                    source, finalMessage))
+            .toList());
 
     tagResolvers.add(Placeholder.component("message", message));
     tagResolvers.add(Placeholder.unparsed("server_name", configurationProvider.get().serverName()));

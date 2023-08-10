@@ -16,4 +16,8 @@ public interface PlaceholderSupport {
   default TagResolver resolvePlaceholder() {
     return TagResolver.empty();
   }
+
+  default TagResolver resolveChatMessagePlaceholder(Player player, String message) {
+    return TagResolver.empty();
+  }
 }
