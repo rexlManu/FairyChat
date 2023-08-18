@@ -26,13 +26,14 @@ Example: <papi:'player_name'>
 
 ## LuckPerms Placeholders
 
-This plugin also adds placeholders for LuckPerms withou the need of an extra plugin.
+This plugin also adds placeholders for LuckPerms without the need of an extra plugin.
 
-| Placeholder                   | Description                                 |
-|-------------------------------|---------------------------------------------|
-| <fc_luckperms_prefix>         | The prefix of the sender                    |
-| <fc_luckperms_suffix>         | The suffix of the sender                    |
-| <fc_luckperms_prefixes>       | The prefixes of the sender                  |
-| <fc_luckperms_suffixes>       | The suffixes of the sender                  |
-| <fc_luckperms_username_color> | The meta key 'username-color' of the sender |
-| <fc_luckperms_message_color>  | The meta key 'message-color' of the sender  |
+| Placeholder                               | Description                                      |
+|-------------------------------------------|--------------------------------------------------|
+| <fc_luckperms_prefix>                     | The prefix of the sender                         |
+| <fc_luckperms_suffix>                     | The suffix of the sender                         |
+| <fc_luckperms_prefixes>                   | The prefixes of the sender                       |
+| <fc_luckperms_suffixes>                   | The suffixes of the sender                       |
+| <fc_luckperms_username_color>             | The meta key 'username-color' of the sender      |
+| <fc_luckperms_message_color>              | The meta key 'message-color' of the sender       |
+| <fc_luckperms_prefix_by_group:group name> | Shows the prefix of the group if the user has it |
