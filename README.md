@@ -37,7 +37,7 @@ You can find the documentation for FairyChat [here](https://github.com/rexlManu/
 ## Commands & Permissions
 
 | Command                    | Permission                           | Description                                         |
-| -------------------------- | ------------------------------------ | --------------------------------------------------- |
+|----------------------------|--------------------------------------|-----------------------------------------------------|
 | `/broadcast <message>`     | `fairychat.command.broadcast`        | Broadcast a message to all servers                  |
 |                            | `fairychat.feature.minimessage`      | Allows MiniMessage & Color Codes in chat            |
 | `/pm <username> <message>` |                                      | Send a private message to a player                  |
@@ -49,6 +49,7 @@ You can find the documentation for FairyChat [here](https://github.com/rexlManu/
 | `/fairychat`               |                                      | Show information about FairyChat                    |
 | `/fairychat reload`        | `fairychat.command.fairychat.reload` | Reload the configuration                            |
 |                            | `fairychat.bypass.similarity`        | Bypass the similarity check for last message        |
+|                            | `fairychat.bypass.cooldown`          | Bypass the chat cooldown                            |
 |                            | `fairychat.feature.displayitem`      | Allow players to show the item in and with <item>   |
 
 ## Installation

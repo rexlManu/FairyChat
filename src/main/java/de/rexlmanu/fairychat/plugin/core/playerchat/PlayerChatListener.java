@@ -33,7 +33,8 @@ public class PlayerChatListener implements Listener {
     Player player = event.getPlayer();
 
     if (this.playerChatCooldownService.enabled()
-        && this.playerChatCooldownService.isCooldowned(player.getUniqueId())) {
+        && this.playerChatCooldownService.isCooldowned(player.getUniqueId())
+        && !player.hasPermission("fairychat.bypass.cooldown")) {
       player.sendMessage(
           this.miniMessage.deserialize(
               this.configurationProvider.get().messages().onCooldown(),
