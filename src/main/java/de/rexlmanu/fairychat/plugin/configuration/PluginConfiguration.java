@@ -104,6 +104,9 @@ public class PluginConfiguration {
   @Comment("How long the last messages should be cached for")
   private int similarityMessageCacheSeconds = 5;
 
+  @Comment("Should players be able to use spoiler tags? Example: ||message||")
+  private boolean spoilerTagsEnabled = true;
+
   @Comment({
     "Configure the plugin's messages.",
     "https://github.com/MiniPlaceholders/MiniPlaceholders/wiki/Placeholders",
