@@ -7,6 +7,8 @@ import de.rexlmanu.fairychat.plugin.integration.Integration;
 import de.rexlmanu.fairychat.plugin.integration.chat.PlaceholderSupport;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
@@ -14,6 +16,7 @@ import org.bukkit.entity.Player;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class BuiltInPlaceholdersIntegration implements Integration, PlaceholderSupport {
   private final Provider<PluginConfiguration> configurationProvider;
+  private final MiniMessage miniMessage;
 
   @Override
   public boolean available() {
@@ -30,6 +33,18 @@ public class BuiltInPlaceholdersIntegration implements Integration, PlaceholderS
     return TagResolver.resolver(
         Placeholder.parsed("sender_name", player.getName()),
         Placeholder.component("sender_displayname", player.displayName()),
+        TagResolver.resolver(
+            "fc_world_name",
+            (argumentQueue, context) -> {
+              String worldName = player.getWorld().getName();
+
+              return Tag.selfClosingInserting(
+                  this.miniMessage.deserialize(
+                      this.configurationProvider
+                          .get()
+                          .worldNames()
+                          .getOrDefault(worldName, worldName)));
+            }),
         this.resolvePlaceholder());
   }
 

@@ -107,6 +107,16 @@ public class PluginConfiguration {
   @Comment("Should players be able to use spoiler tags? Example: ||message||")
   private boolean spoilerTagsEnabled = true;
 
+  @Comment("Customize the output of the placeholder <fc_world_name>")
+  private Map<String, String> worldNames =
+      Map.of(
+          "world",
+          "<gradient:dark_green:green>Overworld</gradient:dark_green:green>",
+          "world_nether",
+          "<gradient:dark_red:red>Nether</gradient:dark_red:red>",
+          "world_the_end",
+          "<gradient:dark_purple:light_purple>End</gradient:dark_purple:light_purple>");
+
   @Comment({
     "Configure the plugin's messages.",
     "https://github.com/MiniPlaceholders/MiniPlaceholders/wiki/Placeholders",
