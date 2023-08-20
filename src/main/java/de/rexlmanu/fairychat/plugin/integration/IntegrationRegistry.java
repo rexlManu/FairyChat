@@ -9,6 +9,7 @@ import de.rexlmanu.fairychat.plugin.integration.types.DisplayItemChatIntegration
 import de.rexlmanu.fairychat.plugin.integration.types.LuckPermsIntegration;
 import de.rexlmanu.fairychat.plugin.integration.types.MiniPlaceholdersIntegration;
 import de.rexlmanu.fairychat.plugin.integration.types.PlaceholderAPIIntegration;
+import de.rexlmanu.fairychat.plugin.integration.types.SpoilerChatIntegration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -22,8 +23,12 @@ public class IntegrationRegistry {
   private final List<Integration> integrations = new ArrayList<>();
 
   public void init() {
+    // first party integrations
     this.tryEnable(BuiltInPlaceholdersIntegration.class);
     this.tryEnable(DisplayItemChatIntegration.class);
+    this.tryEnable(SpoilerChatIntegration.class);
+
+    // third party integrations
     this.tryEnable(PlaceholderAPIIntegration.class);
     this.tryEnable(MiniPlaceholdersIntegration.class);
     this.tryEnable(LuckPermsIntegration.class);
@@ -40,8 +45,9 @@ public class IntegrationRegistry {
       }
     } catch (Exception exception) {
       this.logger.warning(
-          () -> String.format(
-              "Failed to enable integration %s: %s", integrationName, exception.getMessage()));
+          () ->
+              String.format(
+                  "Failed to enable integration %s: %s", integrationName, exception.getMessage()));
     }
   }
 

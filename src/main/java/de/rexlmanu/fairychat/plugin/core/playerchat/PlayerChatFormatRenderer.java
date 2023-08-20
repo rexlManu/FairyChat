@@ -7,6 +7,7 @@ import com.google.inject.name.Named;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.mentions.MentionService;
 import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
+import de.rexlmanu.fairychat.plugin.integration.chat.PlaceholderSupport;
 import de.rexlmanu.fairychat.plugin.permission.PermissionProvider;
 import de.rexlmanu.fairychat.plugin.utility.LegacySupport;
 import io.papermc.paper.chat.ChatRenderer;
@@ -59,35 +60,60 @@ public class PlayerChatFormatRenderer implements ChatRenderer {
       chatFormat = configurationProvider.get().groupFormats().getOrDefault(group, chatFormat);
     }
 
+    Function<Component, String> serializer = PlainTextComponentSerializer.plainText()::serialize;
+    if (this.configurationProvider.get().legacyColorSupport()) {
+      serializer = LegacyComponentSerializer.legacyAmpersand()::serialize;
+    }
+    final String textMessage = this.resolveMessageModifiers(source, serializer.apply(message));
+
     // Check if the player has the permission to use mini message
     if (source.hasPermission("fairychat.feature.minimessage")) {
-      Function<Component, String> serializer = PlainTextComponentSerializer.plainText()::serialize;
-      if (configurationProvider.get().legacyColorSupport()) {
-        serializer = LegacyComponentSerializer.legacyAmpersand()::serialize;
-      }
-      String textMessage = serializer.apply(message);
       String miniMessageFormatted = LegacySupport.replaceLegacyWithTags(textMessage);
-      message = this.colorMiniMessage.deserialize(miniMessageFormatted,
-          TagResolver.resolver(this.registry.getPlaceholderSupports().stream()
-              .map(
-                  chatPlaceholder -> chatPlaceholder.resolveChatMessagePlaceholder(
-                      source, textMessage))
-              .toList()));
+      message =
+          this.colorMiniMessage.deserialize(
+              miniMessageFormatted,
+              TagResolver.resolver(
+                  this.registry.getPlaceholderSupports().stream()
+                      .map(
+                          chatPlaceholder ->
+                              chatPlaceholder.resolveChatMessagePlaceholder(source, miniMessageFormatted))
+                      .toList()));
+    } else {
+      message =
+          MiniMessage.builder()
+              .tags(
+                  TagResolver.resolver(
+                      this.registry.getPlaceholderSupports().stream()
+                          .map(
+                              chatPlaceholder ->
+                                  chatPlaceholder.resolveChatMessagePlaceholder(
+                                      source, textMessage))
+                          .toList()))
+              .build()
+              .deserialize(textMessage);
     }
 
-    @NotNull
-    Component finalMessage = message;
+    @NotNull Component finalMessage = message;
 
-    List<TagResolver> tagResolvers = new ArrayList<>(
-        this.registry.getPlaceholderSupports().stream()
-            .map(
-                chatPlaceholder -> chatPlaceholder.resolvePlayerPlaceholderWithChatMessage(
-                    source, finalMessage))
-            .toList());
+    List<TagResolver> tagResolvers =
+        new ArrayList<>(
+            this.registry.getPlaceholderSupports().stream()
+                .map(
+                    chatPlaceholder ->
+                        chatPlaceholder.resolvePlayerPlaceholderWithChatMessage(
+                            source, finalMessage))
+                .toList());
 
     tagResolvers.add(Placeholder.component("message", message));
     tagResolvers.add(Placeholder.unparsed("server_name", configurationProvider.get().serverName()));
 
     return this.miniMessage.deserialize(chatFormat, TagResolver.resolver(tagResolvers));
+  }
+
+  private String resolveMessageModifiers(@NotNull Player source, String textMessage) {
+    for (PlaceholderSupport placeholderSupport : this.registry.getPlaceholderSupports()) {
+      textMessage = placeholderSupport.resolveChatMessageModifier(source.getPlayer(), textMessage);
+    }
+    return textMessage;
   }
 }
