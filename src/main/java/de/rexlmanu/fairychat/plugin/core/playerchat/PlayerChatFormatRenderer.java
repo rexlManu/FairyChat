@@ -44,7 +44,7 @@ public class PlayerChatFormatRenderer implements ChatRenderer {
       @NotNull Component message,
       @NotNull Audience viewer) {
 
-    Component formattedMessage = formatMessage(source, message);
+    Component formattedMessage = this.formatMessage(source, message);
     if (!(viewer instanceof Player player)) {
       return formattedMessage;
     }
@@ -54,10 +54,10 @@ public class PlayerChatFormatRenderer implements ChatRenderer {
   @NotNull
   public Component formatMessage(@NotNull Player source, @NotNull Component message) {
     String group = this.permissionProvider.getGroup(source.getUniqueId());
-    String chatFormat = configurationProvider.get().chatFormat();
+    String chatFormat = this.configurationProvider.get().chatFormat();
 
     if (group != null) {
-      chatFormat = configurationProvider.get().groupFormats().getOrDefault(group, chatFormat);
+      chatFormat = this.configurationProvider.get().groupFormats().getOrDefault(group, chatFormat);
     }
 
     Function<Component, String> serializer = PlainTextComponentSerializer.plainText()::serialize;
@@ -76,7 +76,8 @@ public class PlayerChatFormatRenderer implements ChatRenderer {
                   this.registry.getPlaceholderSupports().stream()
                       .map(
                           chatPlaceholder ->
-                              chatPlaceholder.resolveChatMessagePlaceholder(source, miniMessageFormatted))
+                              chatPlaceholder.resolveChatMessagePlaceholder(
+                                  source, miniMessageFormatted))
                       .toList()));
     } else {
       message =
@@ -105,7 +106,7 @@ public class PlayerChatFormatRenderer implements ChatRenderer {
                 .toList());
 
     tagResolvers.add(Placeholder.component("message", message));
-    tagResolvers.add(Placeholder.unparsed("server_name", configurationProvider.get().serverName()));
+    tagResolvers.add(Placeholder.unparsed("server_name", this.configurationProvider.get().serverName()));
 
     return this.miniMessage.deserialize(chatFormat, TagResolver.resolver(tagResolvers));
   }

@@ -16,10 +16,10 @@ import org.bukkit.entity.Player;
 
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class SpoilerChatIntegration implements Integration, PlaceholderSupport {
-  private static char SPOILER_CHAR = '█';
-  private static double SPOILER_PLACE = 1.5;
+  private static final char SPOILER_CHAR = '█';
+  private static final double SPOILER_PLACE = 1.5;
   // pattern that checks if string contains "||message||" and extracts message
-  private static Pattern SPOILER_PATTERN = Pattern.compile(".*\\|\\|(.*)\\|\\|.*");
+  private static final Pattern SPOILER_PATTERN = Pattern.compile(".*\\|\\|(.*)\\|\\|.*");
   private static final String SPOILER_TAG_REPLACEMENT = "<spoiler:'%s'>";
   private final Provider<PluginConfiguration> configurationProvider;
 

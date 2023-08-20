@@ -20,7 +20,7 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class StatementBuilder {
   @Setter private String statement = "";
-  private List<Object> parameters = new ArrayList<>();
+  private final List<Object> parameters = new ArrayList<>();
   @Setter private boolean logging = false;
   private final Connection connection;
 

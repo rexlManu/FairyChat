@@ -15,7 +15,7 @@ public class ExpiringMap<K, V> {
   public void put(K key, V value, long duration, TimeUnit unit) {
     ValueWithExpirationTime<V> newValue =
         new ValueWithExpirationTime<>(value, System.nanoTime() + unit.toNanos(duration));
-    ValueWithExpirationTime<V> oldValue = map.put(key, newValue);
+    ValueWithExpirationTime<V> oldValue = this.map.put(key, newValue);
 
     // If the key already exists, cancel its old expiration task
     if (oldValue != null) {
@@ -24,36 +24,36 @@ public class ExpiringMap<K, V> {
 
     // Schedule a new removal task
     ScheduledFuture<?> future =
-        executorService.schedule(() -> map.remove(key, newValue), duration, unit);
+        this.executorService.schedule(() -> this.map.remove(key, newValue), duration, unit);
     newValue.setRemovalTask(future);
   }
 
   public V get(K key) {
-    ValueWithExpirationTime<V> value = map.get(key);
+    ValueWithExpirationTime<V> value = this.map.get(key);
     return value != null && !value.isExpired() ? value.getValue() : null;
   }
 
   public Optional<V> getOptional(K key) {
-    return Optional.ofNullable(get(key));
+    return Optional.ofNullable(this.get(key));
   }
 
   public long getExpirationTime(K key) {
-    ValueWithExpirationTime<V> value = map.get(key);
+    ValueWithExpirationTime<V> value = this.map.get(key);
     return value != null ? value.expirationTime : 0;
   }
 
   public boolean containsKey(K key) {
-    return map.containsKey(key);
+    return this.map.containsKey(key);
   }
 
   public V computeIfAbsent(K key, long duration, TimeUnit unit, Callable<V> callable) {
-    ValueWithExpirationTime<V> value = map.get(key);
+    ValueWithExpirationTime<V> value = this.map.get(key);
     if (value != null && !value.isExpired()) {
       return value.getValue();
     }
     try {
       V newValue = callable.call();
-      put(key, newValue, duration, unit);
+      this.put(key, newValue, duration, unit);
       return newValue;
     } catch (Exception e) {
       throw new RuntimeException(e);
@@ -61,7 +61,7 @@ public class ExpiringMap<K, V> {
   }
 
   public void remove(K key) {
-    ValueWithExpirationTime<V> oldValue = map.remove(key);
+    ValueWithExpirationTime<V> oldValue = this.map.remove(key);
     if (oldValue != null) {
       oldValue.getRemovalTask().cancel(false);
     }
@@ -78,11 +78,11 @@ public class ExpiringMap<K, V> {
     }
 
     public V getValue() {
-      return value;
+      return this.value;
     }
 
     public boolean isExpired() {
-      return System.nanoTime() > expirationTime;
+      return System.nanoTime() > this.expirationTime;
     }
 
     public void setRemovalTask(ScheduledFuture<?> removalTask) {
@@ -90,7 +90,7 @@ public class ExpiringMap<K, V> {
     }
 
     public ScheduledFuture<?> getRemovalTask() {
-      return removalTask;
+      return this.removalTask;
     }
   }
 }

@@ -14,7 +14,6 @@ import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Server;
@@ -35,7 +34,7 @@ public class RedisPrivateMessagingService implements PrivateMessagingService {
           jedis.hset(LAST_RECIPIENTS_KEY, senderId.toString(), recipientId.toString());
           jedis.expire(
               LAST_RECIPIENTS_KEY,
-              configurationProvider.get().privateMessaging().recipientExpirationSeconds());
+              this.configurationProvider.get().privateMessaging().recipientExpirationSeconds());
         });
   }
 
@@ -65,7 +64,7 @@ public class RedisPrivateMessagingService implements PrivateMessagingService {
                         Placeholder.unparsed("sender_name", user.username()),
                         Placeholder.unparsed("recipient_name", recipient.username()))),
             () ->
-                connector.publish(
+                this.connector.publish(
                     Constants.PRIVATE_MESSAGING_CHANNEL,
                     new PrivateMessageData(
                         user.serverIdentity(),

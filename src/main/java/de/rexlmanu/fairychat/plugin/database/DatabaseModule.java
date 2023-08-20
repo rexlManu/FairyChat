@@ -12,7 +12,7 @@ public class DatabaseModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    if (configurationProvider.configuration().database().mysql()) {
+    if (this.configurationProvider.configuration().database().mysql()) {
       this.bind(DatabaseClient.class).to(MySQLClient.class);
     } else {
       this.bind(DatabaseClient.class).to(SQLiteClient.class);

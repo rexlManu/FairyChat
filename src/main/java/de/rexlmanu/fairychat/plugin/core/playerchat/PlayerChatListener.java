@@ -49,7 +49,8 @@ public class PlayerChatListener implements Listener {
         .removeIf(
             audience ->
                 audience instanceof Player recipient
-                    && userIgnoreService.isIgnored(recipient.getUniqueId(), player.getUniqueId()));
+                    && this.userIgnoreService.isIgnored(
+                        recipient.getUniqueId(), player.getUniqueId()));
 
     if (this.playerChatCooldownService.enabled()) {
       this.playerChatCooldownService.trigger(player.getUniqueId());

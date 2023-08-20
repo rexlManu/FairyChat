@@ -13,7 +13,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Server;
@@ -34,14 +33,14 @@ public class DefaultPrivateMessagingService implements PrivateMessagingService {
     this.getPlayer(user)
         .sendMessage(
             this.miniMessage.deserialize(
-                configurationProvider.get().privateMessaging().senderFormat(),
+                this.configurationProvider.get().privateMessaging().senderFormat(),
                 Placeholder.unparsed("message", message),
                 Placeholder.unparsed("sender_name", user.username()),
                 Placeholder.unparsed("recipient_name", recipient.username())));
     this.getPlayer(recipient)
         .sendMessage(
             this.miniMessage.deserialize(
-                configurationProvider.get().privateMessaging().receiverFormat(),
+                this.configurationProvider.get().privateMessaging().receiverFormat(),
                 Placeholder.unparsed("message", message),
                 Placeholder.unparsed("sender_name", user.username()),
                 Placeholder.unparsed("recipient_name", recipient.username())));
@@ -49,7 +48,7 @@ public class DefaultPrivateMessagingService implements PrivateMessagingService {
     this.lastMessageRecipient.put(
         recipient.uniqueId(),
         user.uniqueId(),
-        configurationProvider.get().privateMessaging().recipientExpirationSeconds(),
+        this.configurationProvider.get().privateMessaging().recipientExpirationSeconds(),
         TimeUnit.SECONDS);
   }
 

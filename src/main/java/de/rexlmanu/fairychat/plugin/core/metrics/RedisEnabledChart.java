@@ -19,6 +19,6 @@ public class RedisEnabledChart implements MetricsChart {
     this.metrics.addCustomChart(
         new SimplePie(
             "redis",
-            () -> String.valueOf(configurationProvider.get().redisCredentials().enabled())));
+            () -> String.valueOf(this.configurationProvider.get().redisCredentials().enabled())));
   }
 }

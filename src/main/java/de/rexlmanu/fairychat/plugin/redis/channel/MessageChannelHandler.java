@@ -21,7 +21,7 @@ public class MessageChannelHandler<D> extends JedisPubSub {
 
   @Override
   public void onMessage(String channel, String message) {
-    if (!channel.equals(channelName)) return;
+    if (!channel.equals(this.channelName)) return;
 
     try {
       D data = this.gson.fromJson(message, this.typeToken);

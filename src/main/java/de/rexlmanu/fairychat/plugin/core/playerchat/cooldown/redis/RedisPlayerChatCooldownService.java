@@ -18,18 +18,18 @@ public class RedisPlayerChatCooldownService implements PlayerChatCooldownService
 
   @Override
   public void trigger(UUID playerId) {
-    connector.useResource(
+    this.connector.useResource(
         jedis -> {
           jedis.incr(Constants.CHAT_COOLDOWN_KEY + playerId.toString());
           jedis.expire(
-              Constants.CHAT_COOLDOWN_KEY + playerId.toString(),
+              Constants.CHAT_COOLDOWN_KEY + playerId,
               this.configurationProvider.get().chattingCooldown());
         });
   }
 
   @Override
   public boolean isCooldowned(UUID playerId) {
-    return connector.useQuery(
+    return this.connector.useQuery(
         jedis -> {
           String value = jedis.get(Constants.CHAT_COOLDOWN_KEY + playerId.toString());
           return value != null && Integer.parseInt(value) >= this.configurationProvider.get().chattingThreshold();
@@ -38,7 +38,7 @@ public class RedisPlayerChatCooldownService implements PlayerChatCooldownService
 
   @Override
   public long getTime(UUID playerId) {
-    return connector.useQuery(
+    return this.connector.useQuery(
         jedis -> jedis.pttl(Constants.CHAT_COOLDOWN_KEY + playerId.toString()));
   }
 

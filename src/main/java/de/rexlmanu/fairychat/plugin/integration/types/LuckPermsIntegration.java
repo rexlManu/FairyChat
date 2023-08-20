@@ -35,7 +35,7 @@ public class LuckPermsIntegration implements Integration, PlaceholderSupport {
 
   @Override
   public void enable() {
-    this.luckPermsService = servicesManager.getRegistration(LuckPerms.class);
+    this.luckPermsService = this.servicesManager.getRegistration(LuckPerms.class);
   }
 
   @Override

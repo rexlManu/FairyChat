@@ -29,7 +29,7 @@ public class MySQLClient implements DatabaseClient, DatabaseQueries {
     this.configurationProvider = configurationProvider;
     this.hikariConfig = this.createConfig(dataDirectory);
 
-    hikariConfig.setPoolName(plugin.getName());
+    this.hikariConfig.setPoolName(plugin.getName());
   }
 
   @Override

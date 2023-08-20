@@ -14,7 +14,7 @@ public class RedisSubscriberModule extends AbstractModule {
   @Override
   protected void configure() {
     RedisSubscriberTypeListener listener = new RedisSubscriberTypeListener();
-    requestInjection(listener);
+    this.requestInjection(listener);
     this.bindListener(
         typeLiteral ->
             Matchers.subclassesOf(RedisChannelSubscriber.class).matches(typeLiteral.getRawType()),
@@ -26,7 +26,7 @@ public class RedisSubscriberModule extends AbstractModule {
 
     @Override
     public <I> void hear(TypeLiteral<I> type, TypeEncounter<I> encounter) {
-      encounter.register(new RedisChannelInjectionListener<>(redisConnector));
+      encounter.register(new RedisChannelInjectionListener<>(this.redisConnector));
     }
   }
 
@@ -37,7 +37,7 @@ public class RedisSubscriberModule extends AbstractModule {
     @Override
     public void afterInjection(I injectee) {
       if (injectee instanceof RedisChannelSubscriber<?> subscriber) {
-        subscriber.register(redisConnector);
+        subscriber.register(this.redisConnector);
       }
     }
   }

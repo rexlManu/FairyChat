@@ -32,18 +32,18 @@ public class MessageSimilarityBukkitListener implements Listener {
       String currentMessage = PlainTextComponentSerializer.plainText().serialize(event.message());
 
       double score =
-          configurationProvider
+          this.configurationProvider
               .get()
               .similarityAlgorithm()
               .strategy()
               .get()
               .score(currentMessage, lastMessage);
 
-      if (score >= configurationProvider.get().similarityPercentage()) {
+      if (score >= this.configurationProvider.get().similarityPercentage()) {
         event.setCancelled(true);
         player.sendMessage(
             this.miniMessage.deserialize(
-                configurationProvider.get().messages().yourLastMessageWasTooSimilar()));
+                this.configurationProvider.get().messages().yourLastMessageWasTooSimilar()));
       }
     }
   }

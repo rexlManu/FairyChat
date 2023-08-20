@@ -4,5 +4,4 @@ public interface Integration {
   boolean available();
 
   default void enable() {}
-  ;
 }
