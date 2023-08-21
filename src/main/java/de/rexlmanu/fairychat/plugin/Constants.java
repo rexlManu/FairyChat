@@ -31,6 +31,7 @@ public class Constants {
 
   public static final String PLACEHOLDER_API_NAME = "PlaceholderAPI";
   public static final String LUCKPERMS_NAME = "LuckPerms";
+  public static final String ULTRAPERMISSIONS_NAME = "UltraPermissions";
 
   public static final char HIGHLIGHT_CHAR = '@';
 }

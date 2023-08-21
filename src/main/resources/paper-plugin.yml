@@ -15,10 +15,14 @@ dependencies:
     required: false
   - name: PlaceholderAPI
     required: false
+  - name: UltraPermissions
+    required: false
 load-before:
   - name: LuckPerms
     required: false
   - name: MiniPlaceholders
     required: false
   - name: PlaceholderAPI
+    required: false
+  - name: UltraPermissions
     required: false

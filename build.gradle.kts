@@ -16,9 +16,10 @@ plugins {
 }
 
 repositories {
+    mavenCentral()
     maven("https://jitpack.io")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    mavenCentral()
+    maven("https://repo.techscode.com/repository/maven-releases/")
 }
 
 dependencies {
@@ -28,13 +29,14 @@ dependencies {
     compileOnly(libs.commandframework)
     compileOnly(libs.configlib)
     compileOnly(libs.guice)
-    compileOnly(libs.luckperms)
     compileOnly(libs.hikaridb)
     compileOnly(libs.stringsimilarity)
 
     // Plugin dependencies
     compileOnly(libs.miniplaceholders)
     compileOnly(libs.placeholderapi)
+    compileOnly(libs.luckperms)
+    compileOnly(libs.ultrapermissions)
 
     implementation(libs.bstats)
 }
@@ -139,7 +141,7 @@ bukkit {
     foliaSupported = true
     apiVersion = "1.19"
     load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
-    softDepend = listOf("MiniPlaceholders", "LuckPerms", "PlaceholderAPI")
+    softDepend = listOf("MiniPlaceholders", "LuckPerms", "PlaceholderAPI", "UltraPermissions")
     prefix = "FairyChat"
 }
 
