@@ -57,13 +57,15 @@ public class SpoilerChatIntegration implements Integration, PlaceholderSupport {
     }
 
     var matcher = SPOILER_PATTERN.matcher(message);
-    // if message doesn't contain spoiler tags, return original message
-    if (!matcher.matches()) {
-      return message;
+
+    // while message contains spoiler tags, replace them with spoiler tag
+    while (matcher.find()) {
+      String spoilerContent = matcher.group(1);
+      var spoilerTag = String.format(SPOILER_TAG_REPLACEMENT, spoilerContent);
+      message = message.replace("||" + spoilerContent + "||", spoilerTag);
+      matcher = SPOILER_PATTERN.matcher(message); // Refresh matcher with updated message
     }
 
-    // if message contains spoiler tags, replace them with spoiler tag
-    var spoilerTag = String.format(SPOILER_TAG_REPLACEMENT, matcher.group(1));
-    return message.replace("||" + matcher.group(1) + "||", spoilerTag);
+    return message;
   }
 }
