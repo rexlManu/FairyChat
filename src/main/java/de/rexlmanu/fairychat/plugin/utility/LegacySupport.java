@@ -66,6 +66,9 @@ public class LegacySupport {
   public static final LegacyComponentSerializer LEGACY_HEX_SERIALIZER =
       LegacyComponentSerializer.builder().character('&').hexColors().build();
 
+  public static final LegacyComponentSerializer LEGACY_HEX_SERIALIZER_SECTION =
+      LegacyComponentSerializer.builder().character('§').hexColors().build();
+
   // https://github.com/Hexaoxide/Carbon/blob/2.1/api/src/main/java/net/draycia/carbon/api/util/ColorUtils.java#L42
   public static String replaceLegacyWithTags(String input) {
     String output = LEGACY_RGB_PATTERN.matcher(input).replaceAll(RGB_REPLACEMENT);
@@ -100,7 +103,8 @@ public class LegacySupport {
           final String parsedPlaceholder =
               PlaceholderAPI.setPlaceholders(player, '%' + papiPlaceholder + '%');
 
-          if (parsedPlaceholder.indexOf('&') == -1) {
+          System.out.println(parsedPlaceholder);
+          if (parsedPlaceholder.indexOf('&') == -1 && parsedPlaceholder.indexOf('§') == -1) {
             return Tag.selfClosingInserting(miniMessage().deserialize(parsedPlaceholder));
           }
           // We need to turn this ugly legacy string into a nice component.
@@ -113,13 +117,16 @@ public class LegacySupport {
 
   public static @NotNull Component parsePossibleLegacy(final @Nullable String string) {
     if (string == null || string.isBlank()) return Component.empty();
-    if (string.indexOf('&') == -1) {
+    if (string.indexOf('&') == -1 && string.indexOf('§') == -1) {
       return miniMessage().deserialize(string);
     }
     return miniMessage()
         .deserialize(
             miniMessage()
-                .serialize(LEGACY_HEX_SERIALIZER.deserialize(string))
+                .serialize(
+                    (string.indexOf('§') == -1
+                        ? LEGACY_HEX_SERIALIZER.deserialize(string)
+                        : LEGACY_HEX_SERIALIZER_SECTION.deserialize(string)))
                 .replace("\\<", "<")
                 .replace("\\>", ">"));
   }
