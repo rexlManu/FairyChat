@@ -34,7 +34,7 @@ public class CustomMessageBukkitListener implements Listener {
   private final Provider<PluginConfiguration> configurationProvider;
   private final RedisConnector connector;
 
-  @EventHandler(priority = EventPriority.HIGHEST)
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerJoin(PlayerJoinEvent event) {
     this.handleEventMessage(
         event.getPlayer(),
@@ -45,7 +45,7 @@ public class CustomMessageBukkitListener implements Listener {
         this.configurationProvider.get().customMessages().broadcastJoinMessages());
   }
 
-  @EventHandler(priority = EventPriority.HIGHEST)
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerQuit(PlayerQuitEvent event) {
     this.handleEventMessage(
         event.getPlayer(),
@@ -56,7 +56,7 @@ public class CustomMessageBukkitListener implements Listener {
         this.configurationProvider.get().customMessages().broadcastQuitMessages());
   }
 
-  @EventHandler(priority = EventPriority.HIGHEST)
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerDeath(PlayerDeathEvent event) {
     if (event.deathMessage() instanceof TranslatableComponent translatableComponent) {
       event.deathMessage(this.replaceFirstArgument(event.getPlayer(), translatableComponent));
@@ -70,7 +70,7 @@ public class CustomMessageBukkitListener implements Listener {
         this.configurationProvider.get().customMessages().broadcastDeathMessages());
   }
 
-  @EventHandler(priority = EventPriority.HIGHEST)
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerAdvancementDone(PlayerAdvancementDoneEvent event) {
     if (event.message() instanceof TranslatableComponent translatableComponent) {
       event.message(this.replaceFirstArgument(event.getPlayer(), translatableComponent));
