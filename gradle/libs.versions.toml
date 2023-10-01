@@ -1,19 +1,19 @@
 [versions]
-minecraft = "1.20.1-R0.1-SNAPSHOT"
+minecraft = "1.20.2-R0.1-SNAPSHOT"
 [plugins]
-userdev = { id = "io.papermc.paperweight.userdev", version = "1.5.5" }
-runpaper = { id = "xyz.jpenilla.run-paper", version = "2.1.0" }
+userdev = { id = "io.papermc.paperweight.userdev", version = "1.5.6" }
+runpaper = { id = "xyz.jpenilla.run-paper", version = "2.2.0" }
 shadow = { id = "com.github.johnrengelman.shadow", version = "7.1.2" }
 lombok = { id = "io.freefair.lombok", version = "6.6.1" }
-hangar = { id = "io.papermc.hangar-publish-plugin", version = "0.0.5" }
-minotaur = { id = "com.modrinth.minotaur", version = "2.8.1" }
+hangar = { id = "io.papermc.hangar-publish-plugin", version = "0.1.0" }
+minotaur = { id = "com.modrinth.minotaur", version = "2.8.4" }
 paperyml = { id = "net.minecrell.plugin-yml.paper", version = "0.6.0" }
 pluginyml = { id = "net.minecrell.plugin-yml.bukkit", version = "0.6.0" }
 [libraries]
 annotations = { module = "org.jetbrains:annotations", version = "24.0.1" }
 jedis = { module = "redis.clients:jedis", version = "4.1.1" }
-miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.1.0" }
-commandframework = { module = "cloud.commandframework:cloud-paper", version = "1.8.3" }
+miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.1" }
+commandframework = { module = "cloud.commandframework:cloud-paper", version = "1.8.4" }
 configlib = { module = "com.github.Exlll.ConfigLib:configlib-paper", version = "v4.2.0" }
 guice = { module = "com.google.inject:guice", version = "7.0.0" }
 luckperms = { module = "net.luckperms:api", version = "5.4" }
