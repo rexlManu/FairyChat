@@ -85,7 +85,7 @@ tasks {
 
 tasks.getByName("modrinth").dependsOn(tasks.modrinthSyncBody)
 
-val versions = listOf("1.19.2", "1.19.4", "1.20", "1.20.1");
+val versions = listOf("1.19.2", "1.19.4", "1.20", "1.20.1", "1.20.2");
 
 modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
@@ -110,7 +110,7 @@ modrinth {
 hangarPublish {
     publications.register("plugin") {
         version.set(project.version as String)
-        namespace("rexlManu", "fairychat")
+        id.set("fairychat")
         channel.set("Release")
         changelog.set(System.getenv("HANGAR_CHANGELOG"))
         apiKey.set(System.getenv("HANGAR_TOKEN"))
@@ -121,7 +121,7 @@ hangarPublish {
                 jar.set(buildDir.resolve("libs").resolve("FairyChat-${rootProject.version}.jar"))
                 platformVersions.set(versions)
                 dependencies {
-                    hangar("MiniPlaceholders", "MiniPlaceholders") {
+                    hangar("MiniPlaceholders") {
                         required.set(false)
                     }
 //                  Luckperms is not yet available on hangar
