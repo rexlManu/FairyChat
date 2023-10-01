@@ -103,7 +103,6 @@ public class LegacySupport {
           final String parsedPlaceholder =
               PlaceholderAPI.setPlaceholders(player, '%' + papiPlaceholder + '%');
 
-          System.out.println(parsedPlaceholder);
           if (parsedPlaceholder.indexOf('&') == -1 && parsedPlaceholder.indexOf('§') == -1) {
             return Tag.selfClosingInserting(miniMessage().deserialize(parsedPlaceholder));
           }
