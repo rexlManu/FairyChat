@@ -51,6 +51,8 @@ You can find the documentation for FairyChat [here](https://github.com/rexlManu/
 |                            | `fairychat.bypass.similarity`        | Bypass the similarity check for last message        |
 |                            | `fairychat.bypass.cooldown`          | Bypass the chat cooldown                            |
 |                            | `fairychat.feature.displayitem`      | Allow players to show the item in and with <item>   |
+|                            | `fairychat.messages.join.ignore`     | The join message will not be sent                   |
+|                            | `fairychat.messages.quit.ignore`     | The quit message will not be sent                   |            
 
 ## Installation
 
