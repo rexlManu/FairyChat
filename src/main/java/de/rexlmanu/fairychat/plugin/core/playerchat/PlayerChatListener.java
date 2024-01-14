@@ -54,7 +54,7 @@ public class PlayerChatListener implements Listener {
                         recipient.getUniqueId(), player.getUniqueId()));
 
     if (this.playerChatCooldownService.enabled()) {
-      this.playerChatCooldownService.trigger(player.getUniqueId());
+      this.playerChatCooldownService.trigger(player.getUniqueId(), event.message());
     }
 
     // If the redis connector is not available, we don't need to do anything.

@@ -10,6 +10,7 @@ import de.rexlmanu.fairychat.plugin.configuration.records.Messages;
 import de.rexlmanu.fairychat.plugin.configuration.records.PrivateMessagingConfig;
 import de.rexlmanu.fairychat.plugin.configuration.records.RedisCredentials;
 import de.rexlmanu.fairychat.plugin.core.messagesimilarity.SimilarityAlgorithmsStrategy;
+import de.rexlmanu.fairychat.plugin.core.playerchat.cooldown.strategy.CooldownStrategyType;
 import java.util.Map;
 import lombok.Getter;
 
@@ -81,11 +82,26 @@ public class PluginConfiguration {
           1F,
           1.30F);
 
+  @Comment({
+    "Define which strategy to use when limiting players from chatting too fast.",
+    "Supported strategies:",
+    "DISABLED - Disable the cooldown",
+    "MESSAGE_LENGTH - Cooldown based on the length of the message",
+    "MESSAGE_THRESHOLD - Cooldown based on the amount of messages sent"
+  })
+  private CooldownStrategyType cooldownStrategy = CooldownStrategyType.DISABLED;
+
   @Comment("The cooldown, in seconds, that a player has to wait before chatting again.")
-  private int chattingCooldown = 0;
+  private int messageThresholdCooldown = 0;
 
   @Comment("The threshold, how many messages a player can send before the cooldown is applied.")
-  private int chattingThreshold = 0;
+  private int messageThresholdAmount = 0;
+
+  @Comment({
+    "The multiplier for how long the cooldown should be based on the length of the message.",
+    "Example: 0.02 * 100 = 2 seconds cooldown for a 100 character message.",
+  })
+  private double messageLengthMultiplier = 0.02;
 
   @Comment("Prevent duplicate messages from being sent.")
   private boolean preventSimilarMessages = true;

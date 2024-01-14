@@ -1,6 +1,7 @@
 package de.rexlmanu.fairychat.plugin.core;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.TypeLiteral;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfigurationProvider;
 import de.rexlmanu.fairychat.plugin.core.chatclear.ChatClearService;
 import de.rexlmanu.fairychat.plugin.core.chatclear.DefaultChatClearService;
@@ -8,6 +9,7 @@ import de.rexlmanu.fairychat.plugin.core.chatclear.redis.RedisChatClearService;
 import de.rexlmanu.fairychat.plugin.core.playerchat.cooldown.DefaultPlayerChatCooldownService;
 import de.rexlmanu.fairychat.plugin.core.playerchat.cooldown.PlayerChatCooldownService;
 import de.rexlmanu.fairychat.plugin.core.playerchat.cooldown.redis.RedisPlayerChatCooldownService;
+import de.rexlmanu.fairychat.plugin.core.playerchat.cooldown.strategy.CooldownStrategy;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.PrivateMessagingService;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.defaults.DefaultPrivateMessagingService;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.redis.RedisPrivateMessagingService;
@@ -23,6 +25,9 @@ public class CoreModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    this.bind(new TypeLiteral<CooldownStrategy<CooldownStrategy.CooldownState>>(){})
+        .to((Class<? extends CooldownStrategy<CooldownStrategy.CooldownState>>) this.configurationProvider.configuration().cooldownStrategy().strategyClass());
+
     if (this.configurationProvider.configuration().redisCredentials().enabled()) {
       this.bind(PrivateMessagingService.class).to(RedisPrivateMessagingService.class);
       this.bind(UserService.class).to(RedisUserService.class);
