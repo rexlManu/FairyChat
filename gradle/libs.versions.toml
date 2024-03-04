@@ -11,7 +11,7 @@ paperyml = { id = "net.minecrell.plugin-yml.paper", version = "0.6.0" }
 pluginyml = { id = "net.minecrell.plugin-yml.bukkit", version = "0.6.0" }
 [libraries]
 annotations = { module = "org.jetbrains:annotations", version = "24.1.0" }
-jedis = { module = "redis.clients:jedis", version = "4.1.1" }
+jedis = { module = "redis.clients:jedis", version = "5.1.1" }
 miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.3" }
 commandframework = { module = "cloud.commandframework:cloud-paper", version = "1.8.4" }
 configlib = { module = "de.exlll:configlib-yaml", version = "4.5.0" }
