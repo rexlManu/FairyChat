@@ -12,7 +12,7 @@ pluginyml = { id = "net.minecrell.plugin-yml.bukkit", version = "0.6.0" }
 [libraries]
 annotations = { module = "org.jetbrains:annotations", version = "24.0.1" }
 jedis = { module = "redis.clients:jedis", version = "4.1.1" }
-miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.1" }
+miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.3" }
 commandframework = { module = "cloud.commandframework:cloud-paper", version = "1.8.4" }
 configlib = { module = "de.exlll:configlib-yaml", version = "4.5.0" }
 guice = { module = "com.google.inject:guice", version = "7.0.0" }
