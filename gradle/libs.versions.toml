@@ -14,7 +14,7 @@ annotations = { module = "org.jetbrains:annotations", version = "24.0.1" }
 jedis = { module = "redis.clients:jedis", version = "4.1.1" }
 miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.1" }
 commandframework = { module = "cloud.commandframework:cloud-paper", version = "1.8.4" }
-configlib = { module = "com.github.Exlll.ConfigLib:configlib-paper", version = "v4.2.0" }
+configlib = { module = "de.exlll:configlib-yaml", version = "4.5.0" }
 guice = { module = "com.google.inject:guice", version = "7.0.0" }
 luckperms = { module = "net.luckperms:api", version = "5.4" }
 bstats = { module = "org.bstats:bstats-bukkit", version = "3.0.2" }

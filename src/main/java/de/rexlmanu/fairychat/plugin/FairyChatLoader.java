@@ -21,7 +21,7 @@ public class FairyChatLoader implements PluginLoader {
         new Dependency(new DefaultArtifact("cloud.commandframework:cloud-paper:1.8.3"), null));
     resolver.addDependency(
         new Dependency(
-            new DefaultArtifact("com.github.Exlll.ConfigLib:configlib-paper:v4.2.0"), null));
+            new DefaultArtifact("de.exlll:configlib-yaml:4.5.0"), null));
     resolver.addDependency(
         new Dependency(new DefaultArtifact("com.google.inject:guice:7.0.0"), null));
     resolver.addDependency(new Dependency(new DefaultArtifact("com.zaxxer:HikariCP:5.0.1"), null));
