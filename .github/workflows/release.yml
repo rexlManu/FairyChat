@@ -17,7 +17,7 @@ jobs:
           cache: gradle
       - run: chmod +x gradlew
       - name: Build project
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           gradle-version: '8.1.1'
           arguments: build
@@ -36,7 +36,7 @@ jobs:
           body: ${{ steps.changelog.outputs.changelog }}
           draft: true
       - name: Publish to Modrinth
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           gradle-version: '8.1.1'
           arguments: modrinth
@@ -44,7 +44,7 @@ jobs:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           MODRINTH_CHANGELOG: ${{ steps.changelog.outputs.changelog }}
       - name: Publish to Hangar
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           gradle-version: '8.1.1'
           arguments: publishAllPublicationsToHangar
