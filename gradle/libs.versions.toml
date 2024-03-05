@@ -18,7 +18,7 @@ configlib = { module = "de.exlll:configlib-yaml", version = "4.5.0" }
 guice = { module = "com.google.inject:guice", version = "7.0.0" }
 luckperms = { module = "net.luckperms:api", version = "5.4" }
 bstats = { module = "org.bstats:bstats-bukkit", version = "3.0.2" }
-hikaridb = { module = "com.zaxxer:HikariCP", version = "5.0.1" }
+hikaridb = { module = "com.zaxxer:HikariCP", version = "5.1.0" }
 placeholderapi = { module = "me.clip:placeholderapi", version = "2.11.5" }
 stringsimilarity = { module = "net.ricecode:string-similarity", version = "1.0.0" }
 ultrapermissions = { module = "me.TechsCode:UltraPermissionsAPI", version = "5.5.2" }
