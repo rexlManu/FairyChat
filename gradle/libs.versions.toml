@@ -5,7 +5,7 @@ userdev = { id = "io.papermc.paperweight.userdev", version = "1.5.11" }
 runpaper = { id = "xyz.jpenilla.run-paper", version = "2.2.2" }
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
 lombok = { id = "io.freefair.lombok", version = "8.6" }
-hangar = { id = "io.papermc.hangar-publish-plugin", version = "0.1.1" }
+hangar = { id = "io.papermc.hangar-publish-plugin", version = "0.1.2" }
 minotaur = { id = "com.modrinth.minotaur", version = "2.8.7" }
 paperyml = { id = "net.minecrell.plugin-yml.paper", version = "0.6.0" }
 pluginyml = { id = "net.minecrell.plugin-yml.bukkit", version = "0.6.0" }
