@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
+import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
 import de.rexlmanu.fairychat.plugin.core.mentions.MentionService;
 import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
 import de.rexlmanu.fairychat.plugin.integration.chat.PlaceholderSupport;
@@ -33,6 +34,7 @@ public class PlayerChatFormatRenderer implements ChatRenderer {
   private final PermissionProvider permissionProvider;
   private final MentionService mentionService;
   private final IntegrationRegistry registry;
+  private final UserIgnoreService userIgnoreService;
 
   @Named("colorMiniMessage")
   private final MiniMessage colorMiniMessage;
@@ -46,6 +48,9 @@ public class PlayerChatFormatRenderer implements ChatRenderer {
 
     Component formattedMessage = this.formatMessage(source, message);
     if (!(viewer instanceof Player player)) {
+      return formattedMessage;
+    }
+    if (this.userIgnoreService.isIgnored(player.getUniqueId(), source.getUniqueId())) {
       return formattedMessage;
     }
     return this.mentionService.checkMentions(player, formattedMessage);
@@ -106,7 +111,8 @@ public class PlayerChatFormatRenderer implements ChatRenderer {
                 .toList());
 
     tagResolvers.add(Placeholder.component("message", message));
-    tagResolvers.add(Placeholder.unparsed("server_name", this.configurationProvider.get().serverName()));
+    tagResolvers.add(
+        Placeholder.unparsed("server_name", this.configurationProvider.get().serverName()));
 
     return this.miniMessage.deserialize(chatFormat, TagResolver.resolver(tagResolvers));
   }

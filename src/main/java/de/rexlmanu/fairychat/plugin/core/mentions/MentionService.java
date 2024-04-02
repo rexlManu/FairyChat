@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.Constants;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
+import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
 import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.key.Key;
@@ -21,6 +22,7 @@ public class MentionService {
   private final Provider<PluginConfiguration> configurationProvider;
   private final MiniMessage miniMessage;
   private final IntegrationRegistry registry;
+  private final UserIgnoreService userIgnoreService;
 
   public Component checkMentions(Player viewer, Component message) {
 
