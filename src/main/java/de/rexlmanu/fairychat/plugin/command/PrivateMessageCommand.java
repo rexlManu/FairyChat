@@ -11,6 +11,7 @@ import de.rexlmanu.fairychat.plugin.core.privatemessaging.PrivateMessagingServic
 import de.rexlmanu.fairychat.plugin.core.user.User;
 import de.rexlmanu.fairychat.plugin.core.user.UserFactory;
 import de.rexlmanu.fairychat.plugin.core.user.UserService;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -25,7 +26,8 @@ public class PrivateMessageCommand {
       MiniMessage miniMessage,
       UserFactory userFactory,
       UserIgnoreService userIgnoreService,
-      Provider<PluginConfiguration> configurationProvider) {
+      Provider<PluginConfiguration> configurationProvider,
+      BukkitAudiences bukkitAudiences) {
     commandManager.command(
         commandManager
             .commandBuilder(
@@ -54,8 +56,8 @@ public class PrivateMessageCommand {
                               });
                   String message = commandContext.get("message");
                   if (user.equals(recipient)) {
-                    commandContext
-                        .getSender()
+                    bukkitAudiences
+                        .sender(commandContext.getSender())
                         .sendMessage(
                             miniMessage.deserialize(
                                 configurationProvider.get().messages().youCantMessageYourself()));
@@ -64,8 +66,8 @@ public class PrivateMessageCommand {
 
                   if (userIgnoreService.isIgnored(recipient.uniqueId(), user.uniqueId())
                       && !commandContext.getSender().hasPermission("fairychat.bypass.ignore")) {
-                    commandContext
-                        .getSender()
+                    bukkitAudiences
+                        .sender(commandContext.getSender())
                         .sendMessage(
                             miniMessage.deserialize(
                                 configurationProvider.get().messages().youCantMessageThisPlayer()));
@@ -102,8 +104,8 @@ public class PrivateMessageCommand {
                   String message = commandContext.get("message");
                   User lastRecipient = privateMessagingService.lastRecipient(user).orElse(null);
                   if (lastRecipient == null) {
-                    commandContext
-                        .getSender()
+                    bukkitAudiences
+                        .sender(commandContext.getSender())
                         .sendMessage(
                             miniMessage.deserialize(
                                 configurationProvider.get().messages().youDidntMessageAnyone()));
@@ -112,8 +114,8 @@ public class PrivateMessageCommand {
 
                   if (userIgnoreService.isIgnored(lastRecipient.uniqueId(), user.uniqueId())
                       && !commandContext.getSender().hasPermission("fairychat.bypass.ignore")) {
-                    commandContext
-                        .getSender()
+                    bukkitAudiences
+                        .sender(commandContext.getSender())
                         .sendMessage(
                             miniMessage.deserialize(
                                 configurationProvider.get().messages().youCantMessageThisPlayer()));

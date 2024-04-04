@@ -9,6 +9,7 @@ import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
 import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -23,6 +24,7 @@ public class MentionService {
   private final MiniMessage miniMessage;
   private final IntegrationRegistry registry;
   private final UserIgnoreService userIgnoreService;
+  private final BukkitAudiences bukkitAudiences;
 
   public Component checkMentions(Player viewer, Component message) {
 
@@ -41,7 +43,7 @@ public class MentionService {
       return message;
     }
 
-    viewer.playSound(
+    this.bukkitAudiences.player(viewer).playSound(
         Sound.sound(
             Key.key(this.configurationProvider.get().mention().soundName()),
             Sound.Source.MASTER,

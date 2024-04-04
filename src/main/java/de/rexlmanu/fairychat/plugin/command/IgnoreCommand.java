@@ -9,6 +9,7 @@ import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
 import de.rexlmanu.fairychat.plugin.core.user.User;
 import de.rexlmanu.fairychat.plugin.core.user.UserFactory;
 import de.rexlmanu.fairychat.plugin.core.user.UserService;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.command.CommandSender;
@@ -22,7 +23,8 @@ public class IgnoreCommand {
       UserService userService,
       UserFactory userFactory,
       UserIgnoreService userIgnoreService,
-      Provider<PluginConfiguration> configurationProvider) {
+      Provider<PluginConfiguration> configurationProvider,
+      BukkitAudiences bukkitAudiences) {
     commandManager.command(
         commandManager
             .commandBuilder("ignore")
@@ -43,8 +45,8 @@ public class IgnoreCommand {
                   User target = commandContext.get("target");
 
                   if (user.equals(target)) {
-                    commandContext
-                        .getSender()
+                    bukkitAudiences
+                        .sender(commandContext.getSender())
                         .sendMessage(
                             miniMessage.deserialize(
                                 configurationProvider.get().messages().youCantIgnoreYourself()));
@@ -53,8 +55,8 @@ public class IgnoreCommand {
 
                   if (userIgnoreService.isIgnored(user.uniqueId(), target.uniqueId())) {
                     userIgnoreService.setIgnored(user.uniqueId(), target.uniqueId(), false);
-                    commandContext
-                        .getSender()
+                    bukkitAudiences
+                        .sender(commandContext.getSender())
                         .sendMessage(
                             miniMessage.deserialize(
                                 configurationProvider.get().messages().youUnignoredUser(),
@@ -63,8 +65,8 @@ public class IgnoreCommand {
                   }
 
                   userIgnoreService.setIgnored(user.uniqueId(), target.uniqueId(), true);
-                  commandContext
-                      .getSender()
+                  bukkitAudiences
+                      .sender(commandContext.getSender())
                       .sendMessage(
                           miniMessage.deserialize(
                               configurationProvider.get().messages().youIgnoredUser(),

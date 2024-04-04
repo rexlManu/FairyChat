@@ -1,5 +1,7 @@
 [versions]
 minecraft = "1.20.4-R0.1-SNAPSHOT"
+adventure = "4.3.2"
+minimessage = "4.16.0"
 [plugins]
 userdev = { id = "io.papermc.paperweight.userdev", version = "1.5.11" }
 runpaper = { id = "xyz.jpenilla.run-paper", version = "2.2.2" }
@@ -10,6 +12,9 @@ minotaur = { id = "com.modrinth.minotaur", version = "2.8.7" }
 paperyml = { id = "net.minecrell.plugin-yml.paper", version = "0.6.0" }
 pluginyml = { id = "net.minecrell.plugin-yml.bukkit", version = "0.6.0" }
 [libraries]
+spigot = { module = "org.spigotmc:spigot-api", version = "1.20.4-R0.1-SNAPSHOT" }
+paper = { module = "io.papermc.paper:paper-api", version = "1.20.4-R0.1-SNAPSHOT" }
+
 annotations = { module = "org.jetbrains:annotations", version = "24.1.0" }
 jedis = { module = "redis.clients:jedis", version = "4.1.1" }
 miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.3" }
@@ -22,3 +27,18 @@ hikaridb = { module = "com.zaxxer:HikariCP", version = "5.0.1" }
 placeholderapi = { module = "me.clip:placeholderapi", version = "2.11.5" }
 stringsimilarity = { module = "net.ricecode:string-similarity", version = "1.0.0" }
 ultrapermissions = { module = "me.TechsCode:UltraPermissionsAPI", version = "5.5.2" }
+
+adventure-platform-bukkit = { module = "net.kyori:adventure-platform-bukkit", version.ref = "adventure" }
+adventure-minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "minimessage" }
+adventure-text-serializer-plain = { module = "net.kyori:adventure-text-serializer-plain", version.ref = "minimessage" }
+adventure-text-serializer-gson = { module = "net.kyori:adventure-text-serializer-gson", version.ref = "minimessage" }
+adventure-text-serializer-legacy = { module = "net.kyori:adventure-text-serializer-legacy", version.ref = "minimessage" }
+
+[bundles]
+adventure = [
+    "adventure-platform-bukkit",
+    "adventure-minimessage",
+    "adventure-text-serializer-plain",
+    "adventure-text-serializer-gson",
+    "adventure-text-serializer-legacy"
+]

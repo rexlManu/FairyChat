@@ -7,6 +7,8 @@ import de.rexlmanu.fairychat.plugin.Constants;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.custommessages.redis.CustomMessageDto;
 import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
+import de.rexlmanu.fairychat.plugin.paper.Environment;
+import de.rexlmanu.fairychat.plugin.paper.event.EventMessageUtils;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -37,13 +39,13 @@ public class CustomMessageBukkitListener implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerJoin(PlayerJoinEvent event) {
     if (event.getPlayer().hasPermission("fairychat.messages.join.ignore")) {
-      event.joinMessage(null);
+      EventMessageUtils.joinMessageSetter(event).accept(null);
       return;
     }
     this.handleEventMessage(
         event.getPlayer(),
-        event::joinMessage,
-        event::joinMessage,
+        EventMessageUtils.joinMessage(event),
+        EventMessageUtils.joinMessageSetter(event),
         TagResolver::empty,
         this.configurationProvider.get().messages().joinMessage(),
         this.configurationProvider.get().customMessages().broadcastJoinMessages());
@@ -52,13 +54,13 @@ public class CustomMessageBukkitListener implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerQuit(PlayerQuitEvent event) {
     if (event.getPlayer().hasPermission("fairychat.messages.join.ignore")) {
-      event.quitMessage(null);
+      EventMessageUtils.quitMessageSetter(event).accept(null);
       return;
     }
     this.handleEventMessage(
         event.getPlayer(),
-        event::quitMessage,
-        event::quitMessage,
+        EventMessageUtils.quitMessage(event),
+        EventMessageUtils.quitMessageSetter(event),
         TagResolver::empty,
         this.configurationProvider.get().messages().quitMessage(),
         this.configurationProvider.get().customMessages().broadcastQuitMessages());
@@ -66,28 +68,39 @@ public class CustomMessageBukkitListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerDeath(PlayerDeathEvent event) {
-    if (event.deathMessage() instanceof TranslatableComponent translatableComponent) {
-      event.deathMessage(this.replaceFirstArgument(event.getPlayer(), translatableComponent));
+    var deathMessage = EventMessageUtils.deathMessage(event);
+    if (EventMessageUtils.deathMessage(event).get()
+        instanceof TranslatableComponent translatableComponent) {
+      EventMessageUtils.deathMessageSetter(event)
+          .accept(this.replaceFirstArgument(event.getEntity(), translatableComponent));
     }
     this.handleEventMessage(
-        event.getPlayer(),
-        event::deathMessage,
-        event::deathMessage,
-        () -> Placeholder.component("death_message", event.deathMessage()),
+        event.getEntity(),
+        EventMessageUtils.deathMessage(event),
+        EventMessageUtils.deathMessageSetter(event),
+        () -> Placeholder.component("death_message", EventMessageUtils.deathMessage(event).get()),
         this.configurationProvider.get().messages().deathMessage(),
         this.configurationProvider.get().customMessages().broadcastDeathMessages());
   }
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerAdvancementDone(PlayerAdvancementDoneEvent event) {
-    if (event.message() instanceof TranslatableComponent translatableComponent) {
-      event.message(this.replaceFirstArgument(event.getPlayer(), translatableComponent));
+    // spigot don't support of modifying the advancement message
+    if (Environment.ENVIRONMENT.isSpigot()) {
+      return;
+    }
+    if (EventMessageUtils.advancementMessage(event).get()
+        instanceof TranslatableComponent translatableComponent) {
+      EventMessageUtils.advancementMessageSetter(event)
+          .accept(this.replaceFirstArgument(event.getPlayer(), translatableComponent));
     }
     this.handleEventMessage(
         event.getPlayer(),
-        event::message,
-        event::message,
-        () -> Placeholder.component("advancement_message", event.message()),
+        EventMessageUtils.advancementMessage(event),
+        EventMessageUtils.advancementMessageSetter(event),
+        () ->
+            Placeholder.component(
+                "advancement_message", EventMessageUtils.advancementMessage(event).get()),
         this.configurationProvider.get().messages().advancementDoneMessage(),
         this.configurationProvider.get().customMessages().broadcastAdvancementMessages());
   }

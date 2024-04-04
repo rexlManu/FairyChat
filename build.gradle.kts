@@ -5,32 +5,41 @@ plugins {
     `java-library`
     alias(libs.plugins.lombok)
     alias(libs.plugins.runpaper)
-    alias(libs.plugins.userdev)
+//    alias(libs.plugins.userdev)
     alias(libs.plugins.shadow)
     // Plugins for publishing on platforms
     alias(libs.plugins.hangar)
     alias(libs.plugins.minotaur)
     // Plugins to generate plugin metadata files
-//    alias(libs.plugins.paperyml)
+    alias(libs.plugins.paperyml)
     alias(libs.plugins.pluginyml)
 }
 
 repositories {
     mavenCentral()
+    maven() {
+        url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+        content {
+            includeGroup("org.spigotmc")
+            includeGroup("org.bukkit")
+        }
+    }
     maven("https://jitpack.io")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://repo.techscode.com/repository/maven-releases/")
 }
 
 dependencies {
-    paperweight.paperDevBundle(libs.versions.minecraft)
+//    paperweight.paperDevBundle(libs.versions.minecraft)
+    compileOnly(libs.spigot)
 
-    compileOnly(libs.jedis)
-    compileOnly(libs.commandframework)
-    compileOnly(libs.configlib)
-    compileOnly(libs.guice)
-    compileOnly(libs.hikaridb)
-    compileOnly(libs.stringsimilarity)
+    library(libs.jedis)
+    library(libs.commandframework)
+    library(libs.configlib)
+    library(libs.guice)
+    library(libs.hikaridb)
+    library(libs.stringsimilarity)
+    library(libs.bundles.adventure)
 
     // Plugin dependencies
     compileOnly(libs.miniplaceholders)
@@ -39,12 +48,16 @@ dependencies {
     compileOnly(libs.ultrapermissions)
 
     implementation(libs.bstats)
+    implementation(projects.paper)
 }
 
 tasks {
     compileJava {
         options.encoding = Charsets.UTF_8.name()
         options.release.set(17)
+    }
+    build {
+        dependsOn("shadowJar")
     }
     processResources {
         filteringCharset = Charsets.UTF_8.name()
@@ -63,7 +76,7 @@ tasks {
         options.encoding = Charsets.UTF_8.name()
     }
     assemble {
-        dependsOn(reobfJar)
+//        dependsOn(reobfJar)
     }
     jar {
         enabled = false
@@ -79,13 +92,16 @@ tasks {
             exclude("META-INF/versions/**")
             exclude("META-INF/**.kotlin_module")
         }
-        minimize()
+//        minimize()
+    }
+    runServer {
+        minecraftVersion("1.20.4")
     }
 }
 
 tasks.getByName("modrinth").dependsOn(tasks.modrinthSyncBody)
 
-val versions = listOf("1.19.2", "1.19.4", "1.20", "1.20.1", "1.20.2");
+val versions = listOf("1.19.4", "1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4");
 
 modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
@@ -143,25 +159,30 @@ bukkit {
     load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
     softDepend = listOf("MiniPlaceholders", "LuckPerms", "PlaceholderAPI", "UltraPermissions")
     prefix = "FairyChat"
+    generateLibrariesJson = true
 }
 
-//paper {
-//    main = "de.rexlmanu.fairychat.plugin.FairyChatPlugin"
-//    loader = "de.rexlmanu.fairychat.plugin.FairyChatLoader"
-//    apiVersion = "1.19"
-//    foliaSupported = true
-//    author = "rexlManu"
-//    website = "https://github.com/rexlManu/FairyChat"
-//    prefix = "FairyChat"
-//    serverDependencies {
-//        register("MiniPlaceholders") {
-//            required = false
-//        }
-//        register("LuckPerms") {
-//            required = false
-//        }
-//        register("PlaceholderAPI") {
-//            required = false
-//        }
-//    }
-//}
+paper {
+    main = "de.rexlmanu.fairychat.plugin.FairyChatPlugin"
+    loader = "de.rexlmanu.fairychat.plugin.paper.FairyChatLoader"
+    apiVersion = "1.20"
+    foliaSupported = true
+    author = "rexlManu"
+    website = "https://github.com/rexlManu/FairyChat"
+    prefix = "FairyChat"
+    serverDependencies {
+        register("MiniPlaceholders") {
+            required = false
+        }
+        register("LuckPerms") {
+            required = false
+        }
+        register("PlaceholderAPI") {
+            required = false
+        }
+        register("UltraPermissions") {
+            required = false
+        }
+    }
+    generateLibrariesJson = true
+}

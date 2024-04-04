@@ -7,12 +7,14 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfigurationProvider;
+import de.rexlmanu.fairychat.plugin.paper.AdaptPluginMeta;
+import de.rexlmanu.fairychat.plugin.paper.PluginMetaFactory;
 import de.rexlmanu.fairychat.plugin.utility.ComponentTypeAdapter;
 import de.rexlmanu.fairychat.plugin.utility.annotation.PluginLogger;
-import io.papermc.paper.plugin.configuration.PluginMeta;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -38,7 +40,8 @@ public class FairyChatModule extends AbstractModule {
         .annotatedWith(Names.named("dataFolder"))
         .toInstance(this.plugin.getDataFolder().toPath());
     this.bind(Logger.class).annotatedWith(PluginLogger.class).toInstance(this.plugin.getLogger());
-    this.bind(PluginMeta.class).toInstance(this.plugin.getPluginMeta());
+    this.bind(BukkitAudiences.class).toInstance(BukkitAudiences.create(this.plugin));
+    this.bind(AdaptPluginMeta.class).toInstance(PluginMetaFactory.create(this.plugin));
 
     this.bind(MiniMessage.class).toInstance(MiniMessage.miniMessage());
     this.bind(MiniMessage.class)

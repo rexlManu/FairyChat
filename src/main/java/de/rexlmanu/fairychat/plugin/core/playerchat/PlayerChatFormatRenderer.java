@@ -9,9 +9,9 @@ import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
 import de.rexlmanu.fairychat.plugin.core.mentions.MentionService;
 import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
 import de.rexlmanu.fairychat.plugin.integration.chat.PlaceholderSupport;
+import de.rexlmanu.fairychat.plugin.paper.DefaultChatRenderer;
 import de.rexlmanu.fairychat.plugin.permission.PermissionProvider;
 import de.rexlmanu.fairychat.plugin.utility.LegacySupport;
-import io.papermc.paper.chat.ChatRenderer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class PlayerChatFormatRenderer implements ChatRenderer {
+public class PlayerChatFormatRenderer implements DefaultChatRenderer {
   private final Provider<PluginConfiguration> configurationProvider;
   private final MiniMessage miniMessage;
   private final PermissionProvider permissionProvider;

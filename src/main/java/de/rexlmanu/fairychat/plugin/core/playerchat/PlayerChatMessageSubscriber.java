@@ -9,6 +9,7 @@ import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
 import de.rexlmanu.fairychat.plugin.core.mentions.MentionService;
 import de.rexlmanu.fairychat.plugin.redis.channel.RedisChannelSubscriber;
 import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Server;
 
 @Singleton
@@ -18,6 +19,7 @@ public class PlayerChatMessageSubscriber implements RedisChannelSubscriber<Playe
   private final Provider<PluginConfiguration> configurationProvider;
   private final UserIgnoreService userIgnoreService;
   private final MentionService mentionService;
+  private final BukkitAudiences bukkitAudiences;
 
   @Override
   public Class<PlayerChatMessageData> getDataType() {
@@ -33,10 +35,12 @@ public class PlayerChatMessageSubscriber implements RedisChannelSubscriber<Playe
                 !this.userIgnoreService.isIgnored(recipient.getUniqueId(), data.senderId()))
         .forEach(
             player ->
-                player.sendMessage(this.mentionService.checkMentions(player, data.message())));
+                this.bukkitAudiences
+                    .player(player)
+                    .sendMessage(this.mentionService.checkMentions(player, data.message())));
 
     if (!this.configurationProvider.get().displayChatInConsole()) return;
 
-    this.server.getConsoleSender().sendMessage(data.message());
+    this.bukkitAudiences.sender(this.server.getConsoleSender()).sendMessage(data.message());
   }
 }

@@ -14,6 +14,7 @@ import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Server;
@@ -27,6 +28,7 @@ public class RedisPrivateMessagingService implements PrivateMessagingService {
   private final Provider<PluginConfiguration> configurationProvider;
   private final MiniMessage miniMessage;
   private final Server server;
+  private final BukkitAudiences bukkitAudiences;
 
   public void setLastRecipient(UUID senderId, UUID recipientId) {
     this.connector.useResourceAsync(
@@ -45,7 +47,7 @@ public class RedisPrivateMessagingService implements PrivateMessagingService {
     this.getPlayer(user)
         .ifPresent(
             player ->
-                player.sendMessage(
+                this.bukkitAudiences.player(player).sendMessage(
                     this.miniMessage.deserialize(
                         this.configurationProvider.get().privateMessaging().senderFormat(),
                         Placeholder.unparsed("message", message),
@@ -57,7 +59,7 @@ public class RedisPrivateMessagingService implements PrivateMessagingService {
     this.getPlayer(recipient)
         .ifPresentOrElse(
             player ->
-                player.sendMessage(
+                this.bukkitAudiences.player(player).sendMessage(
                     this.miniMessage.deserialize(
                         this.configurationProvider.get().privateMessaging().receiverFormat(),
                         Placeholder.unparsed("message", message),

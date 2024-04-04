@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
+import de.rexlmanu.fairychat.plugin.paper.AdaptPluginMeta;
 import de.rexlmanu.fairychat.plugin.utility.annotation.PluginLogger;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -16,6 +17,7 @@ import java.net.http.HttpResponse;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.entity.Player;
@@ -31,6 +33,8 @@ public class UpdateChecker {
   private final Provider<PluginConfiguration> configurationProvider;
   @PluginLogger private final Logger logger;
   private final MiniMessage miniMessage;
+  private final AdaptPluginMeta adaptPluginMeta;
+  private final BukkitAudiences bukkitAudiences;
 
   @Nullable private Release latestRelease;
 
@@ -69,7 +73,7 @@ public class UpdateChecker {
     this.logger.info("Checking for updates...");
     this.fetchLatestVersion(
         release -> {
-          if (!this.plugin.getPluginMeta().getVersion().equals(release.version())) {
+          if (!this.adaptPluginMeta.version().equals(release.version())) {
             this.logger.warning(
                 "A new version of FairyChat is available. You can download it at " + release.url());
           } else {
@@ -86,15 +90,17 @@ public class UpdateChecker {
 
     this.fetchLatestVersion(
         release -> {
-          if (this.plugin.getPluginMeta().getVersion().equals(release.version())) {
+          if (this.adaptPluginMeta.version().equals(release.version())) {
             return;
           }
 
-          player.sendMessage(
-              this.miniMessage.deserialize(
-                  this.configurationProvider.get().messages().updateNotification(),
-                  Placeholder.parsed("url", release.url()),
-                  Placeholder.parsed("version", release.version())));
+          this.bukkitAudiences
+              .player(player)
+              .sendMessage(
+                  this.miniMessage.deserialize(
+                      this.configurationProvider.get().messages().updateNotification(),
+                      Placeholder.parsed("url", release.url()),
+                      Placeholder.parsed("version", release.version())));
         });
   }
 }

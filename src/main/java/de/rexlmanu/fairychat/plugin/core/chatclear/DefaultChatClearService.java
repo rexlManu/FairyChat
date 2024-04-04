@@ -7,6 +7,7 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Server;
@@ -18,14 +19,18 @@ public class DefaultChatClearService implements ChatClearService {
   private final Server server;
   private final Provider<PluginConfiguration> configurationProvider;
   private final MiniMessage miniMessage;
+  private final BukkitAudiences bukkitAudiences;
 
   @Override
   public void clearChat(Player player) {
     for (int i = 0; i < CLEAR_CHAT_MAX_LINES; i++) {
-      player.sendMessage(Component.empty());
+      this.bukkitAudiences.player(player).sendMessage(Component.empty());
     }
-    player.sendMessage(
-        this.miniMessage.deserialize(this.configurationProvider.get().messages().chatCleared()));
+    this.bukkitAudiences
+        .player(player)
+        .sendMessage(
+            this.miniMessage.deserialize(
+                this.configurationProvider.get().messages().chatCleared()));
   }
 
   @Override

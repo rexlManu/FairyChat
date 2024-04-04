@@ -1,6 +1,8 @@
 package de.rexlmanu.fairychat.plugin.utility.scheduler;
 
 import com.google.inject.AbstractModule;
+import de.rexlmanu.fairychat.plugin.paper.FoliaPluginScheduler;
+import de.rexlmanu.fairychat.plugin.paper.PluginScheduler;
 
 public class PluginSchedulerModule extends AbstractModule {
   private static final String FOLIA_CLASS = "io.papermc.paper.threadedregions.RegionizedServer";

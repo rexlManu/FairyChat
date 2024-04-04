@@ -10,6 +10,7 @@ import de.rexlmanu.fairychat.plugin.Constants;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.broadcast.BroadcastMessageData;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -23,7 +24,7 @@ public class BroadcastCommand {
       MiniMessage miniMessage,
       RedisConnector connector,
       Server server,
-      Provider<PluginConfiguration> configurationProvider) {
+      Provider<PluginConfiguration> configurationProvider, BukkitAudiences bukkitAudiences) {
     commandManager.command(
         commandManager
             .commandBuilder("broadcast")
@@ -41,7 +42,7 @@ public class BroadcastCommand {
                    * If the redis connector isn't available, we send the message to all online players.
                    */
                   if (!connector.available()) {
-                    server.getOnlinePlayers().forEach(player -> player.sendMessage(component));
+                    server.getOnlinePlayers().forEach(player -> bukkitAudiences.player(player).sendMessage(component));
                     return;
                   }
 

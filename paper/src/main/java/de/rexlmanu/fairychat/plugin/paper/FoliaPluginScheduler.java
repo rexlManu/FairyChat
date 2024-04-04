@@ -1,4 +1,4 @@
-package de.rexlmanu.fairychat.plugin.utility.scheduler;
+package de.rexlmanu.fairychat.plugin.paper;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

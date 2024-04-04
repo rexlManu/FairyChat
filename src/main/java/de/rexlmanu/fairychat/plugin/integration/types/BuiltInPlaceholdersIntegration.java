@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.integration.Integration;
 import de.rexlmanu.fairychat.plugin.integration.chat.PlaceholderSupport;
+import de.rexlmanu.fairychat.plugin.paper.event.EventMessageUtils;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -32,7 +33,8 @@ public class BuiltInPlaceholdersIntegration implements Integration, PlaceholderS
   public TagResolver resolvePlayerPlaceholder(Player player) {
     return TagResolver.resolver(
         Placeholder.parsed("sender_name", player.getName()),
-        Placeholder.component("sender_displayname", player.displayName()),
+        Placeholder.component(
+            "sender_displayname", EventMessageUtils.playerDisplayName(player).get()),
         TagResolver.resolver(
             "fc_world_name",
             (argumentQueue, context) -> {

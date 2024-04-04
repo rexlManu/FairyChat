@@ -13,6 +13,7 @@ import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.command.CommandSender;
@@ -26,7 +27,8 @@ public class CommandModule extends AbstractModule {
       JavaPlugin javaPlugin,
       Injector injector,
       MiniMessage miniMessage,
-      Provider<PluginConfiguration> configurationProvider) {
+      Provider<PluginConfiguration> configurationProvider,
+      BukkitAudiences bukkitAudiences) {
     try {
       Function<CommandSender, CommandSender> mapper = Function.identity();
 
@@ -48,10 +50,12 @@ public class CommandModule extends AbstractModule {
       commandManager.registerExceptionHandler(
           InvalidSyntaxException.class,
           (sender, e) ->
-              sender.sendMessage(
-                  miniMessage.deserialize(
-                      configurationProvider.get().messages().invalidSyntax(),
-                      Placeholder.unparsed("syntax", e.getCorrectSyntax()))));
+              bukkitAudiences
+                  .sender(sender)
+                  .sendMessage(
+                      miniMessage.deserialize(
+                          configurationProvider.get().messages().invalidSyntax(),
+                          Placeholder.unparsed("syntax", e.getCorrectSyntax()))));
 
       return commandManager;
     } catch (Exception e) {

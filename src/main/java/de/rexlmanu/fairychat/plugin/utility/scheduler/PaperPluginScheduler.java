@@ -2,6 +2,7 @@ package de.rexlmanu.fairychat.plugin.utility.scheduler;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import de.rexlmanu.fairychat.plugin.paper.PluginScheduler;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.util.Ticks;
 import org.bukkit.Server;
