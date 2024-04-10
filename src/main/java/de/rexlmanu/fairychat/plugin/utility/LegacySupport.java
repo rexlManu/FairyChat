@@ -114,18 +114,19 @@ public class LegacySupport {
         });
   }
 
-  public static @NotNull Component parsePossibleLegacy(final @Nullable String string) {
-    if (string == null || string.isBlank()) return Component.empty();
-    if (string.indexOf('&') == -1 && string.indexOf('§') == -1) {
-      return miniMessage().deserialize(string);
+  public static @NotNull Component parsePossibleLegacy(@Nullable String message) {
+    if (message == null || message.isBlank()) return Component.empty();
+    if (message.indexOf('&') == -1 && message.indexOf('§') == -1) {
+      return miniMessage().deserialize(message);
     }
+    message = replaceLegacyWithTags(message);
     return miniMessage()
         .deserialize(
             miniMessage()
                 .serialize(
-                    (string.indexOf('§') == -1
-                        ? LEGACY_HEX_SERIALIZER.deserialize(string)
-                        : LEGACY_HEX_SERIALIZER_SECTION.deserialize(string)))
+                    (message.indexOf('§') == -1
+                        ? LEGACY_HEX_SERIALIZER.deserialize(message)
+                        : LEGACY_HEX_SERIALIZER_SECTION.deserialize(message)))
                 .replace("\\<", "<")
                 .replace("\\>", ">"));
   }
