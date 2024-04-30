@@ -3,7 +3,7 @@ minecraft = "1.20.4-R0.1-SNAPSHOT"
 adventure = "4.3.2"
 minimessage = "4.16.0"
 [plugins]
-userdev = { id = "io.papermc.paperweight.userdev", version = "1.6.0" }
+userdev = { id = "io.papermc.paperweight.userdev", version = "1.6.3" }
 runpaper = { id = "xyz.jpenilla.run-paper", version = "2.2.4" }
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
 lombok = { id = "io.freefair.lombok", version = "8.6" }
