@@ -24,6 +24,6 @@ public class PrivateMessagingConfig {
   @Comment("Aliases for commands.")
   private Map<String, String[]> aliases =
       Map.of(
-          "pm", new String[] {"msg", "message", "tell", "whisper"},
+          "pm", new String[] {"msg", "message", "tell", "whisper", "w"},
           "reply", new String[] {"r", "answer"});
 }
