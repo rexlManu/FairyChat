@@ -1,7 +1,9 @@
 package de.rexlmanu.fairychat.plugin.configuration;
 
 import com.google.inject.Singleton;
+import de.exlll.configlib.YamlConfigurationProperties;
 import de.exlll.configlib.YamlConfigurations;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 import lombok.Getter;
@@ -23,7 +25,9 @@ public class PluginConfigurationProvider {
     try {
       this.configuration =
           YamlConfigurations.update(
-              this.dataFolder.resolve("config.yml"), PluginConfiguration.class);
+              this.dataFolder.resolve("config.yml"),
+              PluginConfiguration.class,
+              YamlConfigurationProperties.newBuilder().charset(StandardCharsets.UTF_8).build());
     } catch (Exception e) {
       this.logger.severe(
           """
