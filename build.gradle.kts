@@ -5,7 +5,6 @@ plugins {
     `java-library`
     alias(libs.plugins.lombok)
     alias(libs.plugins.runpaper)
-//    alias(libs.plugins.userdev)
     alias(libs.plugins.shadow)
     // Plugins for publishing on platforms
     alias(libs.plugins.hangar)
@@ -30,7 +29,6 @@ repositories {
 }
 
 dependencies {
-//    paperweight.paperDevBundle(libs.versions.minecraft)
     compileOnly(libs.spigot)
 
     library(libs.jedis)
@@ -75,9 +73,6 @@ tasks {
     javadoc {
         options.encoding = Charsets.UTF_8.name()
     }
-    assemble {
-//        dependsOn(reobfJar)
-    }
     jar {
         enabled = false
     }
@@ -92,7 +87,6 @@ tasks {
             exclude("META-INF/versions/**")
             exclude("META-INF/**.kotlin_module")
         }
-//        minimize()
     }
     runServer {
         minecraftVersion("1.20.4")
@@ -113,7 +107,7 @@ modrinth {
 
     syncBodyFrom.set(rootProject.file("README.md").readText())
 
-    uploadFile.set(buildDir.resolve("libs").resolve("FairyChat-${rootProject.version}.jar"))
+    uploadFile.set(layout.buildDirectory.file("libs/FairyChat-${rootProject.version}.jar"))
     gameVersions.addAll(versions)
     loaders.addAll(listOf("paper", "purpur", "folia"))
     changelog.set(System.getenv("MODRINTH_CHANGELOG"))
@@ -134,7 +128,7 @@ hangarPublish {
         // register platforms
         platforms {
             register(Platforms.PAPER) {
-                jar.set(buildDir.resolve("libs").resolve("FairyChat-${rootProject.version}.jar"))
+                jar.set(layout.buildDirectory.file("libs/FairyChat-${rootProject.version}.jar"))
                 platformVersions.set(versions)
                 dependencies {
                     hangar("MiniPlaceholders") {
