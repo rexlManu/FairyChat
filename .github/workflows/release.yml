@@ -16,11 +16,10 @@ jobs:
           java-version: '17'
           cache: gradle
       - run: chmod +x gradlew
-      - name: Build project
-        uses: gradle/gradle-build-action@v3
-        with:
-          gradle-version: '8.1.1'
-          arguments: build
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+      - name: Build with Gradle
+        run: ./gradlew build
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4.3.3
         with:
@@ -36,18 +35,12 @@ jobs:
           body: ${{ steps.changelog.outputs.changelog }}
           draft: true
       - name: Publish to Modrinth
-        uses: gradle/gradle-build-action@v3
-        with:
-          gradle-version: '8.1.1'
-          arguments: modrinth
+        run: ./gradlew modrinth
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           MODRINTH_CHANGELOG: ${{ steps.changelog.outputs.changelog }}
       - name: Publish to Hangar
-        uses: gradle/gradle-build-action@v3
-        with:
-          gradle-version: '8.1.1'
-          arguments: publishAllPublicationsToHangar
+        run: ./gradlew publishAllPublicationsToHangar
         env:
           HANGAR_CHANGELOG: ${{ steps.changelog.outputs.changelog }}
           HANGAR_TOKEN: ${{ secrets.HANGAR_TOKEN }}
