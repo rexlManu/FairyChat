@@ -39,6 +39,7 @@ public class SpigotEventHandler implements FairyEventHandler {
               return LegacyComponentSerializer.legacySection().deserialize(formattedMessage);
             },
             LegacyComponentSerializer.legacySection().deserialize(event.getMessage()));
+    chatEvent.setCancelled(event.isCancelled());
 
     this.server.getPluginManager().callEvent(chatEvent);
 

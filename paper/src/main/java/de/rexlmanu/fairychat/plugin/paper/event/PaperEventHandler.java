@@ -18,6 +18,8 @@ public class PaperEventHandler implements FairyEventHandler {
             event.renderer()::render,
             event.message());
 
+    chatEvent.setCancelled(event.isCancelled());
+
     chatEvent.callEvent();
 
     event.setCancelled(chatEvent.isCancelled());
