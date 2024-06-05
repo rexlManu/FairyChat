@@ -26,7 +26,7 @@ public class DisplayItemChatIntegration implements Integration, PlaceholderSuppo
     if (item.getType().isAir()) return TagResolver.empty();
 
     Component component;
-    if (Environment.PAPER.isPaper()) {
+    if (Environment.ENVIRONMENT.isPaper()) {
       component = EventMessageUtils.displayNameOfItem(item);
     } else {
       String displayName = item.getItemMeta().getDisplayName();
