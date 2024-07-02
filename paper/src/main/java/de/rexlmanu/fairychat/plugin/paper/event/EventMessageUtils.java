@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
+@SuppressWarnings("deprecation")
 @UtilityClass
 public class EventMessageUtils {
   public static Supplier<Component> quitMessage(PlayerQuitEvent event) {
@@ -28,11 +29,14 @@ public class EventMessageUtils {
 
   public static Consumer<Component> quitMessageSetter(PlayerQuitEvent event) {
     if (Environment.ENVIRONMENT.isPaper()) {
-      return event::quitMessage;
+      return component -> {
+        if (component != null) {
+          event.quitMessage(component);
+        }
+      };
     }
     return component -> {
       if (component == null) {
-        event.setQuitMessage(null);
         return;
       }
       event.setQuitMessage(LegacyComponentSerializer.legacySection().serialize(component));
@@ -52,11 +56,14 @@ public class EventMessageUtils {
 
   public static Consumer<Component> joinMessageSetter(PlayerJoinEvent event) {
     if (Environment.ENVIRONMENT.isPaper()) {
-      return event::joinMessage;
+      return component -> {
+        if (component != null) {
+          event.joinMessage(component);
+        }
+      };
     }
     return component -> {
       if (component == null) {
-        event.setJoinMessage(null);
         return;
       }
       event.setJoinMessage(LegacyComponentSerializer.legacySection().serialize(component));
@@ -76,11 +83,14 @@ public class EventMessageUtils {
 
   public static Consumer<Component> deathMessageSetter(PlayerDeathEvent event) {
     if (Environment.ENVIRONMENT.isPaper()) {
-      return event::deathMessage;
+      return component -> {
+        if (component != null) {
+          event.deathMessage(component);
+        }
+      };
     }
     return component -> {
       if (component == null) {
-        event.setDeathMessage(null);
         return;
       }
       event.setDeathMessage(LegacyComponentSerializer.legacySection().serialize(component));
