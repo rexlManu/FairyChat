@@ -1,11 +1,14 @@
 package de.rexlmanu.fairychat.plugin.integration.types;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.Constants;
+import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.integration.Integration;
 import de.rexlmanu.fairychat.plugin.integration.chat.PlaceholderSupport;
 import de.rexlmanu.fairychat.plugin.utility.LegacySupport;
+import de.rexlmanu.fairychat.plugin.utility.TagResolverUtil;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.Tag;
@@ -27,6 +30,7 @@ public class LuckPermsIntegration implements Integration, PlaceholderSupport {
   private final PluginManager pluginManager;
   private final ServicesManager servicesManager;
   private @Nullable RegisteredServiceProvider<LuckPerms> luckPermsService;
+  private final Provider<PluginConfiguration> configurationProvider;
 
   @Override
   public boolean available() {
@@ -47,20 +51,24 @@ public class LuckPermsIntegration implements Integration, PlaceholderSupport {
     return TagResolver.resolver(
         TagResolver.resolver(
             "fc_luckperms_prefix",
-            Tag.selfClosingInserting(LegacySupport.parsePossibleLegacy(metaData.getPrefix()))),
+            TagResolverUtil.resolver(this.configurationProvider.get())
+                .apply(LegacySupport.parsePossibleLegacy(metaData.getPrefix()))),
         TagResolver.resolver(
             "fc_luckperms_suffix",
-            Tag.selfClosingInserting(LegacySupport.parsePossibleLegacy(metaData.getSuffix()))),
+            TagResolverUtil.resolver(this.configurationProvider.get())
+                .apply(LegacySupport.parsePossibleLegacy(metaData.getSuffix()))),
         TagResolver.resolver(
             "fc_luckperms_prefixes",
-            Tag.selfClosingInserting(
-                LegacySupport.parsePossibleLegacy(
-                    String.join("", metaData.getPrefixes().values())))),
+            TagResolverUtil.resolver(this.configurationProvider.get())
+                .apply(
+                    LegacySupport.parsePossibleLegacy(
+                        String.join("", metaData.getPrefixes().values())))),
         TagResolver.resolver(
             "fc_luckperms_suffixes",
-            Tag.selfClosingInserting(
-                LegacySupport.parsePossibleLegacy(
-                    String.join("", metaData.getSuffixes().values())))),
+            TagResolverUtil.resolver(this.configurationProvider.get())
+                .apply(
+                    LegacySupport.parsePossibleLegacy(
+                        String.join("", metaData.getSuffixes().values())))),
         TagResolver.resolver(
             "fc_luckperms_username_color",
             Tag.inserting(
@@ -88,9 +96,10 @@ public class LuckPermsIntegration implements Integration, PlaceholderSupport {
                 return Tag.selfClosingInserting(Component.empty());
               }
 
-              return Tag.selfClosingInserting(
-                  LegacySupport.parsePossibleLegacy(
-                      group.getCachedData().getMetaData().getPrefix()));
+              return TagResolverUtil.resolver(this.configurationProvider.get())
+                  .apply(
+                      LegacySupport.parsePossibleLegacy(
+                          group.getCachedData().getMetaData().getPrefix()));
             }));
   }
 }

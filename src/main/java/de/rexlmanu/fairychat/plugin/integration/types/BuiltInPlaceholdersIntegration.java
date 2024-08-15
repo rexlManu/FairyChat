@@ -6,6 +6,7 @@ import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.integration.Integration;
 import de.rexlmanu.fairychat.plugin.integration.chat.PlaceholderSupport;
 import de.rexlmanu.fairychat.plugin.paper.event.EventMessageUtils;
+import de.rexlmanu.fairychat.plugin.utility.TagResolverUtil;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -40,12 +41,13 @@ public class BuiltInPlaceholdersIntegration implements Integration, PlaceholderS
             (argumentQueue, context) -> {
               String worldName = player.getWorld().getName();
 
-              return Tag.selfClosingInserting(
-                  this.miniMessage.deserialize(
-                      this.configurationProvider
-                          .get()
-                          .worldNames()
-                          .getOrDefault(worldName, worldName)));
+              return TagResolverUtil.resolver(configurationProvider.get())
+                  .apply(
+                      this.miniMessage.deserialize(
+                          this.configurationProvider
+                              .get()
+                              .worldNames()
+                              .getOrDefault(worldName, worldName)));
             }),
         this.resolvePlaceholder());
   }

@@ -140,4 +140,10 @@ public class PluginConfiguration {
     "<papi:(placeholder name)> e.g. <papi:player_displayname>"
   })
   private Messages messages = new Messages();
+
+  @Comment({
+    "Should the internal placeholders be self closing tags?",
+    "That means styling while not be applied to childrens of the text components."
+  })
+  private boolean placeholderSelfClosingTags = true;
 }
