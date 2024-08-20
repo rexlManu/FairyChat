@@ -6,7 +6,7 @@ minimessage = "4.17.0"
 userdev = { id = "io.papermc.paperweight.userdev", version = "1.7.2" }
 runpaper = { id = "xyz.jpenilla.run-paper", version = "2.3.1" }
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
-lombok = { id = "io.freefair.lombok", version = "8.7.1" }
+lombok = { id = "io.freefair.lombok", version = "8.10" }
 hangar = { id = "io.papermc.hangar-publish-plugin", version = "0.1.2" }
 minotaur = { id = "com.modrinth.minotaur", version = "2.8.7" }
 paperyml = { id = "net.minecrell.plugin-yml.paper", version = "0.6.0" }
