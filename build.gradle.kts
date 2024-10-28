@@ -25,7 +25,7 @@ repositories {
     }
     maven("https://jitpack.io")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    maven("https://repo.techscode.com/repository/maven-releases/")
+    maven("https://repo.miopowered.eu/snapshots/")
 }
 
 dependencies {
@@ -95,7 +95,7 @@ tasks {
 
 tasks.getByName("modrinth").dependsOn(tasks.modrinthSyncBody)
 
-val versions = listOf("1.19.4", "1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4", "1.20.5", "1.20.6", "1.21", "1.21.1");
+val versions = listOf("1.19.4", "1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4", "1.20.5", "1.20.6", "1.21", "1.21.1", "1.21.2", "1.21.3");
 
 modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
