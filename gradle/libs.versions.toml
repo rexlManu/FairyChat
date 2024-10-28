@@ -15,7 +15,7 @@ pluginyml = { id = "net.minecrell.plugin-yml.bukkit", version = "0.6.0" }
 spigot = { module = "org.spigotmc:spigot-api", version = "1.20.4-R0.1-SNAPSHOT" }
 paper = { module = "io.papermc.paper:paper-api", version = "1.20.4-R0.1-SNAPSHOT" }
 
-annotations = { module = "org.jetbrains:annotations", version = "24.1.0" }
+annotations = { module = "org.jetbrains:annotations", version = "26.0.1" }
 jedis = { module = "redis.clients:jedis", version = "5.1.5" }
 miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.3" }
 commandframework = { module = "cloud.commandframework:cloud-paper", version = "1.8.4" }
