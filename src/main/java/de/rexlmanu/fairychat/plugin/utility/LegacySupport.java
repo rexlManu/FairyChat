@@ -99,6 +99,8 @@ public class LegacySupport {
           final String papiPlaceholder =
               argumentQueue.popOr("papi tag requires an argument").value();
 
+          boolean notSelfClosing = argumentQueue.hasNext() && argumentQueue.pop().isFalse();
+
           // Then get PAPI to parse the placeholder for the given player.
           final String parsedPlaceholder =
               PlaceholderAPI.setPlaceholders(player, '%' + papiPlaceholder + '%');
@@ -110,6 +112,9 @@ public class LegacySupport {
           Component component = parsePossibleLegacy(parsedPlaceholder);
 
           // Finally, return the tag instance to insert the placeholder!
+          if (notSelfClosing) {
+            return Tag.inserting(component);
+          }
           return Tag.selfClosingInserting(component);
         });
   }
