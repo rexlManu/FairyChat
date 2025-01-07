@@ -38,6 +38,9 @@ public class CustomMessageBukkitListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerJoin(PlayerJoinEvent event) {
+    if (!configurationProvider.get().customMessages().broadcastJoinMessages()) {
+      return;
+    }
     if (event.getPlayer().hasPermission("fairychat.messages.join.ignore")) {
       EventMessageUtils.joinMessageSetter(event).accept(null);
       return;
@@ -47,12 +50,14 @@ public class CustomMessageBukkitListener implements Listener {
         EventMessageUtils.joinMessage(event),
         EventMessageUtils.joinMessageSetter(event),
         TagResolver::empty,
-        this.configurationProvider.get().messages().joinMessage(),
-        this.configurationProvider.get().customMessages().broadcastJoinMessages());
+        this.configurationProvider.get().messages().joinMessage());
   }
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerQuit(PlayerQuitEvent event) {
+    if (!configurationProvider.get().customMessages().broadcastQuitMessages()) {
+      return;
+    }
     if (event.getPlayer().hasPermission("fairychat.messages.join.ignore")) {
       EventMessageUtils.quitMessageSetter(event).accept(null);
       return;
@@ -62,15 +67,16 @@ public class CustomMessageBukkitListener implements Listener {
         EventMessageUtils.quitMessage(event),
         EventMessageUtils.quitMessageSetter(event),
         TagResolver::empty,
-        this.configurationProvider.get().messages().quitMessage(),
-        this.configurationProvider.get().customMessages().broadcastQuitMessages());
+        this.configurationProvider.get().messages().quitMessage());
   }
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerDeath(PlayerDeathEvent event) {
+    if (!configurationProvider.get().customMessages().broadcastDeathMessages()) {
+      return;
+    }
     var deathMessage = EventMessageUtils.deathMessage(event);
-    if (EventMessageUtils.deathMessage(event).get()
-        instanceof TranslatableComponent translatableComponent) {
+    if (deathMessage.get() instanceof TranslatableComponent translatableComponent) {
       EventMessageUtils.deathMessageSetter(event)
           .accept(this.replaceFirstArgument(event.getEntity(), translatableComponent));
     }
@@ -79,12 +85,14 @@ public class CustomMessageBukkitListener implements Listener {
         EventMessageUtils.deathMessage(event),
         EventMessageUtils.deathMessageSetter(event),
         () -> Placeholder.component("death_message", EventMessageUtils.deathMessage(event).get()),
-        this.configurationProvider.get().messages().deathMessage(),
-        this.configurationProvider.get().customMessages().broadcastDeathMessages());
+        this.configurationProvider.get().messages().deathMessage());
   }
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerAdvancementDone(PlayerAdvancementDoneEvent event) {
+    if (!configurationProvider.get().customMessages().broadcastAdvancementMessages()) {
+      return;
+    }
     // spigot don't support of modifying the advancement message
     if (Environment.ENVIRONMENT.isSpigot()) {
       return;
@@ -101,8 +109,7 @@ public class CustomMessageBukkitListener implements Listener {
         () ->
             Placeholder.component(
                 "advancement_message", EventMessageUtils.advancementMessage(event).get()),
-        this.configurationProvider.get().messages().advancementDoneMessage(),
-        this.configurationProvider.get().customMessages().broadcastAdvancementMessages());
+        this.configurationProvider.get().messages().advancementDoneMessage());
   }
 
   private void handleEventMessage(
@@ -110,9 +117,8 @@ public class CustomMessageBukkitListener implements Listener {
       Supplier<Component> messageSupplier,
       Consumer<Component> messageConsumer,
       Supplier<TagResolver> placeholders,
-      String configValue,
-      boolean broadcast) {
-    if (messageSupplier.get() == null) return;
+      String configValue) {
+    if (messageSupplier.get() == null || !this.connector.available()) return;
 
     if (configValue == null || configValue.isEmpty()) {
       messageConsumer.accept(null);
@@ -127,8 +133,6 @@ public class CustomMessageBukkitListener implements Listener {
                 this.registry.getPlaceholderSupports().stream()
                     .map(placeholderSupport -> placeholderSupport.resolvePlayerPlaceholder(player))
                     .toList())));
-
-    if (!broadcast || !this.connector.available()) return;
 
     this.connector.publish(
         Constants.CUSTOM_MESSAGE_CHANNEL,
