@@ -82,7 +82,7 @@ public class CustomMessageBukkitListener implements Listener {
     }
     this.handleEventMessage(
         event.getEntity(),
-        EventMessageUtils.deathMessage(event),
+        deathMessage,
         EventMessageUtils.deathMessageSetter(event),
         () -> Placeholder.component("death_message", EventMessageUtils.deathMessage(event).get()),
         this.configurationProvider.get().messages().deathMessage());
