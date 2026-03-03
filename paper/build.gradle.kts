@@ -11,3 +11,10 @@ dependencies {
     compileOnly(libs.paper)
     compileOnly(libs.guice)
 }
+
+tasks {
+    compileJava {
+        options.release.set(17)
+        options.encoding = Charsets.UTF_8.name()
+    }
+}
