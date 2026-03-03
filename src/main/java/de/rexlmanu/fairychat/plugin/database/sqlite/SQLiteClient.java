@@ -42,7 +42,6 @@ public class SQLiteClient implements DatabaseClient, DatabaseQueries {
     hikariConfig.setJdbcUrl("jdbc:sqlite:" + this.databaseFile.toAbsolutePath());
     hikariConfig.setConnectionTestQuery("SELECT 1");
     hikariConfig.setMaxLifetime(60000);
-    hikariConfig.setIdleTimeout(45000);
     hikariConfig.setMaximumPoolSize(50);
     this.dataSource = new HikariDataSource(hikariConfig);
 
