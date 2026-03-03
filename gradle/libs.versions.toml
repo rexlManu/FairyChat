@@ -1,30 +1,30 @@
 [versions]
 minecraft = "1.20.4-R0.1-SNAPSHOT"
-adventure = "4.3.4"
-minimessage = "4.17.0"
+adventure = "4.4.1"
+minimessage = "4.26.1"
 [plugins]
-userdev = { id = "io.papermc.paperweight.userdev", version = "1.7.4" }
+userdev = { id = "io.papermc.paperweight.userdev", version = "1.7.7" }
 runpaper = { id = "xyz.jpenilla.run-paper", version = "2.3.1" }
-shadow = { id = "com.gradleup.shadow", version = "8.3.3" }
-lombok = { id = "io.freefair.lombok", version = "8.10.2" }
-hangar = { id = "io.papermc.hangar-publish-plugin", version = "0.1.2" }
-minotaur = { id = "com.modrinth.minotaur", version = "2.8.7" }
+shadow = { id = "com.gradleup.shadow", version = "8.3.5" }
+lombok = { id = "io.freefair.lombok", version = "9.2.0" }
+hangar = { id = "io.papermc.hangar-publish-plugin", version = "0.1.4" }
+minotaur = { id = "com.modrinth.minotaur", version = "2.8.10" }
 paperyml = { id = "net.minecrell.plugin-yml.paper", version = "0.6.0" }
 pluginyml = { id = "net.minecrell.plugin-yml.bukkit", version = "0.6.0" }
 [libraries]
 spigot = { module = "org.spigotmc:spigot-api", version = "1.20.4-R0.1-SNAPSHOT" }
 paper = { module = "io.papermc.paper:paper-api", version = "1.20.4-R0.1-SNAPSHOT" }
 
-annotations = { module = "org.jetbrains:annotations", version = "26.0.1" }
-jedis = { module = "redis.clients:jedis", version = "5.1.5" }
+annotations = { module = "org.jetbrains:annotations", version = "26.1.0" }
+jedis = { module = "redis.clients:jedis", version = "7.3.0" }
 miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.3" }
 commandframework = { module = "cloud.commandframework:cloud-paper", version = "1.8.4" }
-configlib = { module = "de.exlll:configlib-yaml", version = "4.5.0" }
+configlib = { module = "de.exlll:configlib-yaml", version = "4.8.1" }
 guice = { module = "com.google.inject:guice", version = "7.0.0" }
-luckperms = { module = "net.luckperms:api", version = "5.4" }
-bstats = { module = "org.bstats:bstats-bukkit", version = "3.1.0" }
-hikaridb = { module = "com.zaxxer:HikariCP", version = "6.0.0" }
-placeholderapi = { module = "me.clip:placeholderapi", version = "2.11.6" }
+luckperms = { module = "net.luckperms:api", version = "5.5" }
+bstats = { module = "org.bstats:bstats-bukkit", version = "3.2.1" }
+hikaridb = { module = "com.zaxxer:HikariCP", version = "7.0.2" }
+placeholderapi = { module = "me.clip:placeholderapi", version = "2.12.2" }
 stringsimilarity = { module = "net.ricecode:string-similarity", version = "1.0.0" }
 ultrapermissions = { module = "me.TechsCode:UltraPermissionsAPI", version = "5.5.2" }
 

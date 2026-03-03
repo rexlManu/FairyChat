@@ -89,13 +89,34 @@ tasks {
         }
     }
     runServer {
-        minecraftVersion("1.20.4")
+        minecraftVersion("1.21.11")
     }
 }
 
 tasks.getByName("modrinth").dependsOn(tasks.modrinthSyncBody)
 
-val versions = listOf("1.19.4", "1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4", "1.20.5", "1.20.6", "1.21", "1.21.1", "1.21.2", "1.21.3");
+val versions = listOf(
+    "1.19.4",
+    "1.20",
+    "1.20.1",
+    "1.20.2",
+    "1.20.3",
+    "1.20.4",
+    "1.20.5",
+    "1.20.6",
+    "1.21",
+    "1.21.1",
+    "1.21.2",
+    "1.21.3",
+    "1.21.4",
+    "1.21.5",
+    "1.21.6",
+    "1.21.7",
+    "1.21.8",
+    "1.21.9",
+    "1.21.10",
+    "1.21.11"
+)
 
 modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
