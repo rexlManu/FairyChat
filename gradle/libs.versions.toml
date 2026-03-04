@@ -4,7 +4,7 @@ adventure = "4.4.1"
 minimessage = "4.26.1"
 [plugins]
 userdev = { id = "io.papermc.paperweight.userdev", version = "1.7.7" }
-runpaper = { id = "xyz.jpenilla.run-paper", version = "2.3.1" }
+runpaper = { id = "xyz.jpenilla.run-paper", version = "3.0.2" }
 shadow = { id = "com.gradleup.shadow", version = "8.3.5" }
 lombok = { id = "io.freefair.lombok", version = "9.2.0" }
 hangar = { id = "io.papermc.hangar-publish-plugin", version = "0.1.4" }
