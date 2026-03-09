@@ -18,6 +18,7 @@ import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -71,10 +72,11 @@ public class PlayerChatFormatRenderer implements DefaultChatRenderer {
     }
     final String textMessage = this.resolveMessageModifiers(source, serializer.apply(message));
 
+    Component messageComponent;
     // Check if the player has the permission to use mini message
     if (source.hasPermission("fairychat.feature.minimessage")) {
       String miniMessageFormatted = LegacySupport.replaceLegacyWithTags(textMessage);
-      message =
+      Component parsedText =
           this.colorMiniMessage.deserialize(
               miniMessageFormatted,
               TagResolver.resolver(
@@ -84,22 +86,19 @@ public class PlayerChatFormatRenderer implements DefaultChatRenderer {
                               chatPlaceholder.resolveChatMessagePlaceholder(
                                   source, miniMessageFormatted))
                       .toList()));
+
+      // Since FairyChat can only ever apply top-level formatting to the message, we can just parse the message with
+      // the FairyChat formatting and apply that top-level style to the existing message component.
+      // that way we don't strip the message of any subcomponent formatting and things like click/hover events
+      messageComponent = message.style(message.style().merge(parsedText.style(), Style.Merge.Strategy.IF_ABSENT_ON_TARGET));
     } else {
-      message =
-          MiniMessage.builder()
-              .tags(
-                  TagResolver.resolver(
-                      this.registry.getPlaceholderSupports().stream()
-                          .map(
-                              chatPlaceholder ->
-                                  chatPlaceholder.resolveChatMessagePlaceholder(
-                                      source, textMessage))
-                          .toList()))
-              .build()
-              .deserialize(textMessage);
+      // just use the original rich component
+      // no need to re-deserialise the message from plain text
+      // re-deserialising would also stip away formatting and hover/click events
+      messageComponent = message;
     }
 
-    @NotNull Component finalMessage = message;
+    @NotNull Component finalMessage = messageComponent;
 
     List<TagResolver> tagResolvers =
         new ArrayList<>(
@@ -110,7 +109,7 @@ public class PlayerChatFormatRenderer implements DefaultChatRenderer {
                             source, finalMessage))
                 .toList());
 
-    tagResolvers.add(Placeholder.component("message", message));
+    tagResolvers.add(Placeholder.component("message", finalMessage));
     tagResolvers.add(
         Placeholder.unparsed("server_name", this.configurationProvider.get().serverName()));
 
