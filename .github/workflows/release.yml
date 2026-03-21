@@ -33,7 +33,7 @@ jobs:
         with:
           files: build/libs/**.jar
           body: ${{ steps.changelog.outputs.changelog }}
-          draft: true
+          draft: false
       - name: Publish to Modrinth
         run: ./gradlew modrinth
         env:
