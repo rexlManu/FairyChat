@@ -93,8 +93,6 @@ tasks {
     }
 }
 
-tasks.getByName("modrinth").dependsOn(tasks.modrinthSyncBody)
-
 val versions = listOf(
     "1.19.4",
     "1.20",
