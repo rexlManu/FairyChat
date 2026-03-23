@@ -17,7 +17,7 @@ paper = { module = "io.papermc.paper:paper-api", version = "1.20.4-R0.1-SNAPSHOT
 
 annotations = { module = "org.jetbrains:annotations", version = "26.1.0" }
 jedis = { module = "redis.clients:jedis", version = "7.3.0" }
-miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.3" }
+miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "3.1.0" }
 commandframework = { module = "cloud.commandframework:cloud-paper", version = "1.8.4" }
 configlib = { module = "de.exlll:configlib-yaml", version = "4.8.1" }
 guice = { module = "com.google.inject:guice", version = "7.0.0" }
