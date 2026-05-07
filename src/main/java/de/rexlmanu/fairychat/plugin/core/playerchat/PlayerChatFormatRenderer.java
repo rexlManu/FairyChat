@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
+import de.rexlmanu.fairychat.plugin.core.capitals.CapitalsService;
 import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
 import de.rexlmanu.fairychat.plugin.core.mentions.MentionService;
 import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
@@ -34,6 +35,7 @@ public class PlayerChatFormatRenderer implements DefaultChatRenderer {
   private final MiniMessage miniMessage;
   private final PermissionProvider permissionProvider;
   private final MentionService mentionService;
+  private final CapitalsService capitalsService;
   private final IntegrationRegistry registry;
   private final UserIgnoreService userIgnoreService;
 
@@ -70,7 +72,9 @@ public class PlayerChatFormatRenderer implements DefaultChatRenderer {
     if (this.configurationProvider.get().legacyColorSupport()) {
       serializer = LegacyComponentSerializer.legacyAmpersand()::serialize;
     }
-    final String textMessage = this.resolveMessageModifiers(source, serializer.apply(message));
+    final String textMessage = this.resolveMessageModifiers(source, serializer.apply(
+      source.hasPermission("fairychat.bypass.capitals") ? message : this.capitalsService.checkCapitals(message))
+    );
 
     Component messageComponent;
     // Check if the player has the permission to use mini message

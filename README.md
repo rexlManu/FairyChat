@@ -49,6 +49,7 @@ You can find the documentation for FairyChat [here](https://github.com/rexlManu/
 | `/fairychat`               |                                      | Show information about FairyChat                    |
 | `/fairychat reload`        | `fairychat.command.fairychat.reload` | Reload the configuration                            |
 |                            | `fairychat.bypass.similarity`        | Bypass the similarity check for last message        |
+|                            | `fairychat.bypass.capitals`          | Bypass the capital letters check                    |
 |                            | `fairychat.bypass.cooldown`          | Bypass the chat cooldown                            |
 |                            | `fairychat.feature.displayitem`      | Allow players to show the item in and with <item>   |
 |                            | `fairychat.messages.join.ignore`     | The join message will not be sent                   |
