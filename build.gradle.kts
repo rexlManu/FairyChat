@@ -200,7 +200,7 @@ configure<CurseForgePublishingExtension> {
             javaVersion(JavaVersion.toVersion(25))
 
             artifacts {
-                register("jar") {
+                register("main") {
                     from(tasks.shadowJar)
                     displayName.set("FairyChat ${rootProject.version}")
                     releaseType.set(ReleaseType.RELEASE)
