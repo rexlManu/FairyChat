@@ -125,13 +125,6 @@ val versions = listOf(
     "26.1.2"
 )
 
-fun curseForgeVersionType(version: String): String {
-    val parts = version.split(".")
-    require(parts.size >= 2) { "Unsupported Minecraft version format: $version" }
-
-    return "minecraft-${parts[0]}-${parts[1]}"
-}
-
 modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
     projectId.set("fairychat")
@@ -196,7 +189,7 @@ configure<CurseForgePublishingExtension> {
     publications {
         register("plugin") {
             projectId.set("878649")
-            versions.forEach { gameVersion(curseForgeVersionType(it), it.replace(".", "-")) }
+            versions.forEach { gameVersion("bukkit", it.replace(".", "-")) }
 
             artifacts {
                 register("main") {
