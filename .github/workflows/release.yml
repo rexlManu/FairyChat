@@ -1,6 +1,12 @@
 name: Release
 
 on:
+  workflow_dispatch:
+    inputs:
+      publish_curseforge:
+        description: "Publish the current project version to CurseForge only"
+        type: boolean
+        default: false
   push:
     tags:
       - "v*.*.*"
@@ -47,19 +53,19 @@ jobs:
           body: ${{ steps.changelog.outputs.changelog }}
           draft: false
       - name: Publish to Modrinth
-        if: ${{ env.MODRINTH_TOKEN != '' }}
+        if: ${{ startsWith(github.ref, 'refs/tags/') && env.MODRINTH_TOKEN != '' }}
         continue-on-error: true
         run: ./gradlew modrinth
         env:
           MODRINTH_CHANGELOG: ${{ steps.changelog.outputs.changelog }}
       - name: Publish to Hangar
-        if: ${{ env.HANGAR_TOKEN != '' }}
+        if: ${{ startsWith(github.ref, 'refs/tags/') && env.HANGAR_TOKEN != '' }}
         continue-on-error: true
         run: ./gradlew publishAllPublicationsToHangar
         env:
           HANGAR_CHANGELOG: ${{ steps.changelog.outputs.changelog }}
       - name: Publish to CurseForge
-        if: ${{ env.CURSEFORGE_TOKEN != '' }}
+        if: ${{ env.CURSEFORGE_TOKEN != '' && (startsWith(github.ref, 'refs/tags/') || inputs.publish_curseforge) }}
         continue-on-error: true
         run: ./gradlew publishToCurseForge
         env:
