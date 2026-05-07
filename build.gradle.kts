@@ -1,4 +1,7 @@
 import io.papermc.hangarpublishplugin.model.Platforms
+import io.github.themrmilchmann.gradle.publish.curseforge.ChangelogFormat
+import io.github.themrmilchmann.gradle.publish.curseforge.CurseForgePublishingExtension
+import io.github.themrmilchmann.gradle.publish.curseforge.ReleaseType
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 
 plugins {
@@ -9,6 +12,7 @@ plugins {
     // Plugins for publishing on platforms
     alias(libs.plugins.hangar)
     alias(libs.plugins.minotaur)
+    alias(libs.plugins.curseforge)
     // Plugins to generate plugin metadata files
     alias(libs.plugins.paperyml)
     alias(libs.plugins.pluginyml)
@@ -173,6 +177,37 @@ hangarPublish {
 }
 
 tasks.named("publishAllPublicationsToHangar") {
+    dependsOn(tasks.shadowJar)
+}
+
+configure<CurseForgePublishingExtension> {
+    apiToken.set(System.getenv("CURSEFORGE_TOKEN"))
+    publications {
+        register("plugin") {
+            projectId.set("878649")
+            versions.forEach { gameVersion("Minecraft", it) }
+            javaVersion(JavaVersion.toVersion(25))
+
+            artifacts {
+                register("jar") {
+                    from(tasks.shadowJar)
+                    displayName.set("FairyChat ${rootProject.version}")
+                    releaseType.set(ReleaseType.RELEASE)
+                    changelog {
+                        format.set(ChangelogFormat.MARKDOWN)
+                        content.set(System.getenv("CURSEFORGE_CHANGELOG") ?: "")
+                    }
+                    relations {
+                        optionalDependency("miniplaceholders")
+                        optionalDependency("luckperms")
+                    }
+                }
+            }
+        }
+    }
+}
+
+tasks.named("publishToCurseForge") {
     dependsOn(tasks.shadowJar)
 }
 
