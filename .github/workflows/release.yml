@@ -48,16 +48,19 @@ jobs:
           draft: false
       - name: Publish to Modrinth
         if: ${{ env.MODRINTH_TOKEN != '' }}
+        continue-on-error: true
         run: ./gradlew modrinth
         env:
           MODRINTH_CHANGELOG: ${{ steps.changelog.outputs.changelog }}
       - name: Publish to Hangar
         if: ${{ env.HANGAR_TOKEN != '' }}
+        continue-on-error: true
         run: ./gradlew publishAllPublicationsToHangar
         env:
           HANGAR_CHANGELOG: ${{ steps.changelog.outputs.changelog }}
       - name: Publish to CurseForge
         if: ${{ env.CURSEFORGE_TOKEN != '' }}
+        continue-on-error: true
         run: ./gradlew publishToCurseForge
         env:
           CURSEFORGE_CHANGELOG: ${{ steps.changelog.outputs.changelog }}
