@@ -14,7 +14,7 @@ dependencies {
 
 tasks {
     compileJava {
-        options.release.set(17)
+        options.release.set(25)
         options.encoding = Charsets.UTF_8.name()
     }
 }

@@ -6,7 +6,6 @@ import de.rexlmanu.fairychat.plugin.integration.Integration;
 import de.rexlmanu.fairychat.plugin.integration.chat.PlaceholderSupport;
 import io.github.miniplaceholders.api.MiniPlaceholders;
 import lombok.RequiredArgsConstructor;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
@@ -16,7 +15,6 @@ import org.bukkit.plugin.PluginManager;
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class MiniPlaceholdersIntegration implements Integration, PlaceholderSupport {
   private final PluginManager pluginManager;
-  private final BukkitAudiences bukkitAudiences;
 
   @Override
   public boolean available() {
@@ -25,16 +23,16 @@ public class MiniPlaceholdersIntegration implements Integration, PlaceholderSupp
 
   @Override
   public TagResolver resolvePlayerPlaceholderWithChatMessage(Player player, Component message) {
-    return MiniPlaceholders.getAudienceGlobalPlaceholders(bukkitAudiences.player(player));
+    return MiniPlaceholders.audienceGlobalPlaceholders();
   }
 
   @Override
   public TagResolver resolvePlayerPlaceholder(Player player) {
-    return MiniPlaceholders.getAudienceGlobalPlaceholders(bukkitAudiences.player(player));
+    return MiniPlaceholders.audienceGlobalPlaceholders();
   }
 
   @Override
   public TagResolver resolvePlaceholder() {
-    return MiniPlaceholders.getGlobalPlaceholders();
+    return MiniPlaceholders.globalPlaceholders();
   }
 }

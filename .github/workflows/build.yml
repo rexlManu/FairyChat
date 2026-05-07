@@ -5,6 +5,13 @@ on:
   push:
     branches: [ 'master' ]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: Build
@@ -14,14 +21,15 @@ jobs:
       - uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
-          java-version: '17'
-          cache: gradle
-      - run: chmod +x gradlew
+          java-version: '25'
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v5
+        uses: gradle/actions/setup-gradle@v6
       - name: Build with Gradle
         run: ./gradlew build
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v7.0.0
+        uses: actions/upload-artifact@v7.0.1
         with:
+          name: FairyChat
           path: build/libs/**.jar
+          if-no-files-found: error
+          retention-days: 14

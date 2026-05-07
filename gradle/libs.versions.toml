@@ -1,23 +1,25 @@
 [versions]
-minecraft = "1.20.4-R0.1-SNAPSHOT"
+minecraft = "26.1.2-R0.1-SNAPSHOT"
+paper = "26.1.2.build.60-stable"
 adventure = "4.4.1"
 minimessage = "4.26.1"
 [plugins]
 userdev = { id = "io.papermc.paperweight.userdev", version = "1.7.7" }
 runpaper = { id = "xyz.jpenilla.run-paper", version = "3.0.2" }
 shadow = { id = "com.gradleup.shadow", version = "9.4.0" }
-lombok = { id = "io.freefair.lombok", version = "9.2.0" }
+lombok = { id = "io.freefair.lombok", version = "9.5.0" }
 hangar = { id = "io.papermc.hangar-publish-plugin", version = "0.1.4" }
 minotaur = { id = "com.modrinth.minotaur", version = "2.9.0" }
 paperyml = { id = "net.minecrell.plugin-yml.paper", version = "0.6.0" }
 pluginyml = { id = "net.minecrell.plugin-yml.bukkit", version = "0.6.0" }
 [libraries]
-spigot = { module = "org.spigotmc:spigot-api", version = "1.20.4-R0.1-SNAPSHOT" }
-paper = { module = "io.papermc.paper:paper-api", version = "1.20.4-R0.1-SNAPSHOT" }
+spigot = { module = "org.spigotmc:spigot-api", version.ref = "minecraft" }
+paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
 
 annotations = { module = "org.jetbrains:annotations", version = "26.1.0" }
+brigadier = { module = "com.mojang:brigadier", version = "1.0.18" }
 jedis = { module = "redis.clients:jedis", version = "7.4.0" }
-miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "2.2.3" }
+miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "3.2.0" }
 commandframework = { module = "cloud.commandframework:cloud-paper", version = "1.8.4" }
 configlib = { module = "de.exlll:configlib-yaml", version = "4.8.1" }
 guice = { module = "com.google.inject:guice", version = "7.0.0" }

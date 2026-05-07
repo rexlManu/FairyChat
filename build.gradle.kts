@@ -26,10 +26,12 @@ repositories {
     maven("https://jitpack.io")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://repo.miopowered.eu/snapshots/")
+    maven("https://libraries.minecraft.net/")
 }
 
 dependencies {
     compileOnly(libs.spigot)
+    compileOnly(libs.brigadier)
 
     library(libs.jedis)
     library(libs.commandframework)
@@ -52,7 +54,7 @@ dependencies {
 tasks {
     compileJava {
         options.encoding = Charsets.UTF_8.name()
-        options.release.set(17)
+        options.release.set(25)
     }
     build {
         dependsOn("shadowJar")
@@ -89,7 +91,7 @@ tasks {
         }
     }
     runServer {
-        minecraftVersion("1.21.11")
+        minecraftVersion("26.1.2")
     }
 }
 
@@ -113,7 +115,10 @@ val versions = listOf(
     "1.21.8",
     "1.21.9",
     "1.21.10",
-    "1.21.11"
+    "1.21.11",
+    "26.1",
+    "26.1.1",
+    "26.1.2"
 )
 
 modrinth {
@@ -134,6 +139,10 @@ modrinth {
         optional.project("miniplaceholders")
         optional.project("luckperms")
     }
+}
+
+tasks.named("modrinth") {
+    dependsOn(tasks.shadowJar)
 }
 
 hangarPublish {
@@ -161,6 +170,10 @@ hangarPublish {
             }
         }
     }
+}
+
+tasks.named("publishAllPublicationsToHangar") {
+    dependsOn(tasks.shadowJar)
 }
 
 bukkit {
