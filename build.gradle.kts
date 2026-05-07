@@ -180,6 +180,10 @@ tasks.named("publishAllPublicationsToHangar") {
     dependsOn(tasks.shadowJar)
 }
 
+tasks.named("publishPluginPublicationToHangar") {
+    dependsOn(tasks.shadowJar)
+}
+
 configure<CurseForgePublishingExtension> {
     apiToken.set(System.getenv("CURSEFORGE_TOKEN"))
     publications {
@@ -208,6 +212,10 @@ configure<CurseForgePublishingExtension> {
 }
 
 tasks.named("publishToCurseForge") {
+    dependsOn(tasks.shadowJar)
+}
+
+tasks.named("publishPluginPublicationToCurseForge") {
     dependsOn(tasks.shadowJar)
 }
 
