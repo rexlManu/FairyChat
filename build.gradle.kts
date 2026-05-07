@@ -197,7 +197,6 @@ configure<CurseForgePublishingExtension> {
         register("plugin") {
             projectId.set("878649")
             versions.forEach { gameVersion(curseForgeVersionType(it), it.replace(".", "-")) }
-            javaVersion(JavaVersion.toVersion(25))
 
             artifacts {
                 register("main") {
