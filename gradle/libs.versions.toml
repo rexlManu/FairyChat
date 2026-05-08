@@ -19,7 +19,7 @@ paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
 
 annotations = { module = "org.jetbrains:annotations", version = "26.1.0" }
 brigadier = { module = "com.mojang:brigadier", version = "1.0.18" }
-jedis = { module = "redis.clients:jedis", version = "7.4.0" }
+jedis = { module = "redis.clients:jedis", version = "7.5.0" }
 miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "3.2.0" }
 commandframework = { module = "cloud.commandframework:cloud-paper", version = "1.8.4" }
 configlib = { module = "de.exlll:configlib-yaml", version = "4.8.1" }
