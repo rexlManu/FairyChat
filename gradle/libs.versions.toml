@@ -18,7 +18,7 @@ spigot = { module = "org.spigotmc:spigot-api", version.ref = "minecraft" }
 paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
 
 annotations = { module = "org.jetbrains:annotations", version = "26.1.0" }
-brigadier = { module = "com.mojang:brigadier", version = "1.0.18" }
+brigadier = { module = "com.mojang:brigadier", version = "1.0.500" }
 jedis = { module = "redis.clients:jedis", version = "7.4.0" }
 miniplaceholders = { module = "io.github.miniplaceholders:miniplaceholders-api", version = "3.2.0" }
 commandframework = { module = "cloud.commandframework:cloud-paper", version = "1.8.4" }
