@@ -2,7 +2,7 @@
 minecraft = "26.1.2-R0.1-SNAPSHOT"
 paper = "26.1.2.build.60-stable"
 adventure = "4.4.1"
-minimessage = "4.26.1"
+minimessage = "5.0.1"
 [plugins]
 userdev = { id = "io.papermc.paperweight.userdev", version = "1.7.7" }
 runpaper = { id = "xyz.jpenilla.run-paper", version = "3.0.2" }
