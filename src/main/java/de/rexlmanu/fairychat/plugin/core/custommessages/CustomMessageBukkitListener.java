@@ -38,7 +38,8 @@ public class CustomMessageBukkitListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerJoin(PlayerJoinEvent event) {
-    if (event.getPlayer().hasPermission("fairychat.messages.join.ignore")) {
+    if (!this.configurationProvider.get().customMessages().displayJoinMessages()
+        || event.getPlayer().hasPermission("fairychat.messages.join.ignore")) {
       EventMessageUtils.joinMessageSetter(event).accept(null);
       return;
     }
@@ -53,7 +54,8 @@ public class CustomMessageBukkitListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerQuit(PlayerQuitEvent event) {
-    if (event.getPlayer().hasPermission("fairychat.messages.join.ignore")) {
+    if (!this.configurationProvider.get().customMessages().displayQuitMessages()
+        || event.getPlayer().hasPermission("fairychat.messages.quit.ignore")) {
       EventMessageUtils.quitMessageSetter(event).accept(null);
       return;
     }

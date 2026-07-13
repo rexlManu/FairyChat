@@ -7,6 +7,12 @@ import lombok.Getter;
 @Configuration
 @Getter
 public class CustomMessages {
+  @Comment("Should join messages be displayed?")
+  private boolean displayJoinMessages = true;
+
+  @Comment("Should quit messages be displayed?")
+  private boolean displayQuitMessages = true;
+
   @Comment("If you want to broadcast the messages to all servers via redis.")
   private boolean broadcastDeathMessages = true;
 
