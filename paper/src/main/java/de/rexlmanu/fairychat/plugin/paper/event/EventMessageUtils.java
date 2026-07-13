@@ -29,18 +29,13 @@ public class EventMessageUtils {
 
   public static Consumer<Component> quitMessageSetter(PlayerQuitEvent event) {
     if (Environment.ENVIRONMENT.isPaper()) {
-      return component -> {
-        if (component != null) {
-          event.quitMessage(component);
-        }
-      };
+      return event::quitMessage;
     }
-    return component -> {
-      if (component == null) {
-        return;
-      }
-      event.setQuitMessage(LegacyComponentSerializer.legacySection().serialize(component));
-    };
+    return component ->
+        event.setQuitMessage(
+            component == null
+                ? null
+                : LegacyComponentSerializer.legacySection().serialize(component));
   }
 
   public static Supplier<Component> joinMessage(PlayerJoinEvent event) {
@@ -56,18 +51,13 @@ public class EventMessageUtils {
 
   public static Consumer<Component> joinMessageSetter(PlayerJoinEvent event) {
     if (Environment.ENVIRONMENT.isPaper()) {
-      return component -> {
-        if (component != null) {
-          event.joinMessage(component);
-        }
-      };
+      return event::joinMessage;
     }
-    return component -> {
-      if (component == null) {
-        return;
-      }
-      event.setJoinMessage(LegacyComponentSerializer.legacySection().serialize(component));
-    };
+    return component ->
+        event.setJoinMessage(
+            component == null
+                ? null
+                : LegacyComponentSerializer.legacySection().serialize(component));
   }
 
   public static Supplier<Component> deathMessage(PlayerDeathEvent event) {
