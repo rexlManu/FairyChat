@@ -1,33 +1,31 @@
 package de.rexlmanu.fairychat.plugin.command;
 
-import cloud.commandframework.CommandManager;
-import cloud.commandframework.arguments.standard.StringArgument;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import de.rexlmanu.fairychat.plugin.command.argument.UserArgument;
+import de.rexlmanu.fairychat.plugin.command.argument.UserParser;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
 import de.rexlmanu.fairychat.plugin.core.privatemessaging.PrivateMessagingService;
 import de.rexlmanu.fairychat.plugin.core.user.User;
 import de.rexlmanu.fairychat.plugin.core.user.UserFactory;
 import de.rexlmanu.fairychat.plugin.core.user.UserService;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.incendo.cloud.CommandManager;
+import org.incendo.cloud.paper.util.sender.PlayerSource;
+import org.incendo.cloud.paper.util.sender.Source;
+import org.incendo.cloud.parser.standard.StringParser;
 
 public class PrivateMessageCommand {
 
   @Inject
   public PrivateMessageCommand(
-      CommandManager<CommandSender> commandManager,
+      CommandManager<Source> commandManager,
       UserService userService,
       PrivateMessagingService privateMessagingService,
       MiniMessage miniMessage,
       UserFactory userFactory,
       UserIgnoreService userIgnoreService,
-      Provider<PluginConfiguration> configurationProvider,
-      BukkitAudiences bukkitAudiences) {
+      Provider<PluginConfiguration> configurationProvider) {
     commandManager.command(
         commandManager
             .commandBuilder(
@@ -37,27 +35,27 @@ public class PrivateMessageCommand {
                     .privateMessaging()
                     .aliases()
                     .getOrDefault("pm", new String[0]))
-            .senderType(Player.class)
-            .argument(UserArgument.of("recipient"))
-            .argument(StringArgument.greedy("message"))
+            .senderType(PlayerSource.class)
+            .required("recipient", UserParser.userParser())
+            .required("message", StringParser.greedyStringParser())
             .handler(
                 commandContext -> {
                   User recipient = commandContext.get("recipient");
                   User user =
                       userService
-                          .findUserById(((Player) commandContext.getSender()).getUniqueId())
+                          .findUserById(commandContext.sender().source().getUniqueId())
                           .orElseGet(
                               () -> {
                                 User createdUser =
-                                    userFactory.createFromPlayer(
-                                        (Player) commandContext.getSender());
+                                    userFactory.createFromPlayer(commandContext.sender().source());
                                 userService.login(createdUser);
                                 return createdUser;
                               });
                   String message = commandContext.get("message");
                   if (user.equals(recipient)) {
-                    bukkitAudiences
-                        .sender(commandContext.getSender())
+                    commandContext
+                        .sender()
+                        .source()
                         .sendMessage(
                             miniMessage.deserialize(
                                 configurationProvider.get().messages().youCantMessageYourself()));
@@ -65,9 +63,13 @@ public class PrivateMessageCommand {
                   }
 
                   if (userIgnoreService.isIgnored(recipient.uniqueId(), user.uniqueId())
-                      && !commandContext.getSender().hasPermission("fairychat.bypass.ignore")) {
-                    bukkitAudiences
-                        .sender(commandContext.getSender())
+                      && !commandContext
+                          .sender()
+                          .source()
+                          .hasPermission("fairychat.bypass.ignore")) {
+                    commandContext
+                        .sender()
+                        .source()
                         .sendMessage(
                             miniMessage.deserialize(
                                 configurationProvider.get().messages().youCantMessageThisPlayer()));
@@ -86,26 +88,26 @@ public class PrivateMessageCommand {
                     .privateMessaging()
                     .aliases()
                     .getOrDefault("reply", new String[0]))
-            .senderType(Player.class)
-            .argument(StringArgument.greedy("message"))
+            .senderType(PlayerSource.class)
+            .required("message", StringParser.greedyStringParser())
             .handler(
                 commandContext -> {
                   User user =
                       userService
-                          .findUserById(((Player) commandContext.getSender()).getUniqueId())
+                          .findUserById(commandContext.sender().source().getUniqueId())
                           .orElseGet(
                               () -> {
                                 User createdUser =
-                                    userFactory.createFromPlayer(
-                                        (Player) commandContext.getSender());
+                                    userFactory.createFromPlayer(commandContext.sender().source());
                                 userService.login(createdUser);
                                 return createdUser;
                               });
                   String message = commandContext.get("message");
                   User lastRecipient = privateMessagingService.lastRecipient(user).orElse(null);
                   if (lastRecipient == null) {
-                    bukkitAudiences
-                        .sender(commandContext.getSender())
+                    commandContext
+                        .sender()
+                        .source()
                         .sendMessage(
                             miniMessage.deserialize(
                                 configurationProvider.get().messages().youDidntMessageAnyone()));
@@ -113,9 +115,13 @@ public class PrivateMessageCommand {
                   }
 
                   if (userIgnoreService.isIgnored(lastRecipient.uniqueId(), user.uniqueId())
-                      && !commandContext.getSender().hasPermission("fairychat.bypass.ignore")) {
-                    bukkitAudiences
-                        .sender(commandContext.getSender())
+                      && !commandContext
+                          .sender()
+                          .source()
+                          .hasPermission("fairychat.bypass.ignore")) {
+                    commandContext
+                        .sender()
+                        .source()
                         .sendMessage(
                             miniMessage.deserialize(
                                 configurationProvider.get().messages().youCantMessageThisPlayer()));

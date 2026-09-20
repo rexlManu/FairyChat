@@ -26,13 +26,16 @@ public class FairyChatLoader implements PluginLoader {
     classpathBuilder.addLibrary(resolver);
   }
 
-  public PluginLibraries load() {
+  private PluginLibraries load() {
     try (var inputStream = this.getClass().getResourceAsStream("/paper-libraries.json")) {
+      if (inputStream == null) {
+        throw new IllegalStateException("Missing paper-libraries.json");
+      }
       return new Gson()
           .fromJson(
               new InputStreamReader(inputStream, StandardCharsets.UTF_8), PluginLibraries.class);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new IllegalStateException("Failed to load paper-libraries.json", e);
     }
   }
 
@@ -43,7 +46,6 @@ public class FairyChatLoader implements PluginLoader {
 
     public Stream<RemoteRepository> asRepositories() {
       return this.repositories.entrySet().stream()
-          .map(e -> Map.entry(e.getKey(), e.getKey().equals("MavenRepo") ? "https://repo.papermc.io/repository/maven-public/" : e.getValue()))
           .map(e -> new RemoteRepository.Builder(e.getKey(), "default", e.getValue()).build());
     }
   }

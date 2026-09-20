@@ -9,9 +9,9 @@ import de.rexlmanu.fairychat.plugin.core.ignore.UserIgnoreService;
 import de.rexlmanu.fairychat.plugin.core.mentions.MentionService;
 import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
 import de.rexlmanu.fairychat.plugin.integration.chat.PlaceholderSupport;
-import de.rexlmanu.fairychat.plugin.paper.DefaultChatRenderer;
 import de.rexlmanu.fairychat.plugin.permission.PermissionProvider;
 import de.rexlmanu.fairychat.plugin.utility.LegacySupport;
+import io.papermc.paper.chat.ChatRenderer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class PlayerChatFormatRenderer implements DefaultChatRenderer {
+public class PlayerChatFormatRenderer implements ChatRenderer {
   private final Provider<PluginConfiguration> configurationProvider;
   private final MiniMessage miniMessage;
   private final PermissionProvider permissionProvider;
@@ -79,6 +79,7 @@ public class PlayerChatFormatRenderer implements DefaultChatRenderer {
       Component parsedText =
           this.colorMiniMessage.deserialize(
               miniMessageFormatted,
+              source,
               TagResolver.resolver(
                   this.registry.getPlaceholderSupports().stream()
                       .map(
@@ -87,14 +88,11 @@ public class PlayerChatFormatRenderer implements DefaultChatRenderer {
                                   source, miniMessageFormatted))
                       .toList()));
 
-      // Since FairyChat can only ever apply top-level formatting to the message, we can just parse the message with
-      // the FairyChat formatting and apply that top-level style to the existing message component.
-      // that way we don't strip the message of any subcomponent formatting and things like click/hover events
-      messageComponent = message.style(message.style().merge(parsedText.style(), Style.Merge.Strategy.IF_ABSENT_ON_TARGET));
+      // Preserve child formatting and click/hover events from other plugins.
+      messageComponent =
+          message.style(
+              message.style().merge(parsedText.style(), Style.Merge.Strategy.IF_ABSENT_ON_TARGET));
     } else {
-      // just use the original rich component
-      // no need to re-deserialise the message from plain text
-      // re-deserialising would also stip away formatting and hover/click events
       messageComponent = message;
     }
 
@@ -113,7 +111,7 @@ public class PlayerChatFormatRenderer implements DefaultChatRenderer {
     tagResolvers.add(
         Placeholder.unparsed("server_name", this.configurationProvider.get().serverName()));
 
-    return this.miniMessage.deserialize(chatFormat, TagResolver.resolver(tagResolvers));
+    return this.miniMessage.deserialize(chatFormat, source, TagResolver.resolver(tagResolvers));
   }
 
   private String resolveMessageModifiers(@NotNull Player source, String textMessage) {

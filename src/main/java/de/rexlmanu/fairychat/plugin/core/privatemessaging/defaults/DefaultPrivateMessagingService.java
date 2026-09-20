@@ -13,7 +13,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Server;
@@ -28,18 +27,17 @@ public class DefaultPrivateMessagingService implements PrivateMessagingService {
   private final Server server;
   private final UserService userService;
   private final ExpiringMap<UUID, UUID> lastMessageRecipient = new ExpiringMap<>();
-  private final BukkitAudiences bukkitAudiences;
 
   @Override
   public void sendMessage(User user, User recipient, String message) {
-    this.bukkitAudiences.player(this.getPlayer(user))
+    this.getPlayer(user)
         .sendMessage(
             this.miniMessage.deserialize(
                 this.configurationProvider.get().privateMessaging().senderFormat(),
                 Placeholder.unparsed("message", message),
                 Placeholder.unparsed("sender_name", user.username()),
                 Placeholder.unparsed("recipient_name", recipient.username())));
-    this.bukkitAudiences.player(this.getPlayer(recipient))
+    this.getPlayer(recipient)
         .sendMessage(
             this.miniMessage.deserialize(
                 this.configurationProvider.get().privateMessaging().receiverFormat(),

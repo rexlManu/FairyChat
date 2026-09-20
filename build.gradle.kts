@@ -1,8 +1,9 @@
-import io.papermc.hangarpublishplugin.model.Platforms
 import io.github.themrmilchmann.gradle.publish.curseforge.ChangelogFormat
 import io.github.themrmilchmann.gradle.publish.curseforge.CurseForgePublishingExtension
 import io.github.themrmilchmann.gradle.publish.curseforge.ReleaseType
-import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
+import io.papermc.hangarpublishplugin.model.Platforms
+import net.minecrell.pluginyml.GeneratePluginDescription
+import net.minecrell.pluginyml.paper.PaperPluginDescription.RelativeLoadOrder
 
 plugins {
     `java-library`
@@ -15,27 +16,18 @@ plugins {
     alias(libs.plugins.curseforge)
     // Plugins to generate plugin metadata files
     alias(libs.plugins.paperyml)
-    alias(libs.plugins.pluginyml)
 }
 
 repositories {
     mavenCentral()
-    maven() {
-        url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-        content {
-            includeGroup("org.spigotmc")
-            includeGroup("org.bukkit")
-        }
-    }
-    maven("https://jitpack.io")
+    maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://repo.miopowered.eu/snapshots/")
     maven("https://libraries.minecraft.net/")
 }
 
 dependencies {
-    compileOnly(libs.spigot)
-    compileOnly(libs.brigadier)
+    compileOnly(libs.paper)
 
     library(libs.jedis)
     library(libs.commandframework)
@@ -43,7 +35,6 @@ dependencies {
     library(libs.guice)
     library(libs.hikaridb)
     library(libs.stringsimilarity)
-    library(libs.bundles.adventure)
 
     // Plugin dependencies
     compileOnly(libs.miniplaceholders)
@@ -52,29 +43,35 @@ dependencies {
     compileOnly(libs.ultrapermissions)
 
     implementation(libs.bstats)
-    implementation(projects.paper)
+
+    testImplementation(libs.paper)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockito)
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+configurations.testImplementation {
+    extendsFrom(configurations.library.get())
+}
+
+lombok {
+    version = libs.versions.lombok.get()
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 tasks {
+    test {
+        useJUnitPlatform()
+    }
     compileJava {
         options.encoding = Charsets.UTF_8.name()
         options.release.set(25)
     }
     build {
         dependsOn("shadowJar")
-    }
-    processResources {
-        filteringCharset = Charsets.UTF_8.name()
-        val props = mapOf(
-            "name" to project.name,
-            "version" to project.version,
-            "description" to project.description,
-            "apiVersion" to "1.19"
-        )
-        inputs.properties(props)
-        filesMatching("paper-plugin.yml") {
-            expand(props)
-        }
     }
     javadoc {
         options.encoding = Charsets.UTF_8.name()
@@ -87,43 +84,14 @@ tasks {
         relocate("org.bstats", "de.rexlmanu.fairychat.dependencies.bstats")
         from(file("LICENSE"))
 
-        dependencies {
-            exclude("META-INF/NOTICE")
-            exclude("META-INF/maven/**")
-            exclude("META-INF/versions/**")
-            exclude("META-INF/**.kotlin_module")
-        }
+        exclude("META-INF/NOTICE", "META-INF/maven/**", "META-INF/**.kotlin_module")
     }
     runServer {
-        minecraftVersion("26.1.2")
+        minecraftVersion(libs.versions.minecraft.get())
     }
 }
 
-val versions = listOf(
-    "1.19.4",
-    "1.20",
-    "1.20.1",
-    "1.20.2",
-    "1.20.3",
-    "1.20.4",
-    "1.20.5",
-    "1.20.6",
-    "1.21",
-    "1.21.1",
-    "1.21.2",
-    "1.21.3",
-    "1.21.4",
-    "1.21.5",
-    "1.21.6",
-    "1.21.7",
-    "1.21.8",
-    "1.21.9",
-    "1.21.10",
-    "1.21.11",
-    "26.1",
-    "26.1.1",
-    "26.1.2"
-)
+val versions = listOf(libs.versions.minecraft.get())
 
 modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))
@@ -218,22 +186,10 @@ tasks.named("publishPluginPublicationToCurseForge") {
     dependsOn(tasks.shadowJar)
 }
 
-bukkit {
-    author = "rexlManu"
-    main = "de.rexlmanu.fairychat.plugin.FairyChatPlugin"
-    website = "https://github.com/rexlManu/FairyChat"
-    foliaSupported = true
-    apiVersion = "1.19"
-    load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
-    softDepend = listOf("MiniPlaceholders", "LuckPerms", "PlaceholderAPI", "UltraPermissions")
-    prefix = "FairyChat"
-    generateLibrariesJson = true
-}
-
 paper {
     main = "de.rexlmanu.fairychat.plugin.FairyChatPlugin"
     loader = "de.rexlmanu.fairychat.plugin.paper.FairyChatLoader"
-    apiVersion = "1.20"
+    apiVersion = libs.versions.minecraft.get()
     foliaSupported = true
     author = "rexlManu"
     website = "https://github.com/rexlManu/FairyChat"
@@ -241,16 +197,24 @@ paper {
     serverDependencies {
         register("MiniPlaceholders") {
             required = false
+            load = RelativeLoadOrder.BEFORE
         }
         register("LuckPerms") {
             required = false
+            load = RelativeLoadOrder.BEFORE
         }
         register("PlaceholderAPI") {
             required = false
+            load = RelativeLoadOrder.BEFORE
         }
         register("UltraPermissions") {
             required = false
+            load = RelativeLoadOrder.BEFORE
         }
     }
     generateLibrariesJson = true
+}
+
+tasks.withType<GeneratePluginDescription>().configureEach {
+    useDefaultCentralProxy()
 }

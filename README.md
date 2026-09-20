@@ -1,12 +1,15 @@
 # FairyChat
 
-The next generation chat plugin for managing your server's chat.
+A chat plugin for Paper with custom formats, private messages, and Redis messaging between servers.
 
-_FairyChat is the future of chat management for your server, providing a range of features from customizable
-chat
-formats to multi-server message broadcasting. The perfect solution to bring a seamless chatting experience to
-your
-server users._
+## Requirements
+
+- Minecraft 26.3 with Paper build 26 or a compatible Paper fork.
+- Java 25 or newer.
+- Paper 26.3 builds are currently alpha. This release targets that version explicitly.
+
+Spigot, CraftBukkit, and older Minecraft versions are no longer supported. Folia forks must provide
+Paper's 26.3 API. Existing configuration files can still be used.
 
 ## Features
 
@@ -56,9 +59,7 @@ You can find the documentation for FairyChat [here](https://github.com/rexlManu/
 
 ## Installation
 
-You need to have [Paper](https://papermc.io/) (or fork of paper) installed on your server. FairyChat is not
-compatible
-with other server software.
+Install [Paper](https://papermc.io/) for Minecraft 26.3 or a compatible fork, with Java 25.
 
 1. Download the latest FairyChat version from [here](https://github.com/rexlManu/FairyChat/releases).
 2. Place the downloaded jar file in your server's `plugins` folder.
@@ -85,6 +86,15 @@ For bug reports and feature requests, please open an issue on [GitHub](https://g
 ## Configuration
 
 Please checkout the generated configuration file for more information on how to configure FairyChat.
+
+## Development
+
+The plugin is one Gradle project. It uses Paper's `AsyncChatEvent`, `ChatRenderer`, native Adventure
+messages, and async scheduler. Commands use Cloud 2's Paper command manager. Paper loads runtime
+libraries through `FairyChatLoader`. Only bStats is included and relocated in the plugin JAR.
+
+Dependency versions and the Minecraft target are in `gradle/libs.versions.toml`.
+Run `./gradlew test` to compile the code and run the tests. Run `./gradlew build` to create the plugin JAR.
 
 ## License
 

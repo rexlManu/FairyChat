@@ -26,14 +26,9 @@ import de.rexlmanu.fairychat.plugin.core.user.listener.UserBukkitListener;
 import de.rexlmanu.fairychat.plugin.database.DatabaseClient;
 import de.rexlmanu.fairychat.plugin.database.DatabaseModule;
 import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
-import de.rexlmanu.fairychat.plugin.paper.Environment;
-import de.rexlmanu.fairychat.plugin.paper.event.FairyEventHandler;
-import de.rexlmanu.fairychat.plugin.paper.event.PaperEventHandler;
 import de.rexlmanu.fairychat.plugin.permission.PermissionModule;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
 import de.rexlmanu.fairychat.plugin.redis.channel.RedisSubscriberModule;
-import de.rexlmanu.fairychat.plugin.utility.event.SpigotEventHandler;
-import de.rexlmanu.fairychat.plugin.utility.scheduler.PluginSchedulerModule;
 import de.rexlmanu.fairychat.plugin.utility.update.UpdateChecker;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -48,7 +43,6 @@ public class FairyChatPlugin extends JavaPlugin {
     this.injector =
         Guice.createInjector(
             new FairyChatModule(this.configurationProvider, this),
-            new PluginSchedulerModule(),
             new CommandModule(),
             new PermissionModule(),
             new ConfigModule(),
@@ -73,14 +67,6 @@ public class FairyChatPlugin extends JavaPlugin {
     this.registerListeners();
 
     this.injector.getInstance(UpdateChecker.class).checkAndNotify();
-
-    FairyEventHandler chatListener;
-    if (Environment.ENVIRONMENT.isPaper()) {
-      chatListener = this.injector.getInstance(PaperEventHandler.class);
-    } else {
-      chatListener = this.injector.getInstance(SpigotEventHandler.class);
-    }
-    this.getServer().getPluginManager().registerEvents(chatListener, this);
   }
 
   private void registerListeners() {
@@ -108,6 +94,8 @@ public class FairyChatPlugin extends JavaPlugin {
 
   @Override
   public void onDisable() {
+    if (this.injector == null) return;
+    this.getServer().getAsyncScheduler().cancelTasks(this);
     this.injector.getInstance(RedisConnector.class).close();
     this.injector.getInstance(DatabaseClient.class).close();
   }

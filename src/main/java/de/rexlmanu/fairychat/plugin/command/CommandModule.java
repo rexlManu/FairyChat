@@ -1,65 +1,57 @@
 package de.rexlmanu.fairychat.plugin.command;
 
-import cloud.commandframework.CommandManager;
-import cloud.commandframework.bukkit.CloudBukkitCapabilities;
-import cloud.commandframework.exceptions.InvalidSyntaxException;
-import cloud.commandframework.execution.AsynchronousCommandExecutionCoordinator;
-import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
-import java.util.function.Function;
-import lombok.RequiredArgsConstructor;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import de.rexlmanu.fairychat.plugin.core.user.UserService;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.incendo.cloud.CommandManager;
+import org.incendo.cloud.caption.Caption;
+import org.incendo.cloud.caption.CaptionProvider;
+import org.incendo.cloud.exception.InvalidSyntaxException;
+import org.incendo.cloud.execution.ExecutionCoordinator;
+import org.incendo.cloud.paper.PaperCommandManager;
+import org.incendo.cloud.paper.util.sender.PaperSimpleSenderMapper;
+import org.incendo.cloud.paper.util.sender.Source;
 
-@RequiredArgsConstructor
 public class CommandModule extends AbstractModule {
   @Provides
   @Singleton
-  public final CommandManager<CommandSender> provideCommandManager(
-      JavaPlugin javaPlugin,
-      Injector injector,
+  public CommandManager<Source> provideCommandManager(
+      JavaPlugin plugin,
+      UserService userService,
       MiniMessage miniMessage,
-      Provider<PluginConfiguration> configurationProvider,
-      BukkitAudiences bukkitAudiences) {
-    try {
-      Function<CommandSender, CommandSender> mapper = Function.identity();
+      Provider<PluginConfiguration> configurationProvider) {
+    PaperCommandManager<Source> manager =
+        PaperCommandManager.builder(PaperSimpleSenderMapper.simpleSenderMapper())
+            .executionCoordinator(ExecutionCoordinator.asyncCoordinator())
+            .buildOnEnable(plugin);
 
-      PaperCommandManager<CommandSender> commandManager =
-          new PaperCommandManager<>(
-              javaPlugin,
-              AsynchronousCommandExecutionCoordinator.simpleCoordinator(),
-              mapper,
-              mapper);
-
-      if (commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
-        commandManager.registerAsynchronousCompletions();
-      }
-
-      commandManager
-          .parameterInjectorRegistry()
-          .registerInjectionService(context -> injector.getInstance(context.getSecond()));
-
-      commandManager.registerExceptionHandler(
-          InvalidSyntaxException.class,
-          (sender, e) ->
-              bukkitAudiences
-                  .sender(sender)
-                  .sendMessage(
-                      miniMessage.deserialize(
-                          configurationProvider.get().messages().invalidSyntax(),
-                          Placeholder.unparsed("syntax", e.getCorrectSyntax()))));
-
-      return commandManager;
-    } catch (Exception e) {
-      throw new RuntimeException("Failed to initialize the CommandManager");
-    }
+    manager
+        .parameterInjectorRegistry()
+        .registerInjector(UserService.class, (context, annotations) -> userService);
+    manager
+        .captionRegistry()
+        .registerProvider(
+            CaptionProvider.constantProvider(
+                Caption.of("argument.parse.failure.user"), "Player '<input>' was not found."));
+    manager
+        .exceptionController()
+        .registerHandler(
+            InvalidSyntaxException.class,
+            context ->
+                context
+                    .context()
+                    .sender()
+                    .source()
+                    .sendMessage(
+                        miniMessage.deserialize(
+                            configurationProvider.get().messages().invalidSyntax(),
+                            Placeholder.unparsed("syntax", context.exception().correctSyntax()))));
+    return manager;
   }
 }

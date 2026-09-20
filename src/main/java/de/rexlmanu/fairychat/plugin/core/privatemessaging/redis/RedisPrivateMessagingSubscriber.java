@@ -10,7 +10,6 @@ import de.rexlmanu.fairychat.plugin.core.user.UserService;
 import de.rexlmanu.fairychat.plugin.redis.channel.RedisChannelSubscriber;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Server;
@@ -23,7 +22,6 @@ public class RedisPrivateMessagingSubscriber implements RedisChannelSubscriber<P
   private final MiniMessage miniMessage;
   private final Provider<PluginConfiguration> configurationProvider;
   private final Server server;
-  private final BukkitAudiences bukkitAudiences;
 
   @Override
   public Class<PrivateMessageData> getDataType() {
@@ -44,7 +42,7 @@ public class RedisPrivateMessagingSubscriber implements RedisChannelSubscriber<P
     this.getPlayer(recipient)
         .ifPresent(
             player ->
-                this.bukkitAudiences.player(player).sendMessage(
+                player.sendMessage(
                     this.miniMessage.deserialize(
                         this.configurationProvider.get().privateMessaging().receiverFormat(),
                         Placeholder.unparsed("message", data.message()),

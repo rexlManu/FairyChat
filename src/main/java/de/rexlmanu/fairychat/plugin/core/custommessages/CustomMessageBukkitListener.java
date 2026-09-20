@@ -7,8 +7,6 @@ import de.rexlmanu.fairychat.plugin.Constants;
 import de.rexlmanu.fairychat.plugin.configuration.PluginConfiguration;
 import de.rexlmanu.fairychat.plugin.core.custommessages.redis.CustomMessageDto;
 import de.rexlmanu.fairychat.plugin.integration.IntegrationRegistry;
-import de.rexlmanu.fairychat.plugin.paper.Environment;
-import de.rexlmanu.fairychat.plugin.paper.event.EventMessageUtils;
 import de.rexlmanu.fairychat.plugin.redis.RedisConnector;
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -16,6 +14,7 @@ import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
+import net.kyori.adventure.text.TranslationArgument;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -39,13 +38,13 @@ public class CustomMessageBukkitListener implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerJoin(PlayerJoinEvent event) {
     if (event.getPlayer().hasPermission("fairychat.messages.join.ignore")) {
-      EventMessageUtils.joinMessageSetter(event).accept(null);
+      event.joinMessage(null);
       return;
     }
     this.handleEventMessage(
         event.getPlayer(),
-        EventMessageUtils.joinMessage(event),
-        EventMessageUtils.joinMessageSetter(event),
+        event::joinMessage,
+        event::joinMessage,
         TagResolver::empty,
         this.configurationProvider.get().messages().joinMessage(),
         this.configurationProvider.get().customMessages().broadcastJoinMessages());
@@ -53,14 +52,14 @@ public class CustomMessageBukkitListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerQuit(PlayerQuitEvent event) {
-    if (event.getPlayer().hasPermission("fairychat.messages.join.ignore")) {
-      EventMessageUtils.quitMessageSetter(event).accept(null);
+    if (event.getPlayer().hasPermission("fairychat.messages.quit.ignore")) {
+      event.quitMessage(null);
       return;
     }
     this.handleEventMessage(
         event.getPlayer(),
-        EventMessageUtils.quitMessage(event),
-        EventMessageUtils.quitMessageSetter(event),
+        event::quitMessage,
+        event::quitMessage,
         TagResolver::empty,
         this.configurationProvider.get().messages().quitMessage(),
         this.configurationProvider.get().customMessages().broadcastQuitMessages());
@@ -68,39 +67,28 @@ public class CustomMessageBukkitListener implements Listener {
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerDeath(PlayerDeathEvent event) {
-    var deathMessage = EventMessageUtils.deathMessage(event);
-    if (EventMessageUtils.deathMessage(event).get()
-        instanceof TranslatableComponent translatableComponent) {
-      EventMessageUtils.deathMessageSetter(event)
-          .accept(this.replaceFirstArgument(event.getEntity(), translatableComponent));
+    if (event.deathMessage() instanceof TranslatableComponent translatableComponent) {
+      event.deathMessage(this.replaceFirstArgument(event.getEntity(), translatableComponent));
     }
     this.handleEventMessage(
         event.getEntity(),
-        EventMessageUtils.deathMessage(event),
-        EventMessageUtils.deathMessageSetter(event),
-        () -> Placeholder.component("death_message", EventMessageUtils.deathMessage(event).get()),
+        event::deathMessage,
+        event::deathMessage,
+        () -> Placeholder.component("death_message", event.deathMessage()),
         this.configurationProvider.get().messages().deathMessage(),
         this.configurationProvider.get().customMessages().broadcastDeathMessages());
   }
 
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void handlePlayerAdvancementDone(PlayerAdvancementDoneEvent event) {
-    // spigot don't support of modifying the advancement message
-    if (Environment.ENVIRONMENT.isSpigot()) {
-      return;
-    }
-    if (EventMessageUtils.advancementMessage(event).get()
-        instanceof TranslatableComponent translatableComponent) {
-      EventMessageUtils.advancementMessageSetter(event)
-          .accept(this.replaceFirstArgument(event.getPlayer(), translatableComponent));
+    if (event.message() instanceof TranslatableComponent translatableComponent) {
+      event.message(this.replaceFirstArgument(event.getPlayer(), translatableComponent));
     }
     this.handleEventMessage(
         event.getPlayer(),
-        EventMessageUtils.advancementMessage(event),
-        EventMessageUtils.advancementMessageSetter(event),
-        () ->
-            Placeholder.component(
-                "advancement_message", EventMessageUtils.advancementMessage(event).get()),
+        event::message,
+        event::message,
+        () -> Placeholder.component("advancement_message", event.message()),
         this.configurationProvider.get().messages().advancementDoneMessage(),
         this.configurationProvider.get().customMessages().broadcastAdvancementMessages());
   }
@@ -122,6 +110,7 @@ public class CustomMessageBukkitListener implements Listener {
     messageConsumer.accept(
         this.miniMessage.deserialize(
             configValue,
+            player,
             placeholders.get(),
             TagResolver.resolver(
                 this.registry.getPlaceholderSupports().stream()
@@ -136,17 +125,22 @@ public class CustomMessageBukkitListener implements Listener {
   }
 
   private Component replaceFirstArgument(Player player, TranslatableComponent component) {
-    ArrayList<Component> args = new ArrayList<>(component.args());
+    var args = new ArrayList<>(component.arguments());
+    if (args.isEmpty()) return component;
 
     args.set(
         0,
-        this.miniMessage.deserialize(
-            this.configurationProvider.get().customMessages().customName(),
-            TagResolver.resolver(
-                this.registry.getPlaceholderSupports().stream()
-                    .map(placeholderSupport -> placeholderSupport.resolvePlayerPlaceholder(player))
-                    .toList())));
+        TranslationArgument.component(
+            this.miniMessage.deserialize(
+                this.configurationProvider.get().customMessages().customName(),
+                player,
+                TagResolver.resolver(
+                    this.registry.getPlaceholderSupports().stream()
+                        .map(
+                            placeholderSupport ->
+                                placeholderSupport.resolvePlayerPlaceholder(player))
+                        .toList()))));
 
-    return component.args(args);
+    return component.arguments(args);
   }
 }
