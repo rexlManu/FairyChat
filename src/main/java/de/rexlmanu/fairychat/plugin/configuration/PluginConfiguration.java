@@ -109,6 +109,12 @@ public class PluginConfiguration {
   @Comment("How similar the messages have to be to be considered a duplicate.")
   private double similarityPercentage = 0.75;
 
+  @Comment("Prevent excessive capital letters being used.")
+  private boolean preventExcessiveCapitals = false;
+
+  @Comment("How much of the message has to be in capital letters to be considered excessive.")
+  private double capitalPercentage = 0.75;
+
   @Comment({
     "The similarity algorithm that should be used.",
     "Supported algorithms:",
